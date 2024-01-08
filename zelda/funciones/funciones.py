@@ -5,21 +5,23 @@ mapaActual = []
 def mostrarInventario():
     '''
     if Select.lower() == "show inventory main":
-        
-        inventario = [" * * * * Inventory * \n",
+    '''  
+    inventario = [" * * * * Inventory * \n",
                         "*\n".rjust(21),
-                        " Link".ljust(12) + "  {0}/{1}".format(vidas,vidas_max).rjust(6) + " * \n",
-                        "* \n".rjust(22), 
+                        " Link".ljust(12) + "  {0}/{1}".format(d.vidas,d.vidas_max).rjust(6) + " * \n",
+                        " Blod Moon in ".ljust(10) + "  {0}".format(25).rjust(4) + " * \n",
+                        "* \n".rjust(22),
                         " Equipement ".ljust(19) + "* \n",
-                         "{0}".format(escudo_actual).rjust(18) + " * \n",
-                         "{0}".format(arma_actual).rjust(18) + " * \n",
+                         "{0}".format(d.escudo_actual).rjust(18) + " * \n",
+                         "{0}".format(d.arma_actual).rjust(18) + " * \n",
+                         
                          "* \n".rjust(22),
                          " Food".ljust(15) + "{0}".format(5).rjust(3) +  " *\n",
                          " Weapons".ljust(15) + "{0}".format(5).rjust(3) +  " *\n",
                          "* \n".rjust(22),
                         " * * * * * * * * * *"]
-        return inventario
-    
+    return inventario
+    '''
     elif Select.lower() == "Show inventory Food":
 
         inventario = [" * * * * * *  Food * \n",
@@ -69,7 +71,7 @@ def mostrarInventario():
             inventario += "* \n".rjust(23),"*\n".rjust(8),"* \n".rjust(22)," * * * * * * * * * *"                          
                     
     return inventario                
-
+    '''
   
 
 def añadirInventario(objeto, diccionario):
@@ -108,7 +110,7 @@ def añadirInventario(objeto, diccionario):
         diccionario[objeto] = {"nombre": "roasted" }
 
 
-'''A esta función le pasamos los datos del mapa en cuestion y los copia en otra variable para poder editar este segundo mapa sin que el original se vea afectado.'''
+A esta función le pasamos los datos del mapa en cuestion y los copia en otra variable para poder editar este segundo mapa sin que el original se vea afectado.'''
 def obtenerMapa(playermap,posicionplayer):
     mapa = ""
     mapaActual = []
@@ -314,7 +316,7 @@ def menu_random():
     return map
 
 
-playmap = menu_random() #Elegir el menu
+
 
 
 def menu_principal():
