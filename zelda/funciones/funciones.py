@@ -1,4 +1,4 @@
-import funciones.datos as d
+import datos as d
 import random
 mapaActual = []
 
@@ -314,14 +314,11 @@ def menu_random():
     return map
 
 
-playmap = menu_random() #Elegir el menu
 
-
-def menu_principal():
-    game = True
-    while game == True:
-        for i in playmap: #Imprimir menu
-            print(i[0])
+def menu_principal(menu_inicial):
+    menu = True
+    while menu == True:
+        imprimirmapa_menu(menu_inicial)
         opc = input() #Guardar la opcion
         if opc.lower() == "continue": #Si se elige continuar partida
             print("Continue")
@@ -336,7 +333,7 @@ def menu_principal():
             help(d.about_main)
 
         elif opc.lower() == "exit": #Si la opción es exit se sale del juego.
-            game = False
+            break
 
         else: #Cuando la opcion sea incorrecta se mostrara que la opción es invalida
             print("Invalid Option")
@@ -346,8 +343,7 @@ def funcion_new_game():
     back = True
     name = ""
     while back == True:  # Mientras no se de la orden de volver atrás
-        for i in d.new_game:  # Imprimir pantalla de nueva partida
-            print(i[0])
+        imprimirmapa_menu(d.new_game) # Imprimir pantalla de nueva partida
         opc = input()  # Guardar la opcion
         if opc.lower() == "help":  # Si se elige la opcion Help
             help(d.help_new_game)
@@ -355,36 +351,22 @@ def funcion_new_game():
         elif opc.lower() == "back":  # Si se da la orden de volver atrás se sale del bucle
             back = False
 
-
         elif opc.lower() == "":  # Si no se escribe nada se asigna el nombre Link
             name = "Link"
             print("Welcome to the game", name)
+            before_game(name)
 
         elif opc.lower().replace(" ", "").isalnum() and len(opc) >= 3 and len(opc) <= 10:  # Cuando el nombre sea correcto se guarda
             name = opc
             print("Welcome to the game", name)
+            before_game(name)
 
         else:  # Si es una opcion invalida se imprime escribe que no es valido
             print(opc, "Is not a valid name")
 
-        if name != "":  # Si el nombre ha sido cambiado se ira a la pestaña de legend
-            for i in d.legend:  # Se imprime la leyenda
-                print(i[0])
-            opc = input()  # Se guarda la opcion
-
-            while opc.lower() != "continue":
-                print("Invalid Option")
-                opc = input()
-
-            if opc.lower() == "continue":  # Si se elige continue pasamos a la pantalla de plot
-                for i in d.plot:  # Se imprime la pantalla de plot
-                    print(i[0])
-                opc = input()
-
 
 def help(mapa):
-    for i in mapa:  # Se imprime la pantalla de ayuda
-        print(i[0])
+    imprimirmapa_menu(mapa)  # Se imprime la pantalla de ayuda
     back_help = True
     while back_help == True:  # Mientras no se de la orden de volver atrás
         opc = input()  # Guardar la opcion
@@ -394,21 +376,22 @@ def help(mapa):
         else:  # Si la opcion es incorrecta se imprime invalid option
             print("Invaid Option")
 
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-            
-        
+def before_game(name):
+    imprimirmapa_menu(d.legend)  # Se imprime la leyenda
+    opc = input()  # Se guarda la opcion
+
+    while opc.lower() != "continue":
+        print("Invalid Option")
+        opc = input()
+
+    if opc.lower() == "continue":  # Si se elige continue pasamos a la pantalla de plot
+        imprimirmapa_menu(d.plot) # Se imprime la pantalla de plot
+        opc = input()
 
 
+def imprimirmapa_menu(mapa):
+    for i in mapa:
+        print(i[0])
+       
+menu_inicial = menu_random()
+menu_principal(menu_inicial)
