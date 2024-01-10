@@ -393,42 +393,104 @@ def help(mapa):
             print("Invaid Option")
 
 
-def prom(texto_promp): #PROMP
-    if len(texto_promp) > 8:
-        texto_promp.remove(texto_promp[0])
-    for i in texto_promp:
+def promt(): #PROMPT
+    while len(d.texto_prompt) > 8:
+        d.texto_prompt.remove(d.texto_prompt[0]) #Remueve el primer mensaje
+    for i in d.texto_prompt: #Imprime el promp
+        #-No se si tiene que sali prompt al lado
         print(i)
-    return texto_promp
 
+#---------------Interaciones con los objetos del mapa----------------------
+
+def cesped(): #Interacion con el cesped
+   porcentaje = random.randint(1,100)
+   if porcentaje in range(1,10):
+       d.texto_prompt.append("You got a lizard") #Si consigues una lagartija tine que salir esto en el promp
+       #-Falta hacer que se añada 1 de carne al inventario
+   else:
+       d.texto_prompt.append("The grass didn't give you anything")
        
-def arbol(atacar,espada): #arbol
+def arbol(espada): #Interacion con el arbol
+    #-Queda hacer lo de que aparezca despues de 10 movimientos
+    #-Tambien hay que hacer en el mapa que cuando un arbol caiga un contador que ponga cuantos turnos falta para que se vulva a regenerar
     porcentaje = random.randint(1,100)
-    print(porcentaje)
-    if d.vida_arbol == 0:
-        print("No hay arbol")
+    if d.vida_arbol == 0: #
+        d.texto_prompt.append("The tree is not ready yet")
     else:
-        if espada == False:
-            if porcentaje in range(1,6):
-                print("1 Espada")
-            elif porcentaje in range(6,11):
-                print("1 Escudo")
-            elif porcentaje in range(11,51):
-                print("1 Manzana")
-            else:
-                print("1 Nada")
+        if espada == False: #compruba si cuando has atacado a sido con una espada o no
+            if porcentaje in range(1,6): #Te da una espada de madera y tiene que salir un mensaje en el promp
+                d.texto_prompt.append("You got a Wood sword")
+                #-Falta hacer que se añada al inventario
+            elif porcentaje in range(6,11): #Te da un escudo de madera y tiene que salir un mensaje en el promp
+                d.texto_prompt.append("You got a Wood shield")
+                #-Falta hacer que se añada al inventario
+            elif porcentaje in range(11,51): #Te da una manzana y tiene que salir un mensaje en el promp
+                d.texto_prompt.append("You got an apple")
+                #-Falta hacer que se añada al inventario
+            else: #No te da nada y tiene que salir un mensaje en el promp
+                d.texto_prompt.append("The tree didn't give you anything")
         else:
-            if porcentaje in range(1,21):
-                print("2 Espada")
+            if porcentaje in range(1,21): #Te da una espada de madera y tiene que salir un mensaje en el promp
+                d.texto_prompt.append("You got a Wood sword")
+                #-Falta hacer que se añada al inventario
+                d.vida_espada_madera -= 1 #cuando atacas con la espda restas 1 de vida a la espada
+                d.vida_arbol -= 1 #cuando atacas con la espda restas 1 de vida al arbol
+            elif porcentaje in range(21,41): #Te da un escudo de madera y tiene que salir un mensaje en el promp
+                d.texto_prompt.append("You got a Wood shield")
+                #-Falta hacer que se añada al inventario
+                d.vida_espada_madera -= 1 
                 d.vida_arbol -= 1
-            elif porcentaje in range(21,41):
-                print("2 Escudo")
+            elif porcentaje in range(41,81): #Te da una manzana y tiene que salir un mensaje en el promp
+                d.texto_prompt.append("You got an apple")
+                #-Falta hacer que se añada al inventario
+                d.vida_espada_madera -= 1 
                 d.vida_arbol -= 1
-            elif porcentaje in range(41,81):
-                print("2 Manzana")
+            else: #No te da nada y tiene que salir un mensaje en el promp
+                d.texto_prompt.append("The tree didn't give you anything")
+                d.vida_espada_madera -= 1 
                 d.vida_arbol -= 1
-            else:
-                print("2 Nada")
-                d.vida_arbol -= 1
+            if d.vida_arbol == 0: #Cuando el arbol llega a 0 se cae y no aparece hasta dentro de 10 movimientos
+                d.texto_prompt.append("The tree has fallen") #-Este prom  lo he añadido yo os parece bien?
+
+def agua(): #Interacion con el agua
+    #-Se necesita caña de pescar?
+    #-Pone que despues de pescar no puedes conseguir otro pez hasta que salgas del lugar y vulvas, Pero es con todo el agua o solo donde has pescado?
+    porcentaje = random.randint(1,100)
+    if d.pesca == True: #Comprueba si ya has conseguido un pez
+        d.texto_prompt.append("There are no more fish") #-Este prom lo he añadido yo
+    else:
+        if porcentaje in range(1,21): #Te da un pez, confirma que ya has conseguido un pez y te da un mensaje en el promp
+            d.texto_prompt.append("You got a fish")
+            d.pesca = True
+            #-Falta hacer que se añada al inventario
+        else: #No te da nada y te escribe en el promp
+            d.texto_prompt.append("You didn't get a fish")
+
+def zorro_visivilidad(): #Dice si el zorro sera visible o no
+    #-Pone si esta en el area pero que area? o cuanto es el area? o si se refiere al mapa?
+    porcentaje = random.randint(1,100)
+    if porcentaje in range(1,51):
+        d.visibilidad_zorro = True
+        d.texto_prompt.append("You see a Fox")
+    else:
+        d.visibilidad_zorro = False
+        d.texto_prompt.append("You don't see a Fox")
+    
+def zorro(): #Interacion con el zorro
+    d.vida_espada_madera -= 1
+    d.texto_prompt.append("You got meat")
+    #-Falta hacer que se añada 1 de carne al inventario
+
+def abrir_santuario(): #Interacion con el santuario
+    if d.puerta_santuario == True: #Comprueba si esta abierto
+        d.texto_prompt.append("You already opened this sanctuary")
+    else: #Al no estarlo lo abre, añade 1 de vida maxima y escribe en el prompt
+        d.puerta_santuario = True
+        d.vida_personaje_maxima += 1
+        d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
+
+
+
 
       
        

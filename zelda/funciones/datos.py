@@ -258,8 +258,24 @@ link_death = [["* Link death  * * * * * * * * * * * * * * * * * * * * * * * * * 
               ["*                                                                             *"],
               ["* Continue  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"],]
 
+texto_prompt = ["","","","","","","","",""]
 
-vida_arbol = 4
-#arbol = {"posicion":posicion,"vida":vida_arbol}
+#---------------Inventario y pesonaje----------------------
+vida_personaje_maxima = 4
+vida_espada_madera = 5
+vida_escudo_madera = 5
+#-Esto solo lo hecho porque no se donde esta los usos de las cosas ya luego lo modificamos
 
-texto_promp = []
+#---------------Interaciones con los objetos del mapa----------------------
+
+vida_arbol = 4 
+#arbol = {"posicion":posicion,"mapa":mapa,"vida":vida_arbol}
+
+pesca = False #Sirve para saber si ya has conseguido u pez o no
+#agua = {"posicion":posicion,"mapa":mapa,"pesca":pesca}
+
+visibilidad_zorro = False #Saber si el zorro lo ves o no
+#zorro = {"posicion":posicion,"mapa":mapa,"visibilidad":visibilidad_zorro}
+
+puerta_santuario = False #Saber si el santuario esta abierto o no
+#santuario = {"posicion":posicion,"mapa":mapa,"puerta":puerta_santuario}
