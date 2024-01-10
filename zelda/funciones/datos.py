@@ -107,7 +107,7 @@ vidas_max = 10
 arma_actual = ""
 escudo_actual = ""
 
-#inventario1 = f.mostrarInventario()
+inventario1 = f.mostrarInventario()
 
 
 
