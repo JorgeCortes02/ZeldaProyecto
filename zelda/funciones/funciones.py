@@ -303,18 +303,16 @@ def moverPersonaje(mapaActual, select, posicionplayer):
 def menu_random():
     menu_aleatorio = random.randint(1, 3)
     if menu_aleatorio == 1:
-        map = d.principal1
+        d.map = d.principal1
 
     elif menu_aleatorio == 2:
-        map = d.principal2
+        d.map = d.principal2
 
     elif menu_aleatorio == 3:
-        map = d.principal3
+        d.map = d.principal3
 
     return map
 
-
-playmap = menu_random() #Elegir el menu
 
 
 def menu_principal():
@@ -394,9 +392,45 @@ def help(mapa):
         else:  # Si la opcion es incorrecta se imprime invalid option
             print("Invaid Option")
 
+
+def prom(texto_promp): #PROMP
+    if len(texto_promp) > 8:
+        texto_promp.remove(texto_promp[0])
+    for i in texto_promp:
+        print(i)
+    return texto_promp
+
        
-       
-       
+def arbol(atacar,espada): #arbol
+    porcentaje = random.randint(1,100)
+    print(porcentaje)
+    if d.vida_arbol == 0:
+        print("No hay arbol")
+    else:
+        if espada == False:
+            if porcentaje in range(1,6):
+                print("1 Espada")
+            elif porcentaje in range(6,11):
+                print("1 Escudo")
+            elif porcentaje in range(11,51):
+                print("1 Manzana")
+            else:
+                print("1 Nada")
+        else:
+            if porcentaje in range(1,21):
+                print("2 Espada")
+                d.vida_arbol -= 1
+            elif porcentaje in range(21,41):
+                print("2 Escudo")
+                d.vida_arbol -= 1
+            elif porcentaje in range(41,81):
+                print("2 Manzana")
+                d.vida_arbol -= 1
+            else:
+                print("2 Nada")
+                d.vida_arbol -= 1
+
+      
        
        
        
