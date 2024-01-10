@@ -93,7 +93,7 @@ def añadirInventario(objeto, diccionario):
 
     elif objeto == "Vegetable":
         
-        diccionario[objeto] = {"nombre": "Vegetable" }
+        diccionario[objeto] = {"nombre": "Vegetable"}
 
     elif  objeto == "salad":
         
@@ -297,7 +297,10 @@ def moverPersonaje(mapaActual, select, posicionplayer):
             else:
                 return["Invalid action"], posicionplayer[0], posicionplayer[1]
 
-                       
+              
+              
+              
+ #--------------- Menu Principal ----------------------                      
       
 #Menu aleatorio
 def menu_random():
@@ -393,6 +396,8 @@ def before_game(name):
 def imprimirmapa_menu(mapa):
     for i in mapa:
         print(i[0])
+
+
        
 def prompt(): #PROMPT
     while len(d.texto_prompt) > 8:
@@ -490,21 +495,95 @@ def abrir_santuario(): #Interacion con el santuario
         d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
 
 
+#--------------- Cocinar ----------------------
+     
+   
+def cocinar(receta, inventario): # Funcion para cocinar comida 
+    if receta[5:].lower() == "salad": # Si se quiere cocinar una salad
+        cont = 0
+        claves_eliminar = []
 
+        for i in inventario: # Por cada elemento del diccionario miramos si es el objeto vegetable
+            if inventario[i]["nombre"].lower() == "vegetable":
+                cont += 1
+                if cont <= 2:
+                    claves_eliminar.append(i)  # Los dos vegetables los añadimos en una lista para luego eliminarlas del diccionario     
 
-      
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-            
+        if cont >= 2: # Si hay 2 o mas vegetables se puede hacer la salad
+            for claves in claves_eliminar: # Eliminamos los dos vegetables del inventario
+                del inventario[claves]
+                
+            print("You cooked a salad successfully")
+            añadirInventario("salad", inventario) # Añadimos salad al inventario
         
+        else:
+            print("Not enough vegetable") # Si no hay mas 1 vegetable se imprime que no se puede cocinar la salad
 
+    elif receta[5:].lower() == "pescatarian": # Si se elige cocinar el pescatarian
+        cont_vege = 0
+        cont_fish = 0
+        claves_eliminar = []
 
+        for i in inventario: #Por cada elemento del inventario contamos cuantos vegetables y fish hay
+            if inventario[i]["nombre"].lower() == "vegetable":
+                cont_vege += 1
+                if cont_vege <= 1:
+                    claves_eliminar.append(i) # El vegetable que usamos lo añadimos a la lista para eliminarlo
+            
+            elif inventario[i]["nombre"].lower() == "fish":
+                cont_fish += 1
+                if cont_fish <= 1:
+                    claves_eliminar.append(i)  # El fish que usamos también lo eliminamos después
+
+        if cont_vege >= 1 and cont_fish >= 1: # Si hay 1 fish y 1 vegetable se puede cocinar el pescatarian
+            for claves in claves_eliminar: # Eliminamos los dos objetos del inventario
+                del inventario[claves]
+            
+            print("You cooked a pescatarian successfully")
+            añadirInventario("pescatarian", inventario) # Añadimos el pescatarian al inventario 
+        
+        elif cont_vege < 1 and cont_fish < 1: # Si no hay suficientes fish y vegetables se informa
+            print("Not enough vegetable and fish")
+        
+        elif cont_vege < 1: # Si no hay suficientes vegetables se informa
+            print("Not enough vegetable")
+        
+        else: # Si no hay suficientes fish se informa
+            print("Not enough fish")
+
+    elif receta[5:].lower() == "roasted": # Si se elige cocinar el roasted
+        cont_vege = 0
+        cont_meat = 0
+        claves_eliminar = []
+
+        for i in inventario: # Por cada elemento del inventario se comprueba si es un vegetable o un meat
+            if inventario[i]["nombre"].lower() == "vegetable":
+                cont_vege += 1
+                if cont_vege <= 1:
+                    claves_eliminar.append(i) # Añadimos al vegetable en la lista para eliminar 
+            
+            elif inventario[i]["nombre"].lower() == "meat":
+                cont_meat += 1
+                if cont_meat <= 1:
+                    claves_eliminar.append(i)  # Añadimos al met en la lista para eliminar
+
+        if cont_vege >= 1 and cont_meat >= 1:
+            for claves in claves_eliminar:
+                del inventario[claves] # Si hay suficientes objetos se eliminan los 2 que se usan del inventario
+            
+            print("You cooked a roasted successfully")
+            añadirInventario("roasted", inventario) # Se añade el roasted al inventario
+        
+        elif cont_vege < 1 and cont_meat < 1: # Si no hay ni vegetable ni meat suficientes se informa
+            print("Not enough vegetable and meat")
+        
+        elif cont_vege < 1: # Si no hay suficientes vegetables se informa
+            print("Not enough vegetable")
+        
+        else: # Si no hay suficientes meat se informa
+            print("Not enough meat")
+
+    else: # Si lo que se quiere cocinar no existe, se muestra un mensaje de error
+        print("You can't cook", receta[5:])
+
+       
