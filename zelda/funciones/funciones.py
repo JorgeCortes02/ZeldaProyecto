@@ -1,4 +1,4 @@
-import datos as d
+import funciones.datos as d
 import random
 mapaActual = []
 
@@ -302,6 +302,7 @@ def moverPersonaje(mapaActual, select, posicionplayer):
 #Menu aleatorio
 def menu_random():
     menu_aleatorio = random.randint(1, 3)
+    map = []
     if menu_aleatorio == 1:
         map = d.principal1
 
@@ -393,5 +394,3 @@ def imprimirmapa_menu(mapa):
     for i in mapa:
         print(i[0])
        
-menu_inicial = menu_random()
-menu_principal(menu_inicial)
