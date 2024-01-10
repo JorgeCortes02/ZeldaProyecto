@@ -394,8 +394,12 @@ def imprimirmapa_menu(mapa):
     for i in mapa:
         print(i[0])
        
-
-
+def prompt(): #PROMPT
+    while len(d.texto_prompt) > 8:
+        d.texto_prompt.remove(d.texto_prompt[0]) #Remueve el primer mensaje
+    for i in d.texto_prompt: #Imprime el promp
+        #-No se si tiene que sali prompt al lado
+        print(i)
 #---------------Interaciones con los objetos del mapa----------------------
 
 def cesped(): #Interacion con el cesped
