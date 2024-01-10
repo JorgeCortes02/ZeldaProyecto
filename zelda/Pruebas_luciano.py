@@ -15,6 +15,6 @@ import funciones.funciones as f
 
 
 while True:
-    f.promt()
+    f.prompt()
     input("Su: ")
     f.agua()
