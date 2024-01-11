@@ -300,6 +300,7 @@ vida_espada_madera = 5
 vida_escudo_madera = 5
 vida_enemigo = 5
 nombre = "Link"
+inventarioComida1 = [5]
 posicion_enemigo = [0,0]
 #enemigo ={"posicion"=posicion_enemigo,"mapa":mapa,"vida":vida_enemigo}
 #-Esto solo lo hecho porque no se donde esta los usos de las cosas ya luego lo modificamos
@@ -307,16 +308,16 @@ posicion_enemigo = [0,0]
 #---------------Interaciones con los objetos del mapa----------------------
 
 vida_arbol = 4 
-#arbol = {"posicion":posicion,"mapa":mapa,"vida":vida_arbol}
+#arbol = {"posicion":posicion,"mapa":mapa,"vida":vida_arbol,"forma":"T"}
 
 pesca = False #Sirve para saber si ya has conseguido u pez o no
 #agua = {"posicion":posicion,"mapa":mapa,"pesca":pesca}
 
 visibilidad_zorro = False #Saber si el zorro lo ves o no
-#zorro = {"posicion":posicion,"mapa":mapa,"visibilidad":visibilidad_zorro}
+#zorro = {"posicion":posicion,"mapa":mapa,"visibilidad":visibilidad_zorro,"forma":"F"}
 
 puerta_santuario = False #Saber si el santuario esta abierto o no
-#santuario = {"posicion":posicion,"mapa":mapa,"puerta":puerta_santuario}
+#santuario = {"posicion":posicion,"mapa":mapa,"puerta":puerta_santuario,"forma":"S1"}
 
 cofre_abierto = False
-#cofre = {"posicion":posicion,"map":map,"cofre":cofre_abierto}
+#cofre = {"posicion":posicion,"map":map,"cofre":cofre_abierto,"forma":"M"}

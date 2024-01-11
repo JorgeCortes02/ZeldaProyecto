@@ -398,9 +398,10 @@ def prompt(): #PROMPT
     while len(d.texto_prompt) > 8:
         d.texto_prompt.remove(d.texto_prompt[0]) #Remueve el primer mensaje
     for i in d.texto_prompt: #Imprime el promp
-        #-No se si tiene que sali prompt al lado
+        #-No se si tiene que sali "prompt" al lado
         print(i)
-#---------------Interaciones con los objetos del mapa----------------------
+
+#--------------- Interaciones con los objetos del mapa ----------------------
 
 def cesped(): #Interacion con el cesped
    porcentaje = random.randint(1,100)
@@ -453,7 +454,6 @@ def arbol(espada): #Interacion con el arbol
                 d.texto_prompt.append("The tree has fallen") #-Este prom  lo he añadido yo os parece bien?
 
 def agua(): #Interacion con el agua
-    #-Se necesita caña de pescar?
     #-Pone que despues de pescar no puedes conseguir otro pez hasta que salgas del lugar y vulvas, Pero es con todo el agua o solo donde has pescado?
     porcentaje = random.randint(1,100)
     if d.pesca == True: #Comprueba si ya has conseguido un pez
@@ -484,7 +484,7 @@ def zorro(): #Interacion con el zorro
 def abrir_santuario(): #Interacion con el santuario
     if d.puerta_santuario == True: #Comprueba si esta abierto
         d.texto_prompt.append("You already opened this sanctuary")
-    else: #Al no estarlo lo abre, añade 1 de vida maxima y escribe en el prompt
+    else: #Lo abre y añade 1 de vida maxima y escribe en el prompt
         d.puerta_santuario = True
         d.vidas_max += 1
         d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
@@ -521,7 +521,7 @@ def enemigos(): #Interacion con el enemigo
         if d.vidas == 0: #Comprueba si a un te queda vida
             d.texto_prompt.append(f"{d.name} is dead")
         else:
-            if d.vida_enemigo == 0: #Comprueba si al enemigo a un le qued vida
+            if d.vida_enemigo == 0: #Comprueba si al enemigo a un le queda vida
                 d.texto_prompt.append("You defeated an enemy, this is a dangerous zone")
             else:
                 direccion1 = random.randint(1,2)
@@ -537,6 +537,32 @@ def enemigos(): #Interacion con el enemigo
                         d.posicion_enemigo[1] += 1
                     else:
                         d.posicion_enemigo[1] -= 1
+            
+def comer(texto):
+    if d.vidas == d.vidas_max:
+        d.texto_prompt.append("")
+    else:
+        if texto == "Eat vegetable":
+            d.inventarioComida1 -= 1
+            d.vidas += 1
+            d.texto_prompt.append("")
+        elif texto == "Eat salad":
+            d.inventarioComida1 -= 1
+            for i in range(2):
+                if not d.vidas == d.vidas_max:
+                    d.vidas += 1
+        elif texto == "Eat pescatarian":
+            d.inventarioComida1 -= 1
+            for i in range(3):
+                if not d.vidas == d.vidas_max:
+                    d.vidas += 1
+        elif texto == "Eat roasted":
+            d.inventarioComida1 -= 1
+            for i in range(4):
+                if not d.vidas == d.vidas_max:
+                    d.vidas += 1
+
+
     
     
     
