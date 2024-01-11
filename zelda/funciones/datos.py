@@ -18,7 +18,6 @@ mapa_inicio = [["*"," ","M","a","p"," "," ","*","*"," ","*"," ","*"," ","*"," ",
         ["*"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","*"],
         ["*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"]]
 
-#mapas_diccionario = {"hyrule":{"mapa":hyrule, "posicion": position_hyrule},"gerudo":{"mapa":gerudo, "posicion":position_gerudo},"necluda":{"mapa":necluda, "posicion": position_necluda},"death":{"mapa":death, "posicion":position_death}} #Diccionario de los mapas y sus posiciones
 
 hyrule = [["*"," ","H","y","r","u","l","e"," "," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"],
         ["*"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","~","~","~","~","~","~","~","~","~","~","~","~","~","~","~","~","~","~","O","O","O","*"],
@@ -104,6 +103,10 @@ castle_win = [["* ", "Castle  ", "* "*25],
           ["*", "O", "T", "!", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "|", " ", "|", " ", " ", " ", " ", "|", "#", "|", " ", " ", " ", " ", "|", " ", "|", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "*"],
           ["*", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "*"],
           ["* " * 30]]
+
+position_castle_win = [9,3]
+
+mapas_diccionario = {"hyrule":{"mapa":hyrule, "posicion": position_hyrule},"gerudo":{"mapa":gerudo, "posicion":position_gerudo},"necluda":{"mapa":necluda, "posicion": position_necluda},"death":{"mapa":death, "posicion":position_death},"castle":{"mapa":castle,"posicion":position_castle},"castle_win":{"mapa":castle_win,"posicion":position_castle_win}} #Diccionario de los mapas y sus posiciones
 
 position_castle_win = [9,3]
 
@@ -296,21 +299,30 @@ link_death = [["* Link death  * * * * * * * * * * * * * * * * * * * * * * * * * 
 texto_prompt = ["","","","","","","","",""]
 
 #---------------Inventario y pesonaje----------------------
-vida_personaje_maxima = 4
+espada = True
+mapa = hyrule
 vida_espada_madera = 5
 vida_escudo_madera = 5
+vida_enemigo = 5
+nombre = "Link"
+inventarioComida1 = [5]
+posicion_enemigo = [0,0]
+#enemigo ={"posicion"=posicion_enemigo,"mapa":mapa,"vida":vida_enemigo}
 #-Esto solo lo hecho porque no se donde esta los usos de las cosas ya luego lo modificamos
 
 #---------------Interaciones con los objetos del mapa----------------------
 
 vida_arbol = 4 
-#arbol = {"posicion":posicion,"mapa":mapa,"vida":vida_arbol}
+#arbol = {"posicion":posicion,"mapa":mapa,"vida":vida_arbol,"forma":"T"}
 
 pesca = False #Sirve para saber si ya has conseguido u pez o no
 #agua = {"posicion":posicion,"mapa":mapa,"pesca":pesca}
 
 visibilidad_zorro = False #Saber si el zorro lo ves o no
-#zorro = {"posicion":posicion,"mapa":mapa,"visibilidad":visibilidad_zorro}
+#zorro = {"posicion":posicion,"mapa":mapa,"visibilidad":visibilidad_zorro,"forma":"F"}
 
 puerta_santuario = False #Saber si el santuario esta abierto o no
-#santuario = {"posicion":posicion,"mapa":mapa,"puerta":puerta_santuario}
+#santuario = {"posicion":posicion,"mapa":mapa,"puerta":puerta_santuario,"forma":"S1"}
+
+cofre_abierto = False
+#cofre = {"posicion":posicion,"map":map,"cofre":cofre_abierto,"forma":"M"}
