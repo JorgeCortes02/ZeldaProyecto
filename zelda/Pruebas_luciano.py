@@ -17,4 +17,4 @@ import funciones.funciones as f
 while True:
     f.prompt()
     input("Su: ")
-    f.agua()
+    f.enemigos()

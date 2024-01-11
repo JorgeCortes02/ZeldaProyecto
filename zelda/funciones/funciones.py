@@ -417,7 +417,7 @@ def arbol(espada): #Interacion con el arbol
     if d.vida_arbol == 0: #
         d.texto_prompt.append("The tree is not ready yet")
     else:
-        if espada == False: #compruba si cuando has atacado a sido con una espada o no
+        if d.espada == False: #compruba si cuando has atacado a sido con una espada o no
             if porcentaje in range(1,6): #Te da una espada de madera y tiene que salir un mensaje en el promp
                 d.texto_prompt.append("You got a Wood sword")
                 #-Falta hacer que se añada al inventario
@@ -486,9 +486,60 @@ def abrir_santuario(): #Interacion con el santuario
         d.texto_prompt.append("You already opened this sanctuary")
     else: #Al no estarlo lo abre, añade 1 de vida maxima y escribe en el prompt
         d.puerta_santuario = True
-        d.vida_personaje_maxima += 1
+        d.vidas_max += 1
         d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
 
+def cofre_cerrar(): #Comprueba si en tu inventario tienes alguna espada
+    if len(d.inventarioArmas) == 0:
+        d.cofre_abierto = False
+        #-No esta perfecto queda especificar más como lo tiene que buscar
+        #-Tambien no se si solo tiene que ser con espada o tambien escudo o si tambien cuentan las espadas de madera
+
+def cofre(): #Interacion con el cofre
+    if d.cofre_abierto == True: #comprueba si el cofre ya esta abierto
+        d.texto_prompt.append("The chest is now open") #Este prompt lo he puesto yo
+    else:
+        if d.mapa == (d.hyrule or d.gerudo): #Dependiendo del mapa te dara una espada o un escudo
+            d.texto_prompt.append(f"You got a sword")
+            d.cofre_abierto = True
+            #-Falta hacer que se añada una espada al inventario 
+        else:
+            d.texto_prompt.append(f"You got a shield")
+            d.cofre_abierto = True
+            #-Falta hacer que se añada un escudo al inventario
+
+def enemigos(): #Interacion con el enemigo
+    if d.espada == False:
+        print()
+        #-no se que pasa si intentas atacar a un enemigo sin espada o si puedes hacerlo
+    else:
+        d.vida_espada_madera -= 1 #Le quita un uso a la espada
+        d.texto_prompt.append(f"Brave, keep fighting {d.name}")
+        d.vidas -= 1 #Te resta 1 de vida
+        d.texto_prompt.append(f"Be careful Link, you only have {d.vidas} hearts")
+        d.vida_enemigo -= 1 #Le resta 1 de vida al enemigo
+        if d.vidas == 0: #Comprueba si a un te queda vida
+            d.texto_prompt.append(f"{d.name} is dead")
+        else:
+            if d.vida_enemigo == 0: #Comprueba si al enemigo a un le qued vida
+                d.texto_prompt.append("You defeated an enemy, this is a dangerous zone")
+            else:
+                direccion1 = random.randint(1,2)
+                if direccion1 == 1: #Mira si modificara X o Y
+                    direccion2= random.randint(1,2)
+                    if direccion2 == 1: #Luego si es para delante o atras o izquierda o derecha
+                        d.posicion_enemigo[0] += 1
+                    else:
+                        d.posicion_enemigo[0] -= 1
+                else:
+                    direccion2= random.randint(1,2)
+                    if direccion2 == 1:
+                        d.posicion_enemigo[1] += 1
+                    else:
+                        d.posicion_enemigo[1] -= 1
+    
+    
+    
 
 
 
