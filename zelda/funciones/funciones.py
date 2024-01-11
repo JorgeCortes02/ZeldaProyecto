@@ -17,9 +17,9 @@ def mostrarInventario():
                          
                          "* \n".rjust(22),
                          " Food".ljust(15) + "{0}".format(5).rjust(3) +  " *\n",
-                         " Weapons".ljust(15) + "{0}".format(5).rjust(3) +  " *\n",
-                         "* \n".rjust(22),
-                        " * * * * * * * * * *"]
+                         " Weapons".ljust(15) + "{0}".format(5).rjust(3) +  " *"
+                         ]
+                        
     return inventario
     '''
     elif Select.lower() == "Show inventory Food":
@@ -33,9 +33,7 @@ def mostrarInventario():
                          "* \n".rjust(22),
                          " Salads".ljust(16) + "10".rjust(2) + " * \n",
                          " Pescatarian".ljust(16) + "10".rjust(2) + " * \n",
-                         " Roasted".ljust(16) + "10".rjust(2) + " * \n",
-                         "*\n".rjust(21),
-                        " * * * * * * * * * *"]
+                         " Roasted".ljust(16) + "10".rjust(2) + " *"]
 
         return inventario
 
@@ -66,9 +64,9 @@ def mostrarInventario():
                         
     if d.escudo_actual == "Shield":
             
-            inventario += "  (equiped)" + "*\n".rjust(11),"* \n".rjust(22)," * * * * * * * * * *"
+            inventario += "  (equiped)" + "*\n".rjust(11),"*".rjust(22)
     else:
-            inventario += "* \n".rjust(23),"*\n".rjust(8),"* \n".rjust(22)," * * * * * * * * * *"                          
+            inventario += "* \n".rjust(23),"*\n".rjust(8),"*".rjust(22)                          
                     
     return inventario                
    
@@ -147,7 +145,7 @@ def imprimirmapa(mapaActual):
 
         mapa += d.inventario1[contadorInventario]
         
-        if contadorInventario < 11:
+        if contadorInventario < 10:
             contadorInventario += 1
     
     print(mapa)
@@ -770,12 +768,34 @@ def cocinar(receta, inventario): # Funcion para cocinar comida
         print("You can't cook", receta[5:])
 
 
-def menuInferior():
-
+def menuInferior(mapa):
+    #Queda crear el diccionario donde ira el mapa actual
     posicion = d.jugador["posicion"]
     
-    menuInferior = "* Back, Show Map, Go, Show,"
+    menuInferior = "* Exit, Show, Go, Eat"
 
+    if mapa[posicion[0]+1][posicion[1]] == "T" or mapa[posicion[0]-1][posicion[1]] == "T" or mapa[posicion[0]+1][posicion[1]+1]  == "T" or mapa[posicion[0]+1][posicion[1]-1]  == "T" or mapa[posicion[0]][posicion[1]+1]  == "T" or mapa[posicion[0]][posicion[1]-1]  == "T" or mapa[posicion[0]-1][posicion[1]+1] or mapa[posicion[0]-1][posicion[1]-1]  == "T":
 
+        menuInferior += ", Attack"
 
+    '''if d.jugador["mapaActual"][posicion[0]+1][posicion[1]][0] in  ("Z","E") or d.jugador["mapaActual"][posicion[0]-1][posicion[1]][0] in  ("Z","E") or d.jugador["mapaActual"][posicion[0]+1][posicion[1]+1][0]  in  ("Z","E") or d.jugador["mapaActual"][posicion[0]+1][posicion[1]-1][0]  in  ("Z","E") or d.jugador["mapaActual"][posicion[0]][posicion[1]+1][0]  in  ("Z","E") or d.jugador["mapaActual"][posicion[0]][posicion[1]-1][0]  in  ("Z","E") or d.jugador["mapaActual"][posicion[0]-1][posicion[1]+1][0]in  ("Z","E") or d.jugador["mapaActual"][posicion[0]-1][posicion[1]-1][0]  in  ("Z","E") and d.jugador["arma actual"] != " ":
+         menuInferior += ", Attack"
+
+    if d.jugador["mapaActual"][posicion[0]+1][posicion[1]][0] == "~" or d.jugador["mapaActual"][posicion[0]-1][posicion[1]][0]  == "~" or d.jugador["mapaActual"][posicion[0]+1][posicion[1]+1][0]   == "~" or d.jugador["mapaActual"][posicion[0]+1][posicion[1]-1][0]   == "~" or d.jugador["mapaActual"][posicion[0]][posicion[1]+1][0]   == "~" or d.jugador["mapaActual"][posicion[0]][posicion[1]-1][0]   == "~" or d.jugador["mapaActual"][posicion[0]-1][posicion[1]+1][0] == "~" or d.jugador["mapaActual"][posicion[0]-1][posicion[1]-1][0] == "~":
+         menuInferior += ", Fish"
+    
+     if d.jugador["mapaActual"][posicion[0]+1][posicion[1]][0] == "S" or d.jugador["mapaActual"][posicion[0]-1][posicion[1]][0]  == "S" or d.jugador["mapaActual"][posicion[0]+1][posicion[1]+1][0]   == "S" or d.jugador["mapaActual"][posicion[0]+1][posicion[1]-1][0]   == "S" or d.jugador["mapaActual"][posicion[0]][posicion[1]+1][0]   == "S" or d.jugador["mapaActual"][posicion[0]][posicion[1]-1][0]   == "S" or d.jugador["mapaActual"][posicion[0]-1][posicion[1]+1][0] == "S" or d.jugador["mapaActual"][posicion[0]-1][posicion[1]-1][0] == "S":
+     
+        menuInferior += ", Open"
+'''
+
+    while  len(menuInferior) < 79:
+        if len(menuInferior) %2 == 0:
+
+            menuInferior += "*"
+            menuInferior += " "
+        else:
+            menuInferior += " "
+            menuInferior += "*"
+    print (menuInferior)
 

@@ -1,7 +1,7 @@
 import funciones.funciones as f
 
 
-jugador = {"posicion" : [3,9], "arma_actual": " ", "escudo_actual" : " ", "vidas_max": 3, "vidas" : 3 }
+
 
 dict_tipos = {"Shield" : {"total": 0}, "Wood Shield" : {"total": 0}, "Sword" : {"total": 0}, "Wood Swort" : {"total": 0}, "Vegetables" :{"total": 0}, "Fish" :{"total": 0}, "Meat" :{"total": 0}, "Salads" :{"total": 0}, "Pescatarian" : {"total": 0}, "Roasted": {"total": 0} }
 
@@ -73,7 +73,7 @@ death = [["*"," ","D","e","a","t","h"," ","M","o","u","n","t","a","i","n"," "," 
         ["*"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","T"," "," "," "," "," "," "," "," "," "," ","O","O"," "," "," "," "," ","M"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","*"],
         ["*"," ","!"," "," "," ","C"," "," "," "," "," "," "," "," "," "," "," ","T"," "," "," "," "," "," "," "," "," "," ","O","O"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","S","3","?"," "," "," "," "," "," ","*"],
         ["*"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","*"],
-        ["*" * 21]]
+        ]
 
 position_death = [9,2]
 
@@ -106,13 +106,13 @@ castle_win = [["* ", "Castle  ", "* "*25],
           ["* " * 30]]
 
 position_castle_win = [9,3]
-
+jugador = {"posicion" : [3,9], "arma_actual": " ", "escudo_actual" : " ", "vidas_max": 3, "vidas" : 3 }
 vidas = 3
 vidas_max = 10
 arma_actual = ""
 escudo_actual = ""
 
-#inventario1 = f.mostrarInventario()
+inventario1 = f.mostrarInventario()
 
 
 
