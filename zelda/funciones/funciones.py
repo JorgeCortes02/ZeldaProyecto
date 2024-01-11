@@ -95,7 +95,7 @@ def añadirInventario(objeto, diccionario):
 
     elif objeto == "Vegetable":
         
-        diccionario[objeto] = {"nombre": "Vegetable" }
+        diccionario[objeto] = {"nombre": "Vegetable"}
 
     elif  objeto == "salad":
         
@@ -300,6 +300,7 @@ def moverPersonaje(mapaActual, select, posicionplayer):
                 return["Invalid action"], posicionplayer[0], posicionplayer[1]
 
 
+
 def moverPersonajeGanon(mapaActual, select, posicionplayer):
     
     
@@ -381,6 +382,7 @@ def moverPersonajeGanon(mapaActual, select, posicionplayer):
 #Menu aleatorio
 def menu_random():
     menu_aleatorio = random.randint(1, 3)
+    map = []
     if menu_aleatorio == 1:
         map = d.principal1
 
@@ -394,13 +396,10 @@ def menu_random():
 
 
 
-
-
-def menu_principal():
-    game = True
-    while game == True:
-        for i in playmap: #Imprimir menu
-            print(i[0])
+def menu_principal(menu_inicial):
+    menu = True
+    while menu == True:
+        imprimirmapa_menu(menu_inicial)
         opc = input() #Guardar la opcion
         if opc.lower() == "continue": #Si se elige continuar partida
             print("Continue")
@@ -415,7 +414,7 @@ def menu_principal():
             help(d.about_main)
 
         elif opc.lower() == "exit": #Si la opción es exit se sale del juego.
-            game = False
+            break
 
         else: #Cuando la opcion sea incorrecta se mostrara que la opción es invalida
             print("Invalid Option")
@@ -425,8 +424,7 @@ def funcion_new_game():
     back = True
     name = ""
     while back == True:  # Mientras no se de la orden de volver atrás
-        for i in d.new_game:  # Imprimir pantalla de nueva partida
-            print(i[0])
+        imprimirmapa_menu(d.new_game) # Imprimir pantalla de nueva partida
         opc = input()  # Guardar la opcion
         if opc.lower() == "help":  # Si se elige la opcion Help
             help(d.help_new_game)
@@ -434,36 +432,22 @@ def funcion_new_game():
         elif opc.lower() == "back":  # Si se da la orden de volver atrás se sale del bucle
             back = False
 
-
         elif opc.lower() == "":  # Si no se escribe nada se asigna el nombre Link
             name = "Link"
             print("Welcome to the game", name)
+            before_game(name)
 
         elif opc.lower().replace(" ", "").isalnum() and len(opc) >= 3 and len(opc) <= 10:  # Cuando el nombre sea correcto se guarda
             name = opc
             print("Welcome to the game", name)
+            before_game(name)
 
         else:  # Si es una opcion invalida se imprime escribe que no es valido
             print(opc, "Is not a valid name")
 
-        if name != "":  # Si el nombre ha sido cambiado se ira a la pestaña de legend
-            for i in d.legend:  # Se imprime la leyenda
-                print(i[0])
-            opc = input()  # Se guarda la opcion
-
-            while opc.lower() != "continue":
-                print("Invalid Option")
-                opc = input()
-
-            if opc.lower() == "continue":  # Si se elige continue pasamos a la pantalla de plot
-                for i in d.plot:  # Se imprime la pantalla de plot
-                    print(i[0])
-                opc = input()
-
 
 def help(mapa):
-    for i in mapa:  # Se imprime la pantalla de ayuda
-        print(i[0])
+    imprimirmapa_menu(mapa)  # Se imprime la pantalla de ayuda
     back_help = True
     while back_help == True:  # Mientras no se de la orden de volver atrás
         opc = input()  # Guardar la opcion
@@ -473,8 +457,42 @@ def help(mapa):
         else:  # Si la opcion es incorrecta se imprime invalid option
             print("Invalid Option")
 
+def before_game(name):
+    imprimirmapa_menu(d.legend)  # Se imprime la leyenda
+    opc = input()  # Se guarda la opcion
+
+    while opc.lower() != "continue":
+        print("Invalid Option")
+        opc = input()
+
+    if opc.lower() == "continue":  # Si se elige continue pasamos a la pantalla de plot
+        imprimirmapa_menu(d.plot) # Se imprime la pantalla de plot
+        opc = input()
+
+
+def imprimirmapa_menu(mapa):
+    for i in mapa:
+        print(i[0])
+
+
        
+def prompt(): #PROMPT
+    while len(d.texto_prompt) > 8:
+        d.texto_prompt.remove(d.texto_prompt[0]) #Remueve el primer mensaje
+    for i in d.texto_prompt: #Imprime el promp
+        #-No se si tiene que sali prompt al lado
+        print(i)
+#---------------Interaciones con los objetos del mapa----------------------
+
+def cesped(): #Interacion con el cesped
+   porcentaje = random.randint(1,100)
+   if porcentaje in range(1,10):
+       d.texto_prompt.append("You got a lizard") #Si consigues una lagartija tine que salir esto en el promp
+       #-Falta hacer que se añada 1 de carne al inventario
+   else:
+       d.texto_prompt.append("The grass didn't give you anything")
        
+
        
        
 def añadirInventario(objeto, diccionario):
@@ -637,3 +655,176 @@ def conteoInventario():
             elif  "Roasted" in d.inventarioComida[element1]["tipo"]:
 
                 d.dict_tipos["Roasted"]["total"] += 1
+
+def arbol(espada): #Interacion con el arbol
+    #-Queda hacer lo de que aparezca despues de 10 movimientos
+    #-Tambien hay que hacer en el mapa que cuando un arbol caiga un contador que ponga cuantos turnos falta para que se vulva a regenerar
+    porcentaje = random.randint(1,100)
+    if d.vida_arbol == 0: #
+        d.texto_prompt.append("The tree is not ready yet")
+    else:
+        if espada == False: #compruba si cuando has atacado a sido con una espada o no
+            if porcentaje in range(1,6): #Te da una espada de madera y tiene que salir un mensaje en el promp
+                d.texto_prompt.append("You got a Wood sword")
+                #-Falta hacer que se añada al inventario
+            elif porcentaje in range(6,11): #Te da un escudo de madera y tiene que salir un mensaje en el promp
+                d.texto_prompt.append("You got a Wood shield")
+                #-Falta hacer que se añada al inventario
+            elif porcentaje in range(11,51): #Te da una manzana y tiene que salir un mensaje en el promp
+                d.texto_prompt.append("You got an apple")
+                #-Falta hacer que se añada al inventario
+            else: #No te da nada y tiene que salir un mensaje en el promp
+                d.texto_prompt.append("The tree didn't give you anything")
+        else:
+            if porcentaje in range(1,21): #Te da una espada de madera y tiene que salir un mensaje en el promp
+                d.texto_prompt.append("You got a Wood sword")
+                #-Falta hacer que se añada al inventario
+                d.vida_espada_madera -= 1 #cuando atacas con la espda restas 1 de vida a la espada
+                d.vida_arbol -= 1 #cuando atacas con la espda restas 1 de vida al arbol
+            elif porcentaje in range(21,41): #Te da un escudo de madera y tiene que salir un mensaje en el promp
+                d.texto_prompt.append("You got a Wood shield")
+                #-Falta hacer que se añada al inventario
+                d.vida_espada_madera -= 1 
+                d.vida_arbol -= 1
+            elif porcentaje in range(41,81): #Te da una manzana y tiene que salir un mensaje en el promp
+                d.texto_prompt.append("You got an apple")
+                #-Falta hacer que se añada al inventario
+                d.vida_espada_madera -= 1 
+                d.vida_arbol -= 1
+            else: #No te da nada y tiene que salir un mensaje en el promp
+                d.texto_prompt.append("The tree didn't give you anything")
+                d.vida_espada_madera -= 1 
+                d.vida_arbol -= 1
+            if d.vida_arbol == 0: #Cuando el arbol llega a 0 se cae y no aparece hasta dentro de 10 movimientos
+                d.texto_prompt.append("The tree has fallen") #-Este prom  lo he añadido yo os parece bien?
+
+def agua(): #Interacion con el agua
+    #-Se necesita caña de pescar?
+    #-Pone que despues de pescar no puedes conseguir otro pez hasta que salgas del lugar y vulvas, Pero es con todo el agua o solo donde has pescado?
+    porcentaje = random.randint(1,100)
+    if d.pesca == True: #Comprueba si ya has conseguido un pez
+        d.texto_prompt.append("There are no more fish") #-Este prom lo he añadido yo
+    else:
+        if porcentaje in range(1,21): #Te da un pez, confirma que ya has conseguido un pez y te da un mensaje en el promp
+            d.texto_prompt.append("You got a fish")
+            d.pesca = True
+            #-Falta hacer que se añada al inventario
+        else: #No te da nada y te escribe en el promp
+            d.texto_prompt.append("You didn't get a fish")
+
+def zorro_visivilidad(): #Dice si el zorro sera visible o no
+    #-Pone si esta en el area pero que area? o cuanto es el area? o si se refiere al mapa?
+    porcentaje = random.randint(1,100)
+    if porcentaje in range(1,51):
+        d.visibilidad_zorro = True
+        d.texto_prompt.append("You see a Fox")
+    else:
+        d.visibilidad_zorro = False
+        d.texto_prompt.append("You don't see a Fox")
+    
+def zorro(): #Interacion con el zorro
+    d.vida_espada_madera -= 1
+    d.texto_prompt.append("You got meat")
+    #-Falta hacer que se añada 1 de carne al inventario
+
+def abrir_santuario(): #Interacion con el santuario
+    if d.puerta_santuario == True: #Comprueba si esta abierto
+        d.texto_prompt.append("You already opened this sanctuary")
+    else: #Al no estarlo lo abre, añade 1 de vida maxima y escribe en el prompt
+        d.puerta_santuario = True
+        d.vida_personaje_maxima += 1
+        d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
+
+
+#--------------- Cocinar ----------------------
+     
+   
+def cocinar(receta, inventario): # Funcion para cocinar comida 
+    if receta[5:].lower() == "salad": # Si se quiere cocinar una salad
+        cont = 0
+        claves_eliminar = []
+
+        for i in inventario: # Por cada elemento del diccionario miramos si es el objeto vegetable
+            if inventario[i]["nombre"].lower() == "vegetable":
+                cont += 1
+                if cont <= 2:
+                    claves_eliminar.append(i)  # Los dos vegetables los añadimos en una lista para luego eliminarlas del diccionario     
+
+        if cont >= 2: # Si hay 2 o mas vegetables se puede hacer la salad
+            for claves in claves_eliminar: # Eliminamos los dos vegetables del inventario
+                del inventario[claves]
+                
+            print("You cooked a salad successfully")
+            añadirInventario("salad", inventario) # Añadimos salad al inventario
+        
+        else:
+            print("Not enough vegetable") # Si no hay mas 1 vegetable se imprime que no se puede cocinar la salad
+
+    elif receta[5:].lower() == "pescatarian": # Si se elige cocinar el pescatarian
+        cont_vege = 0
+        cont_fish = 0
+        claves_eliminar = []
+
+        for i in inventario: #Por cada elemento del inventario contamos cuantos vegetables y fish hay
+            if inventario[i]["nombre"].lower() == "vegetable":
+                cont_vege += 1
+                if cont_vege <= 1:
+                    claves_eliminar.append(i) # El vegetable que usamos lo añadimos a la lista para eliminarlo
+            
+            elif inventario[i]["nombre"].lower() == "fish":
+                cont_fish += 1
+                if cont_fish <= 1:
+                    claves_eliminar.append(i)  # El fish que usamos también lo eliminamos después
+
+        if cont_vege >= 1 and cont_fish >= 1: # Si hay 1 fish y 1 vegetable se puede cocinar el pescatarian
+            for claves in claves_eliminar: # Eliminamos los dos objetos del inventario
+                del inventario[claves]
+            
+            print("You cooked a pescatarian successfully")
+            añadirInventario("pescatarian", inventario) # Añadimos el pescatarian al inventario 
+        
+        elif cont_vege < 1 and cont_fish < 1: # Si no hay suficientes fish y vegetables se informa
+            print("Not enough vegetable and fish")
+        
+        elif cont_vege < 1: # Si no hay suficientes vegetables se informa
+            print("Not enough vegetable")
+        
+        else: # Si no hay suficientes fish se informa
+            print("Not enough fish")
+
+    elif receta[5:].lower() == "roasted": # Si se elige cocinar el roasted
+        cont_vege = 0
+        cont_meat = 0
+        claves_eliminar = []
+
+        for i in inventario: # Por cada elemento del inventario se comprueba si es un vegetable o un meat
+            if inventario[i]["nombre"].lower() == "vegetable":
+                cont_vege += 1
+                if cont_vege <= 1:
+                    claves_eliminar.append(i) # Añadimos al vegetable en la lista para eliminar 
+            
+            elif inventario[i]["nombre"].lower() == "meat":
+                cont_meat += 1
+                if cont_meat <= 1:
+                    claves_eliminar.append(i)  # Añadimos al met en la lista para eliminar
+
+        if cont_vege >= 1 and cont_meat >= 1:
+            for claves in claves_eliminar:
+                del inventario[claves] # Si hay suficientes objetos se eliminan los 2 que se usan del inventario
+            
+            print("You cooked a roasted successfully")
+            añadirInventario("roasted", inventario) # Se añade el roasted al inventario
+        
+        elif cont_vege < 1 and cont_meat < 1: # Si no hay ni vegetable ni meat suficientes se informa
+            print("Not enough vegetable and meat")
+        
+        elif cont_vege < 1: # Si no hay suficientes vegetables se informa
+            print("Not enough vegetable")
+        
+        else: # Si no hay suficientes meat se informa
+            print("Not enough meat")
+
+    else: # Si lo que se quiere cocinar no existe, se muestra un mensaje de error
+        print("You can't cook", receta[5:])
+
+
