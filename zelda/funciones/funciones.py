@@ -299,8 +299,85 @@ def moverPersonaje(mapaActual, select, posicionplayer):
             else:
                 return["Invalid action"], posicionplayer[0], posicionplayer[1]
 
+
+def moverPersonajeGanon(mapaActual, select, posicionplayer):
+    
+    
+    if select[0:7] == "go left":
+        print(posicionplayer[1], posicionplayer[1] - int(select[8:]) )
+        if posicionplayer[1] - int(select[8:]) < 0:
+            
+            return["Invalid action1"], posicionplayer[0], posicionplayer[1]
+        else:
+            int1 = posicionplayer[1]
+            int2 = posicionplayer[1] - int(select[8:])
+            diferent = True
+           
+            for i in range (int1, int2, -1):
+                
+                if int(select[8:]) == 1:
+
+                    if mapaActual[posicionplayer[0]][i-1] != " ":
+                        
+                        return["Invalid action"], posicionplayer[0], posicionplayer[1]
+                    
+                    else:
+
+                        mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
+                        mapaActual[posicionplayer[0]][posicionplayer[1] - int(select[8:])] = "X"
+                        return mapaActual, posicionplayer[0], posicionplayer[1] - int(select[8:])
+                else:
+
+                    if mapaActual[posicionplayer[0]][i-1] != " ":
+                        
+                        diferent = False
+            if diferent == True:
+
+                mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
+                mapaActual[posicionplayer[0]][posicionplayer[1] - int(select[8:])] = "X"
+                return mapaActual, posicionplayer[0], posicionplayer[1] - int(select[8:])        
+            else:
+                return["Invalid action"], posicionplayer[0], posicionplayer[1]
                        
-      
+
+    elif select[0:8] == "go right":
+       
+        if posicionplayer[1] + int(select[8:]) > 57:
+            
+
+            return["Invalid action1"], posicionplayer[0], posicionplayer[1]
+        else:
+            int1 = posicionplayer[1]
+            int2 = posicionplayer[1] + int(select[9:])
+            diferent = True
+            for i in range (int2, int1, -1):
+                
+                if int(select[9:]) == 1:
+
+                    if mapaActual[posicionplayer[0]][i+1] != " ":
+                        
+                        return["Invalid action2"], posicionplayer[0], posicionplayer[1]
+                    
+                    
+                else:
+
+                    if mapaActual[posicionplayer[0]][i+1] != " ":
+                        diferent = False
+            
+            if diferent == True:
+       
+                mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
+                mapaActual[posicionplayer[0]][posicionplayer[1] + int(select[9:])] = "X"
+                return mapaActual, posicionplayer[0], posicionplayer[1] + int(select[9:])
+            else:
+                return["Invalid action"], posicionplayer[0], posicionplayer[1]
+
+
+
+
+
+
+
 #Menu aleatorio
 def menu_random():
     menu_aleatorio = random.randint(1, 3)
@@ -486,9 +563,77 @@ def equiparArma(Select):
                 lista_dict[j]["usos"], lista_dict[j+1]["usos"] = lista_dict[j+1]["usos"], lista_dict[j]["usos"]
 
     if "Shield" in lista_dict[0]:
-
-        d.jugador["escudo_actual"] = lista_dict[0]
+        if d.jugador["escudo_actual"] == lista_dict[0]:
+            return "You already have {lista_dict[0]} equiped"
+        else:
+            d.jugador["escudo_actual"] = lista_dict[0]
     
     elif "Sword" in lista_dict[0]:
 
-        d.jugador["arma_actual"] = lista_dict[0]
+        if d.jugador["arma_actual"] == lista_dict[0]:
+            return "You already have {lista_dict[0]} equiped"
+        else:
+            d.jugador["escudo_actual"] = lista_dict[0]
+            return "You already have {lista_dict[0]} equiped"
+        
+            
+def desequiparArma(Select):
+
+    if "Sword" in Select:
+        d.jugador["arma_actual"] = " "
+        return "Escudo desequipado."
+    elif "Shield" in Select:
+        d.jugador["arma_actual"] = " "
+        return "Espada desequipado."
+    else:
+        return "Incorrect Option"
+    
+
+def conteoInventario():
+
+    
+   
+
+    for element in d.inventarioArmas:
+        
+
+
+        if "Wood Shield" in element:
+              d.dict_tipos["Wood Shield"]["total"] += 1
+            
+        elif  "Shield" in element and not "Wood" in element:
+
+            d.dict_tipos["Shield"]["total"] += 1
+        elif "Wood Sword" in element:
+
+            d.dict_tipos["Wood Sword"]["total"] += 1        
+
+        elif  "Sword" in element and not "Wood" in element:
+
+            d.dict_tipos["Sword"]["total"] += 1
+
+        
+    for element1 in d.inventarioComida:
+            
+
+            if "vegetal" in d.inventarioComida[element1]["tipo"]:
+                d.dict_tipos["Vegetables"]["total"] += 1
+                
+            elif  "Fish" in d.inventarioComida[element1]["tipo"]:
+                d.dict_tipos["Fish"]["total"] += fish
+                
+            elif "Meat" in d.inventarioComida[element1]["tipo"]:
+
+                d.dict_tipos["Meat"]["total"] += 1        
+
+            elif  "Salads" in d.inventarioComida[element1]["tipo"]:
+
+                d.dict_tipos["Salads"]["total"] += 1
+
+            elif "Pescatarian" in d.inventarioComida[element1]["tipo"]:
+
+                d.dict_tipos["Pescatarian"]["total"] += 1        
+
+            elif  "Roasted" in d.inventarioComida[element1]["tipo"]:
+
+                d.dict_tipos["Roasted"]["total"] += 1
