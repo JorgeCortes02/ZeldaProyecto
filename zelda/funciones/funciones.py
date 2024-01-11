@@ -71,7 +71,7 @@ def mostrarInventario():
             inventario += "* \n".rjust(23),"*\n".rjust(8),"* \n".rjust(22)," * * * * * * * * * *"                          
                     
     return inventario                
-    '''
+   
   
 
 def añadirInventario(objeto, diccionario):
@@ -95,21 +95,26 @@ def añadirInventario(objeto, diccionario):
 
     elif objeto == "Vegetable":
         
-        diccionario[objeto] = {"nombre": "Vegetable"}
-
-    elif  objeto == "salad":
+        diccionario[objeto] += 1 
+    elif objeto == "Fish":
         
-        diccionario[objeto] = {"nombre": "salad" }
+        diccionario[objeto] += 1 
+    elif objeto == "Meat":
+        
+        diccionario[objeto] += 1 
+    elif  objeto == "Salad":
+        
+        diccionario[objeto] += 1 
     
-    elif  objeto == "pescatarian":
+    elif  objeto == "Pescatarian":
         
-        diccionario[objeto] = {"nombre": "pescatarian" }
+        diccionario[objeto] += 1 
     
-    elif objeto == "roasted":
+    elif objeto == "Roasted":
         
-        diccionario[objeto] = {"nombre": "roasted" }
+        diccionario[objeto] += 1 
 
-
+'''
 A esta función le pasamos los datos del mapa en cuestion y los copia en otra variable para poder editar este segundo mapa sin que el original se vea afectado.'''
 def obtenerMapa(playermap,posicionplayer):
     mapa = ""
@@ -495,46 +500,6 @@ def cesped(): #Interacion con el cesped
 
        
        
-def añadirInventario(objeto, diccionario):
-
-        numeroRandom = "" 
-
-        for i in range(3):
-
-            numeroRandom += str(random.randint(0,20))
-
-        if objeto == "Wood Sword":
-            
-            diccionario[objeto + numeroRandom] = {"nombre": "Wood Sword", "Usos": 5 }
-            
-        elif objeto == "Wood Shield":
-        
-            diccionario[objeto + numeroRandom] = {"nombre": "Wood Shield", "Usos": 5 }
-        
-        elif objeto == "Shield":
-            
-            diccionario[objeto + numeroRandom] = {"nombre": "Shield", "Usos": 9 }
-            
-        
-        elif objeto == "Sword":
-            
-            diccionario[objeto + numeroRandom] = {"nombre": "Sword", "Usos": 9 }
-
-        elif objeto == "Vegetable":
-            
-            diccionario[objeto + numeroRandom] = {"nombre": "Vegetable" }
-
-        elif  objeto == "salad":
-            
-            diccionario[objeto + numeroRandom] = {"nombre": "salad" }
-        
-        elif  objeto == "pescatarian":
-            
-            diccionario[objeto + numeroRandom] = {"nombre": "pescatarian" }
-        
-        elif objeto == "roasted":
-            
-            diccionario[objeto + numeroRandom] = {"nombre": "roasted" }
 
         
 def equiparArma(Select):
@@ -630,31 +595,8 @@ def conteoInventario():
 
             d.dict_tipos["Sword"]["total"] += 1
 
-        
-    for element1 in d.inventarioComida:
-            
-
-            if "vegetal" in d.inventarioComida[element1]["tipo"]:
-                d.dict_tipos["Vegetables"]["total"] += 1
-                
-            elif  "Fish" in d.inventarioComida[element1]["tipo"]:
-                d.dict_tipos["Fish"]["total"] += fish
-                
-            elif "Meat" in d.inventarioComida[element1]["tipo"]:
-
-                d.dict_tipos["Meat"]["total"] += 1        
-
-            elif  "Salads" in d.inventarioComida[element1]["tipo"]:
-
-                d.dict_tipos["Salads"]["total"] += 1
-
-            elif "Pescatarian" in d.inventarioComida[element1]["tipo"]:
-
-                d.dict_tipos["Pescatarian"]["total"] += 1        
-
-            elif  "Roasted" in d.inventarioComida[element1]["tipo"]:
-
-                d.dict_tipos["Roasted"]["total"] += 1
+     
+    
 
 def arbol(espada): #Interacion con el arbol
     #-Queda hacer lo de que aparezca despues de 10 movimientos
@@ -826,5 +768,14 @@ def cocinar(receta, inventario): # Funcion para cocinar comida
 
     else: # Si lo que se quiere cocinar no existe, se muestra un mensaje de error
         print("You can't cook", receta[5:])
+
+
+def menuInferior():
+
+    posicion = d.jugador["posicion"]
+    
+    menuInferior = "* Back, Show Map, Go, Show,"
+
+
 
 

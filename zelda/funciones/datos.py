@@ -117,7 +117,7 @@ escudo_actual = ""
 
 
 inventarioArmas = {"Wood Shield998" :{"nombre" :"Arma", "usos": 4}, "Wood Shield98" :{"nombre" :"Arma", "usos": 4}}
-inventarioComida = {"Manzana" :{ "tipo": "vegetal", "nombre" : "Vegetal"}, "Vegetable" :{ "tipo": "vegetal","nombre" : "Vegetal"}, "poma" :{ "tipo": "vegetal","nombre" : "Vegetal"}, "Fish" :{ "tipo": "asno", "nombre" : "Vegetal"}  }
+inventarioComida = { "Vegetables" : 0, "Fish" : 0, "Meat" : 0, "Salads" : 0, "Pescatarian" : 0, "Roasted" : 0 }
 
 
 
