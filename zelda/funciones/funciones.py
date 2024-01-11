@@ -393,12 +393,13 @@ def before_game(name):
 def imprimirmapa_menu(mapa):
     for i in mapa:
         print(i[0])
-       
+
+#--------------- prompt ----------------------
+
 def prompt(): #PROMPT
     while len(d.texto_prompt) > 8:
         d.texto_prompt.remove(d.texto_prompt[0]) #Remueve el primer mensaje
     for i in d.texto_prompt: #Imprime el promp
-        #-No se si tiene que sali "prompt" al lado
         print(i)
 
 #--------------- Interaciones con los objetos del mapa ----------------------
@@ -435,7 +436,7 @@ def arbol(espada): #Interacion con el arbol
                 d.texto_prompt.append("You got a Wood sword")
                 #-Falta hacer que se añada al inventario
                 d.vida_espada_madera -= 1 #cuando atacas con la espda restas 1 de vida a la espada
-                d.vida_arbol -= 1 #cuando atacas con la espda restas 1 de vida al arbol
+                d.vida_arbol -= 1 #Cuando atacas con la espda restas 1 de vida al arbol
             elif porcentaje in range(21,41): #Te da un escudo de madera y tiene que salir un mensaje en el promp
                 d.texto_prompt.append("You got a Wood shield")
                 #-Falta hacer que se añada al inventario
@@ -451,10 +452,9 @@ def arbol(espada): #Interacion con el arbol
                 d.vida_espada_madera -= 1 
                 d.vida_arbol -= 1
             if d.vida_arbol == 0: #Cuando el arbol llega a 0 se cae y no aparece hasta dentro de 10 movimientos
-                d.texto_prompt.append("The tree has fallen") #-Este prom  lo he añadido yo os parece bien?
+                d.texto_prompt.append("The tree has fallen") #Este prom lo he añadido yo
 
 def agua(): #Interacion con el agua
-    #-Pone que despues de pescar no puedes conseguir otro pez hasta que salgas del lugar y vulvas, Pero es con todo el agua o solo donde has pescado?
     porcentaje = random.randint(1,100)
     if d.pesca == True: #Comprueba si ya has conseguido un pez
         d.texto_prompt.append("There are no more fish") #-Este prom lo he añadido yo
@@ -467,7 +467,6 @@ def agua(): #Interacion con el agua
             d.texto_prompt.append("You didn't get a fish")
 
 def zorro_visivilidad(): #Dice si el zorro sera visible o no
-    #-Pone si esta en el area pero que area? o cuanto es el area? o si se refiere al mapa?
     porcentaje = random.randint(1,100)
     if porcentaje in range(1,51):
         d.visibilidad_zorro = True
@@ -509,58 +508,72 @@ def cofre(): #Interacion con el cofre
             #-Falta hacer que se añada un escudo al inventario
 
 def enemigos(): #Interacion con el enemigo
-    if d.espada == False:
-        print()
-        #-no se que pasa si intentas atacar a un enemigo sin espada o si puedes hacerlo
+    d.vida_espada_madera -= 1 #Le quita un uso a la espada
+    d.texto_prompt.append(f"Brave, keep fighting {d.name}")
+    d.vidas -= 1 #Te resta 1 de vida
+    d.texto_prompt.append(f"Be careful Link, you only have {d.vidas} hearts")
+    d.vida_enemigo -= 1 #Le resta 1 de vida al enemigo
+    if d.vidas == 0: #Comprueba si a un te queda vida
+        d.texto_prompt.append(f"{d.name} is dead")
     else:
-        d.vida_espada_madera -= 1 #Le quita un uso a la espada
-        d.texto_prompt.append(f"Brave, keep fighting {d.name}")
-        d.vidas -= 1 #Te resta 1 de vida
-        d.texto_prompt.append(f"Be careful Link, you only have {d.vidas} hearts")
-        d.vida_enemigo -= 1 #Le resta 1 de vida al enemigo
-        if d.vidas == 0: #Comprueba si a un te queda vida
-            d.texto_prompt.append(f"{d.name} is dead")
+        if d.vida_enemigo == 0: #Comprueba si al enemigo a un le queda vida
+            d.texto_prompt.append("You defeated an enemy, this is a dangerous zone")
         else:
-            if d.vida_enemigo == 0: #Comprueba si al enemigo a un le queda vida
-                d.texto_prompt.append("You defeated an enemy, this is a dangerous zone")
-            else:
-                direccion1 = random.randint(1,2)
-                if direccion1 == 1: #Mira si modificara X o Y
-                    direccion2= random.randint(1,2)
-                    if direccion2 == 1: #Luego si es para delante o atras o izquierda o derecha
-                        d.posicion_enemigo[0] += 1
-                    else:
-                        d.posicion_enemigo[0] -= 1
+            direccion1 = random.randint(1,2)
+            if direccion1 == 1: #Mira si modificara X o Y
+                direccion2= random.randint(1,2)
+                if direccion2 == 1: #Luego si es para delante o atras o izquierda o derecha
+                    d.posicion_enemigo[0] += 1
                 else:
-                    direccion2= random.randint(1,2)
-                    if direccion2 == 1:
-                        d.posicion_enemigo[1] += 1
-                    else:
-                        d.posicion_enemigo[1] -= 1
+                    d.posicion_enemigo[0] -= 1
+            else:
+                direccion2= random.randint(1,2)
+                if direccion2 == 1:
+                    d.posicion_enemigo[1] += 1
+                else:
+                    d.posicion_enemigo[1] -= 1
             
-def comer(texto):
-    if d.vidas == d.vidas_max:
-        d.texto_prompt.append("")
+def comer(select): #Interaccion de comer
+    #-Habra que modificar el como se dirije a la comida
+    if d.vidas == d.vidas_max: #Comprueba si el personaje ya tiene lla vida maxima
+        d.texto_prompt.append("You already have your whole life complete")
     else:
-        if texto == "Eat vegetable":
-            d.inventarioComida1 -= 1
-            d.vidas += 1
-            d.texto_prompt.append("")
-        elif texto == "Eat salad":
-            d.inventarioComida1 -= 1
-            for i in range(2):
-                if not d.vidas == d.vidas_max:
-                    d.vidas += 1
-        elif texto == "Eat pescatarian":
-            d.inventarioComida1 -= 1
-            for i in range(3):
-                if not d.vidas == d.vidas_max:
-                    d.vidas += 1
-        elif texto == "Eat roasted":
-            d.inventarioComida1 -= 1
-            for i in range(4):
-                if not d.vidas == d.vidas_max:
-                    d.vidas += 1
+        if select == "Eat vegetable": #Comprueba si como un vegetal
+            if d.inventarioComida[0] < 0: #Comprueba si la comida que quieres esta en el inventario
+                d.texto_prompt.append("You have no vegetables left")
+            else: #Si tienes entonces te elimina 1 de comida y te añade la vida que necesites
+                d.inventarioComida[0] -= 1
+                d.vidas += 1
+                d.texto_prompt.append("You have increased 1 health and spent 1 vegetable")
+        elif select == "Eat salad": #Comprueba si como un ensalada
+            if d.inventarioComida[0] < 0: #Comprueba si la comida que quieres esta en el inventario
+                d.texto_prompt.append("You don't have any salad left")
+            else:#Si tienes entonces te elimina 1 de comida y te añade la vida que necesites
+                d.inventarioComida[0] -= 1
+                for i in range(2): #Para no pasarse de la vida maxima comprueba si ya esta en su maximo de vida o no
+                    if not d.vidas == d.vidas_max:
+                        d.vidas += 1
+                d.texto_prompt.append("You have increased 2 health and spent 1 salad")
+        elif select == "Eat pescatarian": #Comprueba si como un pescado
+            if d.inventarioComida[0] < 0: #Comprueba si la comida que quieres esta en el inventario
+                d.texto_prompt.append("You don't have any pescatarian left")
+            else:#Si tienes entonces te elimina 1 de comida y te añade la vida que necesites
+                d.inventarioComida[0] -= 1
+                for i in range(3): #Para no pasarse de la vida maxima comprueba si ya esta en su maximo de vida o no
+                    if not d.vidas == d.vidas_max:
+                        d.vidas += 1
+                d.texto_prompt.append("You have increased 3 health and spent 1 Pescatarian")
+        elif select == "Eat roasted": #Comprueba si como una carne cocinada
+            if d.inventarioComida[0] < 0: #Comprueba si la comida que quieres esta en el inventario
+                d.texto_prompt.append("You don't have anything toasted")
+            else:#Si tienes entonces te elimina 1 de comida y te añade la vida que necesites
+                d.inventarioComida[0] -= 1
+                for i in range(4): #Para no pasarse de la vida maxima comprueba si ya esta en su maximo de vida o no
+                    if not d.vidas == d.vidas_max:
+                        d.vidas += 1
+                d.texto_prompt.append("You have increased 4 health and spent 1 roast")
+        else: #Si no existe la comida que ha puesto sale este promp
+            d.texto_prompt.append("This food does not exist") #Este promp lo he añadido yo
 
 
     
