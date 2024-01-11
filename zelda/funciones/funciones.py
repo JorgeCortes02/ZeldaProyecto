@@ -5,21 +5,23 @@ mapaActual = []
 def mostrarInventario():
     '''
     if Select.lower() == "show inventory main":
-        
-        inventario = [" * * * * Inventory * \n",
+    '''  
+    inventario = [" * * * * Inventory * \n",
                         "*\n".rjust(21),
-                        " Link".ljust(12) + "  {0}/{1}".format(vidas,vidas_max).rjust(6) + " * \n",
-                        "* \n".rjust(22), 
+                        " Link".ljust(12) + "  {0}/{1}".format(d.vidas,d.vidas_max).rjust(6) + " * \n",
+                        " Blod Moon in ".ljust(10) + "  {0}".format(25).rjust(4) + " * \n",
+                        "* \n".rjust(22),
                         " Equipement ".ljust(19) + "* \n",
-                         "{0}".format(escudo_actual).rjust(18) + " * \n",
-                         "{0}".format(arma_actual).rjust(18) + " * \n",
+                         "{0}".format(d.escudo_actual).rjust(18) + " * \n",
+                         "{0}".format(d.arma_actual).rjust(18) + " * \n",
+                         
                          "* \n".rjust(22),
                          " Food".ljust(15) + "{0}".format(5).rjust(3) +  " *\n",
                          " Weapons".ljust(15) + "{0}".format(5).rjust(3) +  " *\n",
                          "* \n".rjust(22),
                         " * * * * * * * * * *"]
-        return inventario
-    
+    return inventario
+    '''
     elif Select.lower() == "Show inventory Food":
 
         inventario = [" * * * * * *  Food * \n",
@@ -69,7 +71,7 @@ def mostrarInventario():
             inventario += "* \n".rjust(23),"*\n".rjust(8),"* \n".rjust(22)," * * * * * * * * * *"                          
                     
     return inventario                
-
+    '''
   
 
 def añadirInventario(objeto, diccionario):
@@ -93,7 +95,7 @@ def añadirInventario(objeto, diccionario):
 
     elif objeto == "Vegetable":
         
-        diccionario[objeto] = {"nombre": "Vegetable" }
+        diccionario[objeto] = {"nombre": "Vegetable"}
 
     elif  objeto == "salad":
         
@@ -108,7 +110,7 @@ def añadirInventario(objeto, diccionario):
         diccionario[objeto] = {"nombre": "roasted" }
 
 
-'''A esta función le pasamos los datos del mapa en cuestion y los copia en otra variable para poder editar este segundo mapa sin que el original se vea afectado.'''
+A esta función le pasamos los datos del mapa en cuestion y los copia en otra variable para poder editar este segundo mapa sin que el original se vea afectado.'''
 def obtenerMapa(playermap,posicionplayer):
     mapa = ""
     mapaActual = []
@@ -297,8 +299,86 @@ def moverPersonaje(mapaActual, select, posicionplayer):
             else:
                 return["Invalid action"], posicionplayer[0], posicionplayer[1]
 
+
+
+def moverPersonajeGanon(mapaActual, select, posicionplayer):
+    
+    
+    if select[0:7] == "go left":
+        print(posicionplayer[1], posicionplayer[1] - int(select[8:]) )
+        if posicionplayer[1] - int(select[8:]) < 0:
+            
+            return["Invalid action1"], posicionplayer[0], posicionplayer[1]
+        else:
+            int1 = posicionplayer[1]
+            int2 = posicionplayer[1] - int(select[8:])
+            diferent = True
+           
+            for i in range (int1, int2, -1):
+                
+                if int(select[8:]) == 1:
+
+                    if mapaActual[posicionplayer[0]][i-1] != " ":
+                        
+                        return["Invalid action"], posicionplayer[0], posicionplayer[1]
+                    
+                    else:
+
+                        mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
+                        mapaActual[posicionplayer[0]][posicionplayer[1] - int(select[8:])] = "X"
+                        return mapaActual, posicionplayer[0], posicionplayer[1] - int(select[8:])
+                else:
+
+                    if mapaActual[posicionplayer[0]][i-1] != " ":
+                        
+                        diferent = False
+            if diferent == True:
+
+                mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
+                mapaActual[posicionplayer[0]][posicionplayer[1] - int(select[8:])] = "X"
+                return mapaActual, posicionplayer[0], posicionplayer[1] - int(select[8:])        
+            else:
+                return["Invalid action"], posicionplayer[0], posicionplayer[1]
                        
-      
+
+    elif select[0:8] == "go right":
+       
+        if posicionplayer[1] + int(select[8:]) > 57:
+            
+
+            return["Invalid action1"], posicionplayer[0], posicionplayer[1]
+        else:
+            int1 = posicionplayer[1]
+            int2 = posicionplayer[1] + int(select[9:])
+            diferent = True
+            for i in range (int2, int1, -1):
+                
+                if int(select[9:]) == 1:
+
+                    if mapaActual[posicionplayer[0]][i+1] != " ":
+                        
+                        return["Invalid action2"], posicionplayer[0], posicionplayer[1]
+                    
+                    
+                else:
+
+                    if mapaActual[posicionplayer[0]][i+1] != " ":
+                        diferent = False
+            
+            if diferent == True:
+       
+                mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
+                mapaActual[posicionplayer[0]][posicionplayer[1] + int(select[9:])] = "X"
+                return mapaActual, posicionplayer[0], posicionplayer[1] + int(select[9:])
+            else:
+                return["Invalid action"], posicionplayer[0], posicionplayer[1]
+
+
+
+
+
+
+
 #Menu aleatorio
 def menu_random():
     menu_aleatorio = random.randint(1, 3)
@@ -375,7 +455,7 @@ def help(mapa):
             back_help = False
 
         else:  # Si la opcion es incorrecta se imprime invalid option
-            print("Invaid Option")
+            print("Invalid Option")
 
 def before_game(name):
     imprimirmapa_menu(d.legend)  # Se imprime la leyenda
@@ -393,9 +473,172 @@ def before_game(name):
 def imprimirmapa_menu(mapa):
     for i in mapa:
         print(i[0])
+        
+        
+#--------------- Inventario ----------------------       
 
+def añadirInventario(objeto, diccionario):
+
+        numeroRandom = "" 
+
+        for i in range(3):
+
+            numeroRandom += str(random.randint(0,20))
+
+        if objeto == "Wood Sword":
+            
+            diccionario[objeto + numeroRandom] = {"nombre": "Wood Sword", "Usos": 5 }
+            
+        elif objeto == "Wood Shield":
+        
+            diccionario[objeto + numeroRandom] = {"nombre": "Wood Shield", "Usos": 5 }
+        
+        elif objeto == "Shield":
+            
+            diccionario[objeto + numeroRandom] = {"nombre": "Shield", "Usos": 9 }
+            
+        
+        elif objeto == "Sword":
+            
+            diccionario[objeto + numeroRandom] = {"nombre": "Sword", "Usos": 9 }
+
+        elif objeto == "Vegetable":
+            
+            diccionario[objeto + numeroRandom] = {"nombre": "Vegetable" }
+
+        elif  objeto == "salad":
+            
+            diccionario[objeto + numeroRandom] = {"nombre": "salad" }
+        
+        elif  objeto == "pescatarian":
+            
+            diccionario[objeto + numeroRandom] = {"nombre": "pescatarian" }
+        
+        elif objeto == "roasted":
+            
+            diccionario[objeto + numeroRandom] = {"nombre": "roasted" }
+
+        
+def equiparArma(Select):
+
+    if len(d.inventarioArmas )== 0:
+
+        print("No hay armas en el inventario")
+
+    if Select.find("Wood Shield") != -1:
+
+        if Select[Select.find("Wood Shield"): ]:
+
+            Select = Select[Select.find("Wood Shield"): ]
+    
+    elif Select.find("Shield") != -1 and Select.find("Wood") == -1:
+
+        if Select[Select.find("Shield"): ] :
+
+             Select = Select[Select.find("Shield"): ]
+
+    elif Select.find("Wood Sword") != -1:
+
+        if Select[Select.find("Wood Sword"): ]:
+
+            Select = Select[Select.find("Wood Shield"): ]
+
+     
+    elif Select.find("Sword") != -1 and Select.find("Wood") == -1:
+
+        if Select[Select.find("Sword"): ] :
+
+             Select = Select[Select.find("Shield"): ]
+    
+    lista_dict = list(d.inventarioArmas.keys())
+    
+
+    if len(lista_dict)== 0:
+
+        print ("No dispones de este arma en tu inventario.")
+
+    for i in range(len(lista_dict)):
+        for j in range(0, len(lista_dict)-i-1):
+            if lista_dict[j]["usos"] > lista_dict[j+1]["usos"]:
+                lista_dict[j]["usos"], lista_dict[j+1]["usos"] = lista_dict[j+1]["usos"], lista_dict[j]["usos"]
+
+    if "Shield" in lista_dict[0]:
+        if d.jugador["escudo_actual"] == lista_dict[0]:
+            return "You already have {lista_dict[0]} equiped"
+        else:
+            d.jugador["escudo_actual"] = lista_dict[0]
+    
+    elif "Sword" in lista_dict[0]:
+
+        if d.jugador["arma_actual"] == lista_dict[0]:
+            return "You already have {lista_dict[0]} equiped"
+        else:
+            d.jugador["escudo_actual"] = lista_dict[0]
+            return "You already have {lista_dict[0]} equiped"
+        
+            
+def desequiparArma(Select):
+
+    if "Sword" in Select:
+        d.jugador["arma_actual"] = " "
+        return "Escudo desequipado."
+    elif "Shield" in Select:
+        d.jugador["arma_actual"] = " "
+        return "Espada desequipado."
+    else:
+        return "Incorrect Option"
+    
+
+def conteoInventario():
+
+    
+   
+
+    for element in d.inventarioArmas:
+        
+
+
+        if "Wood Shield" in element:
+              d.dict_tipos["Wood Shield"]["total"] += 1
+            
+        elif  "Shield" in element and not "Wood" in element:
+
+            d.dict_tipos["Shield"]["total"] += 1
+        elif "Wood Sword" in element:
+
+            d.dict_tipos["Wood Sword"]["total"] += 1        
+
+        elif  "Sword" in element and not "Wood" in element:
+
+            d.dict_tipos["Sword"]["total"] += 1
+
+        
+    for element1 in d.inventarioComida:
+            
+
+            if "vegetal" in d.inventarioComida[element1]["tipo"]:
+                d.dict_tipos["Vegetables"]["total"] += 1
+                
+            elif  "Fish" in d.inventarioComida[element1]["tipo"]:
+                d.dict_tipos["Fish"]["total"] += fish
+                
+            elif "Meat" in d.inventarioComida[element1]["tipo"]:
+
+                d.dict_tipos["Meat"]["total"] += 1        
+
+            elif  "Salads" in d.inventarioComida[element1]["tipo"]:
+
+                d.dict_tipos["Salads"]["total"] += 1
+
+            elif "Pescatarian" in d.inventarioComida[element1]["tipo"]:
+
+                d.dict_tipos["Pescatarian"]["total"] += 1        
+
+            elif  "Roasted" in d.inventarioComida[element1]["tipo"]:
+
+                d.dict_tipos["Roasted"]["total"] += 1
+                
 #--------------- prompt ----------------------
-
 def prompt(): #PROMPT
     while len(d.texto_prompt) > 8:
         d.texto_prompt.remove(d.texto_prompt[0]) #Remueve el primer mensaje
@@ -411,7 +654,7 @@ def cesped(): #Interacion con el cesped
        #-Falta hacer que se añada 1 de carne al inventario
    else:
        d.texto_prompt.append("The grass didn't give you anything")
-       
+
 def arbol(espada): #Interacion con el arbol
     #-Queda hacer lo de que aparezca despues de 10 movimientos
     #-Tambien hay que hacer en el mapa que cuando un arbol caiga un contador que ponga cuantos turnos falta para que se vulva a regenerar
@@ -574,28 +817,96 @@ def comer(select): #Interaccion de comer
                         d.vidas += 1
                 d.texto_prompt.append("You have increased 4 health and spent 1 roast")
         else: #Si no existe la comida que ha puesto sale este promp
-            d.texto_prompt.append("This food does not exist") #Este promp lo he añadido yo
+            d.texto_prompt.append("This food does not exist") #Este promp lo he añadido yo    
 
+#--------------- Cocinar ----------------------
+     
+def cocinar(receta, inventario): # Funcion para cocinar comida 
+    if receta[5:].lower() == "salad": # Si se quiere cocinar una salad
+        cont = 0
+        claves_eliminar = []
 
-    
-    
-    
+        for i in inventario: # Por cada elemento del diccionario miramos si es el objeto vegetable
+            if inventario[i]["nombre"].lower() == "vegetable":
+                cont += 1
+                if cont <= 2:
+                    claves_eliminar.append(i)  # Los dos vegetables los añadimos en una lista para luego eliminarlas del diccionario     
 
-
-
-      
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-            
+        if cont >= 2: # Si hay 2 o mas vegetables se puede hacer la salad
+            for claves in claves_eliminar: # Eliminamos los dos vegetables del inventario
+                del inventario[claves]
+                
+            print("You cooked a salad successfully")
+            añadirInventario("salad", inventario) # Añadimos salad al inventario
         
+        else:
+            print("Not enough vegetable") # Si no hay mas 1 vegetable se imprime que no se puede cocinar la salad
+
+    elif receta[5:].lower() == "pescatarian": # Si se elige cocinar el pescatarian
+        cont_vege = 0
+        cont_fish = 0
+        claves_eliminar = []
+
+        for i in inventario: #Por cada elemento del inventario contamos cuantos vegetables y fish hay
+            if inventario[i]["nombre"].lower() == "vegetable":
+                cont_vege += 1
+                if cont_vege <= 1:
+                    claves_eliminar.append(i) # El vegetable que usamos lo añadimos a la lista para eliminarlo
+            
+            elif inventario[i]["nombre"].lower() == "fish":
+                cont_fish += 1
+                if cont_fish <= 1:
+                    claves_eliminar.append(i)  # El fish que usamos también lo eliminamos después
+
+        if cont_vege >= 1 and cont_fish >= 1: # Si hay 1 fish y 1 vegetable se puede cocinar el pescatarian
+            for claves in claves_eliminar: # Eliminamos los dos objetos del inventario
+                del inventario[claves]
+            
+            print("You cooked a pescatarian successfully")
+            añadirInventario("pescatarian", inventario) # Añadimos el pescatarian al inventario 
+        
+        elif cont_vege < 1 and cont_fish < 1: # Si no hay suficientes fish y vegetables se informa
+            print("Not enough vegetable and fish")
+        
+        elif cont_vege < 1: # Si no hay suficientes vegetables se informa
+            print("Not enough vegetable")
+        
+        else: # Si no hay suficientes fish se informa
+            print("Not enough fish")
+
+    elif receta[5:].lower() == "roasted": # Si se elige cocinar el roasted
+        cont_vege = 0
+        cont_meat = 0
+        claves_eliminar = []
+
+        for i in inventario: # Por cada elemento del inventario se comprueba si es un vegetable o un meat
+            if inventario[i]["nombre"].lower() == "vegetable":
+                cont_vege += 1
+                if cont_vege <= 1:
+                    claves_eliminar.append(i) # Añadimos al vegetable en la lista para eliminar 
+            
+            elif inventario[i]["nombre"].lower() == "meat":
+                cont_meat += 1
+                if cont_meat <= 1:
+                    claves_eliminar.append(i)  # Añadimos al met en la lista para eliminar
+
+        if cont_vege >= 1 and cont_meat >= 1:
+            for claves in claves_eliminar:
+                del inventario[claves] # Si hay suficientes objetos se eliminan los 2 que se usan del inventario
+            
+            print("You cooked a roasted successfully")
+            añadirInventario("roasted", inventario) # Se añade el roasted al inventario
+        
+        elif cont_vege < 1 and cont_meat < 1: # Si no hay ni vegetable ni meat suficientes se informa
+            print("Not enough vegetable and meat")
+        
+        elif cont_vege < 1: # Si no hay suficientes vegetables se informa
+            print("Not enough vegetable")
+        
+        else: # Si no hay suficientes meat se informa
+            print("Not enough meat")
+
+    else: # Si lo que se quiere cocinar no existe, se muestra un mensaje de error
+        print("You can't cook", receta[5:])
 
 
