@@ -1,4 +1,10 @@
 import funciones.funciones as f
+
+
+jugador = {"posicion" : [3,9], "arma_actual": " ", "escudo_actual" : " ", "vidas_max": 3, "vidas" : 3 }
+
+dict_tipos = {"Shield" : {"total": 0}, "Wood Shield" : {"total": 0}, "Sword" : {"total": 0}, "Wood Swort" : {"total": 0}, "Vegetables" :{"total": 0}, "Fish" :{"total": 0}, "Meat" :{"total": 0}, "Salads" :{"total": 0}, "Pescatarian" : {"total": 0}, "Roasted": {"total": 0} }
+
 mapa_inicio = [["*"," ","M","a","p"," "," ","*","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"],
         ["*"," "," ","H","y","r","u","l","e"," "," "," "," "," "," "," ","S","O"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","D","e","a","t","h"," ","m","o","u","n","t","a","i","n"," "," ","*"],
         ["*"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","S","2","?"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","*"],
@@ -110,8 +116,8 @@ escudo_actual = ""
 
 
 
-inventarioArmas = {}
-inventarioComida = {}
+inventarioArmas = {"Wood Shield998" :{"nombre" :"Arma", "usos": 4}, "Wood Shield98" :{"nombre" :"Arma", "usos": 4}}
+inventarioComida = {"Manzana" :{ "tipo": "vegetal", "nombre" : "Vegetal"}, "Vegetable" :{ "tipo": "vegetal","nombre" : "Vegetal"}, "poma" :{ "tipo": "vegetal","nombre" : "Vegetal"}, "Fish" :{ "tipo": "asno", "nombre" : "Vegetal"}  }
 
 
 
