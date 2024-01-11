@@ -508,6 +508,7 @@ def cofre(): #Interacion con el cofre
             #-Falta hacer que se añada un escudo al inventario
 
 def enemigos(): #Interacion con el enemigo
+    #-Queda que el enemigo se mueva bien y que no se ponga en un sitio donde no se puede
     d.vida_espada_madera -= 1 #Le quita un uso a la espada
     d.texto_prompt.append(f"Brave, keep fighting {d.name}")
     d.vidas -= 1 #Te resta 1 de vida
