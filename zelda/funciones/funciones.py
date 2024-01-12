@@ -17,9 +17,9 @@ def mostrarInventario():
                          
                          "* \n".rjust(22),
                          " Food".ljust(15) + "{0}".format(5).rjust(3) +  " *\n",
-                         " Weapons".ljust(15) + "{0}".format(5).rjust(3) +  " *\n",
-                         "* \n".rjust(22),
-                        " * * * * * * * * * *"]
+                         " Weapons".ljust(15) + "{0}".format(5).rjust(3) +  " *"
+                         ]
+                        
     return inventario
     '''
     elif Select.lower() == "Show inventory Food":
@@ -33,9 +33,7 @@ def mostrarInventario():
                          "* \n".rjust(22),
                          " Salads".ljust(16) + "10".rjust(2) + " * \n",
                          " Pescatarian".ljust(16) + "10".rjust(2) + " * \n",
-                         " Roasted".ljust(16) + "10".rjust(2) + " * \n",
-                         "*\n".rjust(21),
-                        " * * * * * * * * * *"]
+                         " Roasted".ljust(16) + "10".rjust(2) + " *"]
 
         return inventario
 
@@ -66,12 +64,12 @@ def mostrarInventario():
                         
     if d.escudo_actual == "Shield":
             
-            inventario += "  (equiped)" + "*\n".rjust(11),"* \n".rjust(22)," * * * * * * * * * *"
+            inventario += "  (equiped)" + "*\n".rjust(11),"*".rjust(22)
     else:
-            inventario += "* \n".rjust(23),"*\n".rjust(8),"* \n".rjust(22)," * * * * * * * * * *"                          
+            inventario += "* \n".rjust(23),"*\n".rjust(8),"*".rjust(22)                          
                     
     return inventario                
-    '''
+   
   
 
 def añadirInventario(objeto, diccionario):
@@ -95,21 +93,26 @@ def añadirInventario(objeto, diccionario):
 
     elif objeto == "Vegetable":
         
-        diccionario[objeto] = {"nombre": "Vegetable"}
-
-    elif  objeto == "salad":
+        diccionario[objeto] += 1 
+    elif objeto == "Fish":
         
-        diccionario[objeto] = {"nombre": "salad" }
+        diccionario[objeto] += 1 
+    elif objeto == "Meat":
+        
+        diccionario[objeto] += 1 
+    elif  objeto == "Salad":
+        
+        diccionario[objeto] += 1 
     
-    elif  objeto == "pescatarian":
+    elif  objeto == "Pescatarian":
         
-        diccionario[objeto] = {"nombre": "pescatarian" }
+        diccionario[objeto] += 1 
     
-    elif objeto == "roasted":
+    elif objeto == "Roasted":
         
-        diccionario[objeto] = {"nombre": "roasted" }
+        diccionario[objeto] += 1 
 
-
+'''
 A esta función le pasamos los datos del mapa en cuestion y los copia en otra variable para poder editar este segundo mapa sin que el original se vea afectado.'''
 def obtenerMapa(playermap,posicionplayer):
     mapa = ""
@@ -118,7 +121,7 @@ def obtenerMapa(playermap,posicionplayer):
             '''Lo hacemos de este modo porque si aplicamos el copy sobre la lista general del mapa, al modificar las listas internas que corresponden
                 a cada una de las lineas del mapa, el mapa original si que se ve afectado.'''
             mapaActual.append(element1.copy())
-    mapaActual = introducirUserInicial(posicionplayer,mapaActual)
+    '''mapaActual = introducirUserInicial(posicionplayer,mapaActual)'''
     imprimirmapa(mapaActual)
     return mapaActual
 
@@ -142,7 +145,7 @@ def imprimirmapa(mapaActual):
 
         mapa += d.inventario1[contadorInventario]
         
-        if contadorInventario < 11:
+        if contadorInventario < 10:
             contadorInventario += 1
     
     print(mapa)
@@ -484,6 +487,9 @@ def imprimirmapa_menu(mapa):
         
 #--------------- Inventario ----------------------       
 
+       
+       
+
 def añadirInventario(objeto, diccionario):
 
         numeroRandom = "" 
@@ -619,7 +625,6 @@ def conteoInventario():
 
             d.dict_tipos["Sword"]["total"] += 1
 
-        
     for element1 in d.inventarioComida:
             
 
@@ -918,6 +923,41 @@ def cocinar(receta, inventario): # Funcion para cocinar comida
 
 
 
+def menuInferior(mapa):
+    #Queda crear el diccionario donde ira el mapa actual
+    posicion = d.jugador["posicion"]
+    
+    menuInferior = "* Exit, Show, Go, Eat"
+
+    if mapa[posicion[0]+1][posicion[1]] == "T" or mapa[posicion[0]-1][posicion[1]] == "T" or mapa[posicion[0]+1][posicion[1]+1]  == "T" or mapa[posicion[0]+1][posicion[1]-1]  == "T" or mapa[posicion[0]][posicion[1]+1]  == "T" or mapa[posicion[0]][posicion[1]-1]  == "T" or mapa[posicion[0]-1][posicion[1]+1] or mapa[posicion[0]-1][posicion[1]-1]  == "T":
+
+        menuInferior += ", Attack"
+
+    '''
+    if menuInferior.find("Attack") == -1:
+    
+        if d.jugador["mapaActual"][posicion[0]+1][posicion[1]][0] in  ("Z","E") or d.jugador["mapaActual"][posicion[0]-1][posicion[1]][0] in  ("Z","E") or d.jugador["mapaActual"][posicion[0]+1][posicion[1]+1][0]  in  ("Z","E") or d.jugador["mapaActual"][posicion[0]+1][posicion[1]-1][0]  in  ("Z","E") or d.jugador["mapaActual"][posicion[0]][posicion[1]+1][0]  in  ("Z","E") or d.jugador["mapaActual"][posicion[0]][posicion[1]-1][0]  in  ("Z","E") or d.jugador["mapaActual"][posicion[0]-1][posicion[1]+1][0]in  ("Z","E") or d.jugador["mapaActual"][posicion[0]-1][posicion[1]-1][0]  in  ("Z","E") and d.jugador["arma actual"] != " ":
+            menuInferior += ", Attack"
+
+    if d.jugador["mapaActual"][posicion[0]+1][posicion[1]][0] == "~" or d.jugador["mapaActual"][posicion[0]-1][posicion[1]][0]  == "~" or d.jugador["mapaActual"][posicion[0]+1][posicion[1]+1][0]   == "~" or d.jugador["mapaActual"][posicion[0]+1][posicion[1]-1][0]   == "~" or d.jugador["mapaActual"][posicion[0]][posicion[1]+1][0]   == "~" or d.jugador["mapaActual"][posicion[0]][posicion[1]-1][0]   == "~" or d.jugador["mapaActual"][posicion[0]-1][posicion[1]+1][0] == "~" or d.jugador["mapaActual"][posicion[0]-1][posicion[1]-1][0] == "~":
+         menuInferior += ", Fish"
+    
+     if d.jugador["mapaActual"][posicion[0]+1][posicion[1]][0] == "S" or d.jugador["mapaActual"][posicion[0]-1][posicion[1]][0]  == "S" or d.jugador["mapaActual"][posicion[0]+1][posicion[1]+1][0]   == "S" or d.jugador["mapaActual"][posicion[0]+1][posicion[1]-1][0]   == "S" or d.jugador["mapaActual"][posicion[0]][posicion[1]+1][0]   == "S" or d.jugador["mapaActual"][posicion[0]][posicion[1]-1][0]   == "S" or d.jugador["mapaActual"][posicion[0]-1][posicion[1]+1][0] == "S" or d.jugador["mapaActual"][posicion[0]-1][posicion[1]-1][0] == "S":
+     
+        menuInferior += ", Open"
+'''
+
+    while  len(menuInferior) < 79:
+        if len(menuInferior) %2 == 0:
+
+            menuInferior += "*"
+            menuInferior += " "
+        else:
+            menuInferior += " "
+            menuInferior += "*"
+    print (menuInferior)
+
+
 #----------------- Mapa -------------------
 
 def mostrar_mapa(santuarios_abiertos): # Faltaria ver como implementar los santuarios, si es un diccionario o una lista
@@ -954,4 +994,5 @@ def frase_ganon():
     frase_rand = random.randint(1,10)
 
     print(d.frases_ganon[frase_rand-1])
+
 

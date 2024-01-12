@@ -1,7 +1,7 @@
 import funciones.datos as d
 import funciones.funciones as f
 
-posicionplayer = [3,9]
+posicionplayer = [8,19]
 mapaActual = []
 playermap = d.gerudo
 mapa = ""
@@ -9,14 +9,14 @@ retorno = []
 
 
 mapaActual = f.obtenerMapa(d.death, posicionplayer)
-
+print(f.menuInferior(mapaActual))
 
 
 
 
 while(True):
 
-    
+   
     select = input("Selecciona una opcion:")
     
     retorno = f.moverPersonaje(mapaActual, select, posicionplayer)
