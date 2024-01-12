@@ -433,12 +433,12 @@ def funcion_new_game():
             back = False
 
         elif opc.lower() == "":  # Si no se escribe nada se asigna el nombre Link
-            name = "Link"
+            name = "Link" # Modificar variable name
             print("Welcome to the game", name)
             before_game(name)
 
         elif opc.lower().replace(" ", "").isalnum() and len(opc) >= 3 and len(opc) <= 10:  # Cuando el nombre sea correcto se guarda
-            name = opc
+            name = opc # Modificar variable name
             print("Welcome to the game", name)
             before_game(name)
 
@@ -462,12 +462,19 @@ def before_game(name):
     opc = input()  # Se guarda la opcion
 
     while opc.lower() != "continue":
-        print("Invalid Option")
+        print("Invalid action")
         opc = input()
 
-    if opc.lower() == "continue":  # Si se elige continue pasamos a la pantalla de plot
-        imprimirmapa_menu(d.plot) # Se imprime la pantalla de plot
+    imprimirmapa_menu(d.plot) # Se imprime la pantalla de plot        
+    opc = input()
+
+    while opc.lower() != "continue":
+        print("Invalid action")
         opc = input()
+    
+    print("The adventure begins")
+        
+
 
 
 def imprimirmapa_menu(mapa):
@@ -909,4 +916,42 @@ def cocinar(receta, inventario): # Funcion para cocinar comida
     else: # Si lo que se quiere cocinar no existe, se muestra un mensaje de error
         print("You can't cook", receta[5:])
 
+
+
+#----------------- Mapa -------------------
+
+def mostrar_mapa(santuarios_abiertos): # Faltaria ver como implementar los santuarios, si es un diccionario o una lista
+    #santuarios_abiertos = ["S0?", "S2?"]
+
+    for linea in range(len(d.mapa_inicio)-1): # Este for va comprueba los santuarios abiertos, si hay santuario abierto, en el mapa se elimina el interrogante que tiene al lado
+        for elemento in range(len(d.mapa_inicio[linea])):
+            if d.mapa_inicio[linea][elemento] in santuarios_abiertos:
+                d.mapa_inicio[linea][elemento] = d.mapa_inicio[linea][elemento][:2] + " "
+                
+
+
+    mapa = "" # Imprimir el mapa de inicio
+    for element in d.mapa_inicio:
+        for element1 in element:
+            mapa += element1
+        mapa += "\n"
+
+    print(mapa)
+
+    back = True
+    while back == True: # Hasta que no se de la orden de "back" no se sale del mapa
+        opc = input("What to do now? ")
+        while opc.lower() != "back":
+            print("Invalid action")
+            opc = input("What to do now? ")
+        
+        back = False
+
+
+#----------------------- Frases Ganon ----------------
+
+def frase_ganon():
+    frase_rand = random.randint(1,10)
+
+    print(d.frases_ganon[frase_rand-1])
 
