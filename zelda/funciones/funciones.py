@@ -5,21 +5,23 @@ mapaActual = []
 def mostrarInventario():
     '''
     if Select.lower() == "show inventory main":
-        
-        inventario = [" * * * * Inventory * \n",
+    '''  
+    inventario = [" * * * * Inventory * \n",
                         "*\n".rjust(21),
-                        " Link".ljust(12) + "  {0}/{1}".format(vidas,vidas_max).rjust(6) + " * \n",
-                        "* \n".rjust(22), 
+                        " Link".ljust(12) + "  {0}/{1}".format(d.vidas,d.vidas_max).rjust(6) + " * \n",
+                        " Blod Moon in ".ljust(10) + "  {0}".format(25).rjust(4) + " * \n",
+                        "* \n".rjust(22),
                         " Equipement ".ljust(19) + "* \n",
-                         "{0}".format(escudo_actual).rjust(18) + " * \n",
-                         "{0}".format(arma_actual).rjust(18) + " * \n",
+                         "{0}".format(d.escudo_actual).rjust(18) + " * \n",
+                         "{0}".format(d.arma_actual).rjust(18) + " * \n",
+                         
                          "* \n".rjust(22),
                          " Food".ljust(15) + "{0}".format(5).rjust(3) +  " *\n",
                          " Weapons".ljust(15) + "{0}".format(5).rjust(3) +  " *\n",
                          "* \n".rjust(22),
                         " * * * * * * * * * *"]
-        return inventario
-    
+    return inventario
+    '''
     elif Select.lower() == "Show inventory Food":
 
         inventario = [" * * * * * *  Food * \n",
@@ -69,7 +71,7 @@ def mostrarInventario():
             inventario += "* \n".rjust(23),"*\n".rjust(8),"* \n".rjust(22)," * * * * * * * * * *"                          
                     
     return inventario                
-
+    '''
   
 
 def añadirInventario(objeto, diccionario):
@@ -108,7 +110,7 @@ def añadirInventario(objeto, diccionario):
         diccionario[objeto] = {"nombre": "roasted" }
 
 
-'''A esta función le pasamos los datos del mapa en cuestion y los copia en otra variable para poder editar este segundo mapa sin que el original se vea afectado.'''
+A esta función le pasamos los datos del mapa en cuestion y los copia en otra variable para poder editar este segundo mapa sin que el original se vea afectado.'''
 def obtenerMapa(playermap,posicionplayer):
     mapa = ""
     mapaActual = []
@@ -297,11 +299,86 @@ def moverPersonaje(mapaActual, select, posicionplayer):
             else:
                 return["Invalid action"], posicionplayer[0], posicionplayer[1]
 
-              
-              
-              
- #--------------- Menu Principal ----------------------                      
-      
+
+
+def moverPersonajeGanon(mapaActual, select, posicionplayer):
+    
+    
+    if select[0:7] == "go left":
+        print(posicionplayer[1], posicionplayer[1] - int(select[8:]) )
+        if posicionplayer[1] - int(select[8:]) < 0:
+            
+            return["Invalid action1"], posicionplayer[0], posicionplayer[1]
+        else:
+            int1 = posicionplayer[1]
+            int2 = posicionplayer[1] - int(select[8:])
+            diferent = True
+           
+            for i in range (int1, int2, -1):
+                
+                if int(select[8:]) == 1:
+
+                    if mapaActual[posicionplayer[0]][i-1] != " ":
+                        
+                        return["Invalid action"], posicionplayer[0], posicionplayer[1]
+                    
+                    else:
+
+                        mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
+                        mapaActual[posicionplayer[0]][posicionplayer[1] - int(select[8:])] = "X"
+                        return mapaActual, posicionplayer[0], posicionplayer[1] - int(select[8:])
+                else:
+
+                    if mapaActual[posicionplayer[0]][i-1] != " ":
+                        
+                        diferent = False
+            if diferent == True:
+
+                mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
+                mapaActual[posicionplayer[0]][posicionplayer[1] - int(select[8:])] = "X"
+                return mapaActual, posicionplayer[0], posicionplayer[1] - int(select[8:])        
+            else:
+                return["Invalid action"], posicionplayer[0], posicionplayer[1]
+                       
+
+    elif select[0:8] == "go right":
+       
+        if posicionplayer[1] + int(select[8:]) > 57:
+            
+
+            return["Invalid action1"], posicionplayer[0], posicionplayer[1]
+        else:
+            int1 = posicionplayer[1]
+            int2 = posicionplayer[1] + int(select[9:])
+            diferent = True
+            for i in range (int2, int1, -1):
+                
+                if int(select[9:]) == 1:
+
+                    if mapaActual[posicionplayer[0]][i+1] != " ":
+                        
+                        return["Invalid action2"], posicionplayer[0], posicionplayer[1]
+                    
+                    
+                else:
+
+                    if mapaActual[posicionplayer[0]][i+1] != " ":
+                        diferent = False
+            
+            if diferent == True:
+       
+                mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
+                mapaActual[posicionplayer[0]][posicionplayer[1] + int(select[9:])] = "X"
+                return mapaActual, posicionplayer[0], posicionplayer[1] + int(select[9:])
+            else:
+                return["Invalid action"], posicionplayer[0], posicionplayer[1]
+
+
+
+
+
+
+
 #Menu aleatorio
 def menu_random():
     menu_aleatorio = random.randint(1, 3)
@@ -378,7 +455,7 @@ def help(mapa):
             back_help = False
 
         else:  # Si la opcion es incorrecta se imprime invalid option
-            print("Invaid Option")
+            print("Invalid Option")
 
 def before_game(name):
     imprimirmapa_menu(d.legend)  # Se imprime la leyenda
@@ -403,16 +480,179 @@ def before_game(name):
 def imprimirmapa_menu(mapa):
     for i in mapa:
         print(i[0])
+        
+        
+#--------------- Inventario ----------------------       
+
+def añadirInventario(objeto, diccionario):
+
+        numeroRandom = "" 
+
+        for i in range(3):
+
+            numeroRandom += str(random.randint(0,20))
+
+        if objeto == "Wood Sword":
+            
+            diccionario[objeto + numeroRandom] = {"nombre": "Wood Sword", "Usos": 5 }
+            
+        elif objeto == "Wood Shield":
+        
+            diccionario[objeto + numeroRandom] = {"nombre": "Wood Shield", "Usos": 5 }
+        
+        elif objeto == "Shield":
+            
+            diccionario[objeto + numeroRandom] = {"nombre": "Shield", "Usos": 9 }
+            
+        
+        elif objeto == "Sword":
+            
+            diccionario[objeto + numeroRandom] = {"nombre": "Sword", "Usos": 9 }
+
+        elif objeto == "Vegetable":
+            
+            diccionario[objeto + numeroRandom] = {"nombre": "Vegetable" }
+
+        elif  objeto == "salad":
+            
+            diccionario[objeto + numeroRandom] = {"nombre": "salad" }
+        
+        elif  objeto == "pescatarian":
+            
+            diccionario[objeto + numeroRandom] = {"nombre": "pescatarian" }
+        
+        elif objeto == "roasted":
+            
+            diccionario[objeto + numeroRandom] = {"nombre": "roasted" }
+
+        
+def equiparArma(Select):
+
+    if len(d.inventarioArmas )== 0:
+
+        print("No hay armas en el inventario")
+
+    if Select.find("Wood Shield") != -1:
+
+        if Select[Select.find("Wood Shield"): ]:
+
+            Select = Select[Select.find("Wood Shield"): ]
+    
+    elif Select.find("Shield") != -1 and Select.find("Wood") == -1:
+
+        if Select[Select.find("Shield"): ] :
+
+             Select = Select[Select.find("Shield"): ]
+
+    elif Select.find("Wood Sword") != -1:
+
+        if Select[Select.find("Wood Sword"): ]:
+
+            Select = Select[Select.find("Wood Shield"): ]
+
+     
+    elif Select.find("Sword") != -1 and Select.find("Wood") == -1:
+
+        if Select[Select.find("Sword"): ] :
+
+             Select = Select[Select.find("Shield"): ]
+    
+    lista_dict = list(d.inventarioArmas.keys())
+    
+
+    if len(lista_dict)== 0:
+
+        print ("No dispones de este arma en tu inventario.")
+
+    for i in range(len(lista_dict)):
+        for j in range(0, len(lista_dict)-i-1):
+            if lista_dict[j]["usos"] > lista_dict[j+1]["usos"]:
+                lista_dict[j]["usos"], lista_dict[j+1]["usos"] = lista_dict[j+1]["usos"], lista_dict[j]["usos"]
+
+    if "Shield" in lista_dict[0]:
+        if d.jugador["escudo_actual"] == lista_dict[0]:
+            return "You already have {lista_dict[0]} equiped"
+        else:
+            d.jugador["escudo_actual"] = lista_dict[0]
+    
+    elif "Sword" in lista_dict[0]:
+
+        if d.jugador["arma_actual"] == lista_dict[0]:
+            return "You already have {lista_dict[0]} equiped"
+        else:
+            d.jugador["escudo_actual"] = lista_dict[0]
+            return "You already have {lista_dict[0]} equiped"
+        
+            
+def desequiparArma(Select):
+
+    if "Sword" in Select:
+        d.jugador["arma_actual"] = " "
+        return "Escudo desequipado."
+    elif "Shield" in Select:
+        d.jugador["arma_actual"] = " "
+        return "Espada desequipado."
+    else:
+        return "Incorrect Option"
+    
+
+def conteoInventario():
+
+    
+   
+
+    for element in d.inventarioArmas:
+        
 
 
-       
+        if "Wood Shield" in element:
+              d.dict_tipos["Wood Shield"]["total"] += 1
+            
+        elif  "Shield" in element and not "Wood" in element:
+
+            d.dict_tipos["Shield"]["total"] += 1
+        elif "Wood Sword" in element:
+
+            d.dict_tipos["Wood Sword"]["total"] += 1        
+
+        elif  "Sword" in element and not "Wood" in element:
+
+            d.dict_tipos["Sword"]["total"] += 1
+
+        
+    for element1 in d.inventarioComida:
+            
+
+            if "vegetal" in d.inventarioComida[element1]["tipo"]:
+                d.dict_tipos["Vegetables"]["total"] += 1
+                
+            elif  "Fish" in d.inventarioComida[element1]["tipo"]:
+                d.dict_tipos["Fish"]["total"] += fish
+                
+            elif "Meat" in d.inventarioComida[element1]["tipo"]:
+
+                d.dict_tipos["Meat"]["total"] += 1        
+
+            elif  "Salads" in d.inventarioComida[element1]["tipo"]:
+
+                d.dict_tipos["Salads"]["total"] += 1
+
+            elif "Pescatarian" in d.inventarioComida[element1]["tipo"]:
+
+                d.dict_tipos["Pescatarian"]["total"] += 1        
+
+            elif  "Roasted" in d.inventarioComida[element1]["tipo"]:
+
+                d.dict_tipos["Roasted"]["total"] += 1
+                
+#--------------- prompt ----------------------
 def prompt(): #PROMPT
     while len(d.texto_prompt) > 8:
         d.texto_prompt.remove(d.texto_prompt[0]) #Remueve el primer mensaje
     for i in d.texto_prompt: #Imprime el promp
-        #-No se si tiene que sali prompt al lado
         print(i)
-#---------------Interaciones con los objetos del mapa----------------------
+
+#--------------- Interaciones con los objetos del mapa ----------------------
 
 def cesped(): #Interacion con el cesped
    porcentaje = random.randint(1,100)
@@ -421,7 +661,7 @@ def cesped(): #Interacion con el cesped
        #-Falta hacer que se añada 1 de carne al inventario
    else:
        d.texto_prompt.append("The grass didn't give you anything")
-       
+
 def arbol(espada): #Interacion con el arbol
     #-Queda hacer lo de que aparezca despues de 10 movimientos
     #-Tambien hay que hacer en el mapa que cuando un arbol caiga un contador que ponga cuantos turnos falta para que se vulva a regenerar
@@ -429,7 +669,7 @@ def arbol(espada): #Interacion con el arbol
     if d.vida_arbol == 0: #
         d.texto_prompt.append("The tree is not ready yet")
     else:
-        if espada == False: #compruba si cuando has atacado a sido con una espada o no
+        if d.espada == False: #compruba si cuando has atacado a sido con una espada o no
             if porcentaje in range(1,6): #Te da una espada de madera y tiene que salir un mensaje en el promp
                 d.texto_prompt.append("You got a Wood sword")
                 #-Falta hacer que se añada al inventario
@@ -446,7 +686,7 @@ def arbol(espada): #Interacion con el arbol
                 d.texto_prompt.append("You got a Wood sword")
                 #-Falta hacer que se añada al inventario
                 d.vida_espada_madera -= 1 #cuando atacas con la espda restas 1 de vida a la espada
-                d.vida_arbol -= 1 #cuando atacas con la espda restas 1 de vida al arbol
+                d.vida_arbol -= 1 #Cuando atacas con la espda restas 1 de vida al arbol
             elif porcentaje in range(21,41): #Te da un escudo de madera y tiene que salir un mensaje en el promp
                 d.texto_prompt.append("You got a Wood shield")
                 #-Falta hacer que se añada al inventario
@@ -462,11 +702,9 @@ def arbol(espada): #Interacion con el arbol
                 d.vida_espada_madera -= 1 
                 d.vida_arbol -= 1
             if d.vida_arbol == 0: #Cuando el arbol llega a 0 se cae y no aparece hasta dentro de 10 movimientos
-                d.texto_prompt.append("The tree has fallen") #-Este prom  lo he añadido yo os parece bien?
+                d.texto_prompt.append("The tree has fallen") #Este prom lo he añadido yo
 
 def agua(): #Interacion con el agua
-    #-Se necesita caña de pescar?
-    #-Pone que despues de pescar no puedes conseguir otro pez hasta que salgas del lugar y vulvas, Pero es con todo el agua o solo donde has pescado?
     porcentaje = random.randint(1,100)
     if d.pesca == True: #Comprueba si ya has conseguido un pez
         d.texto_prompt.append("There are no more fish") #-Este prom lo he añadido yo
@@ -479,7 +717,6 @@ def agua(): #Interacion con el agua
             d.texto_prompt.append("You didn't get a fish")
 
 def zorro_visivilidad(): #Dice si el zorro sera visible o no
-    #-Pone si esta en el area pero que area? o cuanto es el area? o si se refiere al mapa?
     porcentaje = random.randint(1,100)
     if porcentaje in range(1,51):
         d.visibilidad_zorro = True
@@ -496,15 +733,101 @@ def zorro(): #Interacion con el zorro
 def abrir_santuario(): #Interacion con el santuario
     if d.puerta_santuario == True: #Comprueba si esta abierto
         d.texto_prompt.append("You already opened this sanctuary")
-    else: #Al no estarlo lo abre, añade 1 de vida maxima y escribe en el prompt
+    else: #Lo abre y añade 1 de vida maxima y escribe en el prompt
         d.puerta_santuario = True
-        d.vida_personaje_maxima += 1
+        d.vidas_max += 1
         d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
 
+def cofre_cerrar(): #Comprueba si en tu inventario tienes alguna espada
+    if len(d.inventarioArmas) == 0:
+        d.cofre_abierto = False
+        #-No esta perfecto queda especificar más como lo tiene que buscar
+        #-Tambien no se si solo tiene que ser con espada o tambien escudo o si tambien cuentan las espadas de madera
+
+def cofre(): #Interacion con el cofre
+    if d.cofre_abierto == True: #comprueba si el cofre ya esta abierto
+        d.texto_prompt.append("The chest is now open") #Este prompt lo he puesto yo
+    else:
+        if d.mapa == (d.hyrule or d.gerudo): #Dependiendo del mapa te dara una espada o un escudo
+            d.texto_prompt.append(f"You got a sword")
+            d.cofre_abierto = True
+            #-Falta hacer que se añada una espada al inventario 
+        else:
+            d.texto_prompt.append(f"You got a shield")
+            d.cofre_abierto = True
+            #-Falta hacer que se añada un escudo al inventario
+
+def enemigos(): #Interacion con el enemigo
+    #-Queda que el enemigo se mueva bien y que no se ponga en un sitio donde no se puede
+    d.vida_espada_madera -= 1 #Le quita un uso a la espada
+    d.texto_prompt.append(f"Brave, keep fighting {d.name}")
+    d.vidas -= 1 #Te resta 1 de vida
+    d.texto_prompt.append(f"Be careful Link, you only have {d.vidas} hearts")
+    d.vida_enemigo -= 1 #Le resta 1 de vida al enemigo
+    if d.vidas == 0: #Comprueba si a un te queda vida
+        d.texto_prompt.append(f"{d.name} is dead")
+    else:
+        if d.vida_enemigo == 0: #Comprueba si al enemigo a un le queda vida
+            d.texto_prompt.append("You defeated an enemy, this is a dangerous zone")
+        else:
+            direccion1 = random.randint(1,2)
+            if direccion1 == 1: #Mira si modificara X o Y
+                direccion2= random.randint(1,2)
+                if direccion2 == 1: #Luego si es para delante o atras o izquierda o derecha
+                    d.posicion_enemigo[0] += 1
+                else:
+                    d.posicion_enemigo[0] -= 1
+            else:
+                direccion2= random.randint(1,2)
+                if direccion2 == 1:
+                    d.posicion_enemigo[1] += 1
+                else:
+                    d.posicion_enemigo[1] -= 1
+            
+def comer(select): #Interaccion de comer
+    #-Habra que modificar el como se dirije a la comida
+    if d.vidas == d.vidas_max: #Comprueba si el personaje ya tiene lla vida maxima
+        d.texto_prompt.append("You already have your whole life complete")
+    else:
+        if select == "Eat vegetable": #Comprueba si como un vegetal
+            if d.inventarioComida[0] < 0: #Comprueba si la comida que quieres esta en el inventario
+                d.texto_prompt.append("You have no vegetables left")
+            else: #Si tienes entonces te elimina 1 de comida y te añade la vida que necesites
+                d.inventarioComida[0] -= 1
+                d.vidas += 1
+                d.texto_prompt.append("You have increased 1 health and spent 1 vegetable")
+        elif select == "Eat salad": #Comprueba si como un ensalada
+            if d.inventarioComida[0] < 0: #Comprueba si la comida que quieres esta en el inventario
+                d.texto_prompt.append("You don't have any salad left")
+            else:#Si tienes entonces te elimina 1 de comida y te añade la vida que necesites
+                d.inventarioComida[0] -= 1
+                for i in range(2): #Para no pasarse de la vida maxima comprueba si ya esta en su maximo de vida o no
+                    if not d.vidas == d.vidas_max:
+                        d.vidas += 1
+                d.texto_prompt.append("You have increased 2 health and spent 1 salad")
+        elif select == "Eat pescatarian": #Comprueba si como un pescado
+            if d.inventarioComida[0] < 0: #Comprueba si la comida que quieres esta en el inventario
+                d.texto_prompt.append("You don't have any pescatarian left")
+            else:#Si tienes entonces te elimina 1 de comida y te añade la vida que necesites
+                d.inventarioComida[0] -= 1
+                for i in range(3): #Para no pasarse de la vida maxima comprueba si ya esta en su maximo de vida o no
+                    if not d.vidas == d.vidas_max:
+                        d.vidas += 1
+                d.texto_prompt.append("You have increased 3 health and spent 1 Pescatarian")
+        elif select == "Eat roasted": #Comprueba si como una carne cocinada
+            if d.inventarioComida[0] < 0: #Comprueba si la comida que quieres esta en el inventario
+                d.texto_prompt.append("You don't have anything toasted")
+            else:#Si tienes entonces te elimina 1 de comida y te añade la vida que necesites
+                d.inventarioComida[0] -= 1
+                for i in range(4): #Para no pasarse de la vida maxima comprueba si ya esta en su maximo de vida o no
+                    if not d.vidas == d.vidas_max:
+                        d.vidas += 1
+                d.texto_prompt.append("You have increased 4 health and spent 1 roast")
+        else: #Si no existe la comida que ha puesto sale este promp
+            d.texto_prompt.append("This food does not exist") #Este promp lo he añadido yo    
 
 #--------------- Cocinar ----------------------
      
-   
 def cocinar(receta, inventario): # Funcion para cocinar comida 
     if receta[5:].lower() == "salad": # Si se quiere cocinar una salad
         cont = 0
@@ -594,6 +917,7 @@ def cocinar(receta, inventario): # Funcion para cocinar comida
         print("You can't cook", receta[5:])
 
 
+
 #----------------- Mapa -------------------
 
 def mostrar_mapa(santuarios_abiertos): # Faltaria ver como implementar los santuarios, si es un diccionario o una lista
@@ -630,3 +954,4 @@ def frase_ganon():
     frase_rand = random.randint(1,10)
 
     print(d.frases_ganon[frase_rand-1])
+

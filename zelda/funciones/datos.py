@@ -1,4 +1,5 @@
 import funciones.funciones as f
+
 mapa_inicio = [["* Map * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"],
         ["*"," "," ","H","y","r","u","l","e"," "," "," "," "," "," "," ","S0?"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","D","e","a","t","h"," ","m","o","u","n","t","a","i","n"," "," ","*                   *"],
         ["*"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","S2?"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","*                   *"],
@@ -12,7 +13,12 @@ mapa_inicio = [["* Map * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
         ["*"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","*                   *"],
         ["* Back  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"]]
 
-#mapas_diccionario = {"hyrule":{"mapa":hyrule, "posicion": position_hyrule},"gerudo":{"mapa":gerudo, "posicion":position_gerudo},"necluda":{"mapa":necluda, "posicion": position_necluda},"death":{"mapa":death, "posicion":position_death}} #Diccionario de los mapas y sus posiciones
+
+
+jugador = {"posicion" : [3,9], "arma_actual": " ", "escudo_actual" : " ", "vidas_max": 3, "vidas" : 3 }
+
+dict_tipos = {"Shield" : {"total": 0}, "Wood Shield" : {"total": 0}, "Sword" : {"total": 0}, "Wood Swort" : {"total": 0}, "Vegetables" :{"total": 0}, "Fish" :{"total": 0}, "Meat" :{"total": 0}, "Salads" :{"total": 0}, "Pescatarian" : {"total": 0}, "Roasted": {"total": 0} }
+
 
 hyrule = [["*"," ","H","y","r","u","l","e"," "," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"],
         ["*"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","~","~","~","~","~","~","~","~","~","~","~","~","~","~","~","~","~","~","O","O","O","*"],
@@ -105,6 +111,11 @@ position_castle_win = [9,3]
 frases_ganon = ["Ganon is powerful, are you sure you can defeat him?", "Ganon's strength is supernatural, Zelda fought with bravery.", "To Ganon, you are like a fly, find a weak spot and attack.", "Ganon will not surrender easily.", "Ganon has fought great battles, is an expert fighter.", "Link, transform your fears into strengths.", "Keep it up, Link, Ganon can't hold out much longer.", "Link, history repeats itself, Ganon can be defeated.", "Think of all the warriors who have tried before.", "You fight for the weaker ones, Link, persevere."]
 
 
+mapas_diccionario = {"hyrule":{"mapa":hyrule, "posicion": position_hyrule},"gerudo":{"mapa":gerudo, "posicion":position_gerudo},"necluda":{"mapa":necluda, "posicion": position_necluda},"death":{"mapa":death, "posicion":position_death},"castle":{"mapa":castle,"posicion":position_castle},"castle_win":{"mapa":castle_win,"posicion":position_castle_win}} #Diccionario de los mapas y sus posiciones
+
+position_castle_win = [9,3]
+
+
 vidas = 3
 vidas_max = 10
 arma_actual = ""
@@ -114,8 +125,8 @@ escudo_actual = ""
 
 
 
-inventarioArmas = {}
-inventarioComida = {}
+inventarioArmas = {"Wood Shield998" :{"nombre" :"Arma", "usos": 4}, "Wood Shield98" :{"nombre" :"Arma", "usos": 4}}
+inventarioComida = {"Manzana" :{ "tipo": "vegetal", "nombre" : "Vegetal"}, "Vegetable" :{ "tipo": "vegetal","nombre" : "Vegetal"}, "poma" :{ "tipo": "vegetal","nombre" : "Vegetal"}, "Fish" :{ "tipo": "asno", "nombre" : "Vegetal"}  }
 
 
 
@@ -294,21 +305,30 @@ link_death = [["* Link death  * * * * * * * * * * * * * * * * * * * * * * * * * 
 texto_prompt = ["","","","","","","","",""]
 
 #---------------Inventario y pesonaje----------------------
-vida_personaje_maxima = 4
+espada = True
+mapa = hyrule
 vida_espada_madera = 5
 vida_escudo_madera = 5
+vida_enemigo = 5
+nombre = "Link"
+inventarioComida1 = [5]
+posicion_enemigo = [0,0]
+#enemigo ={"posicion"=posicion_enemigo,"mapa":mapa,"vida":vida_enemigo}
 #-Esto solo lo hecho porque no se donde esta los usos de las cosas ya luego lo modificamos
 
 #---------------Interaciones con los objetos del mapa----------------------
 
 vida_arbol = 4 
-#arbol = {"posicion":posicion,"mapa":mapa,"vida":vida_arbol}
+#arbol = {"posicion":posicion,"mapa":mapa,"vida":vida_arbol,"forma":"T"}
 
 pesca = False #Sirve para saber si ya has conseguido u pez o no
 #agua = {"posicion":posicion,"mapa":mapa,"pesca":pesca}
 
 visibilidad_zorro = False #Saber si el zorro lo ves o no
-#zorro = {"posicion":posicion,"mapa":mapa,"visibilidad":visibilidad_zorro}
+#zorro = {"posicion":posicion,"mapa":mapa,"visibilidad":visibilidad_zorro,"forma":"F"}
 
 puerta_santuario = False #Saber si el santuario esta abierto o no
-#santuario = {"posicion":posicion,"mapa":mapa,"puerta":puerta_santuario}
+#santuario = {"posicion":posicion,"mapa":mapa,"puerta":puerta_santuario,"forma":"S1"}
+
+cofre_abierto = False
+#cofre = {"posicion":posicion,"map":map,"cofre":cofre_abierto,"forma":"M"}
