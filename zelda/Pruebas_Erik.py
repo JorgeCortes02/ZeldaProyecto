@@ -48,3 +48,4 @@ diccio = {"vegetable123456":{"nombre":"vegetable"}, "vegetable654321":{"nombre":
 while True:
     f.frase_ganon()
     input("")
+
