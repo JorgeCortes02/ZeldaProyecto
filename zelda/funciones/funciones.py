@@ -121,7 +121,7 @@ def obtenerMapa(playermap,posicionplayer):
             '''Lo hacemos de este modo porque si aplicamos el copy sobre la lista general del mapa, al modificar las listas internas que corresponden
                 a cada una de las lineas del mapa, el mapa original si que se ve afectado.'''
             mapaActual.append(element1.copy())
-    mapaActual = introducirUserInicial(posicionplayer,mapaActual)
+    '''mapaActual = introducirUserInicial(posicionplayer,mapaActual)'''
     imprimirmapa(mapaActual)
     return mapaActual
 
