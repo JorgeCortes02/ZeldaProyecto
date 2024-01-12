@@ -55,7 +55,7 @@ def movimientoCercano(Select):
         d.mapaActual[element[0]][element[1]-1] = "D"
         print(d.mapaActual)
     else:
-        print("Invalid Action") 
+        print("Invalid Action.") 
 
 
 movimientoCercano("Go to T")
