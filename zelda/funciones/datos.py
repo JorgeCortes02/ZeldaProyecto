@@ -107,7 +107,7 @@ localitzacions = {
           ["* " * 30]]
 }
 
-dades = { "death" : {"arboles" : [(8,20), (9,19), (10,19)], "position_death" : (9,2) },
+dades = { "death" : {"arboles" : [(8,20), (9,19), (10,19,4)], "position_death" : (9,2) },
          "hyrule" : {"position" : (8,11)},
          "gerudo" : {"position" : (9,2)},
          "necluda" : {"position" : (1,2)},
