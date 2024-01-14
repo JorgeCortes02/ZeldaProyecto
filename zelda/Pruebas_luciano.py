@@ -15,6 +15,9 @@ import funciones.funciones as f
 
 
 while True:
+    print(d.vidas)
+    print(d.vidas_max)
+    print(d.inventarioComida1)
     f.prompt()
-    input("Su: ")
-    f.agua()
+    texto = input("Su: ")
+    f.comer(texto)
