@@ -28,31 +28,31 @@ def movimientoCercano(Select):
     element = d.dades["death"]["arboles"][0]
         
     print([element])
-    if d.mapaActual[element[0]-1][element[1]] == " ":
+    if d.mapaActual[element[0]-1][element[1]] == " ": #Comprueba si esta libre arriba
 
         d.jugador["posicion"][0] = element[0]
         d.jugador["posicion"][1] = element[1] 
-        d.mapaActual[element[0]-1][element[1]] = "P"
+        d.mapaActual[element[0]-1][element[1]] = "X"
         print(d.mapaActual)
-    elif d.mapaActual[element[0]][element[1]] == " ":
+    elif d.mapaActual[element[0]+1][element[1]] == " ": #Comprueba si esta libre abajo
 
         d.jugador["posicion"][0] = element[0]+1
         d.jugador["posicion"][1] = element[1] 
-        d.mapaActual[element[0]+1][element[1]] = "O"
+        d.mapaActual[element[0]+1][element[1]] = "X"
         print(d.mapaActual)
     
-    elif d.mapaActual[element[0]][element[1]] == " ":
+    elif d.mapaActual[element[0]][element[1]-1] == " ": #Comprueba si esta libre izquierda
 
         d.jugador["posicion"][0] = element[0]
         d.jugador["posicion"][1] = element[1]+1
-        d.mapaActual[element[0]][element[1]+1] = "S"
+        d.mapaActual[element[0]][element[1]-1] = "X"
         print(d.mapaActual)
 
-    elif d.mapaActual[element[0]][element[1]-1] == " ":
+    elif d.mapaActual[element[0]][element[1]+1] == " ": #Comprueba si esta libre derecha
 
         d.jugador["posicion"][0] = element[0]
         d.jugador["posicion"][1] = element[1] -1
-        d.mapaActual[element[0]][element[1]-1] = "D"
+        d.mapaActual[element[0]][element[1]+1] = "X"
         print(d.mapaActual)
     else:
         print("Invalid Action") 
