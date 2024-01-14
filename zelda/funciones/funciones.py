@@ -731,7 +731,13 @@ def abrir_santuario(): #Interacion con el santuario
         d.vidas_max += 1
         d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
 
-def cofre_cerrar(): #Comprueba si en tu inventario tienes alguna espada
+def cofre_cerrar_sword(): #Comprueba si en tu inventario tienes alguna espada
+    if len(d.inventarioArmas) == 0:
+        d.cofre_abierto = False
+        #-No esta perfecto queda especificar más como lo tiene que buscar
+        #-Tambien no se si solo tiene que ser con espada o tambien escudo o si tambien cuentan las espadas de madera
+
+def cofre_cerrar_shield(): #Comprueba si en tu inventario tienes alguna espada
     if len(d.inventarioArmas) == 0:
         d.cofre_abierto = False
         #-No esta perfecto queda especificar más como lo tiene que buscar

@@ -14,10 +14,19 @@ import funciones.funciones as f
 #    f.arbol(espada)
 
 
-while True:
+'''while True:
     print(d.vidas)
     print(d.vidas_max)
     print(d.inventarioComida1)
     f.prompt()
     texto = input("Su: ")
-    f.comer(texto)
+    f.comer(texto)'''
+linia = ""
+for i in d.necluda:
+    for j in i:
+        linia += j
+    linia += "\n"
+
+print(linia)
+    
+print(d.necluda[10][39])
