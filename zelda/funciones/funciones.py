@@ -732,16 +732,18 @@ def abrir_santuario(): #Interacion con el santuario
         d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
 
 def cofre_cerrar_sword(): #Comprueba si en tu inventario tienes alguna espada
-    if len(d.inventarioArmas) == 0:
-        d.cofre_abierto = False
-        #-No esta perfecto queda especificar más como lo tiene que buscar
-        #-Tambien no se si solo tiene que ser con espada o tambien escudo o si tambien cuentan las espadas de madera
+    if len(d.dict_tipos["Sword"]["total"]) == 0: #-mirar direcciones
+       d.objetos_hyrule["M"]["abierto"][0] == False
+       d.objetos_gerudo["M"]["abierto"][0] == False
+       d.objetos_gerudo["M"]["abierto"][1] == False
 
-def cofre_cerrar_shield(): #Comprueba si en tu inventario tienes alguna espada
-    if len(d.inventarioArmas) == 0:
-        d.cofre_abierto = False
-        #-No esta perfecto queda especificar más como lo tiene que buscar
-        #-Tambien no se si solo tiene que ser con espada o tambien escudo o si tambien cuentan las espadas de madera
+def cofre_cerrar_shield(): #Comprueba si en tu inventario tienes algun escudo
+    if len(d.dict_tipos["Shield"]["total"]) == 0: #-mirar direcciones
+        d.objetos_necluda["M"]["abierto"][0] == False
+        d.objetos_necluda["M"]["abierto"][1] == False
+        d.objetos_necluda["M"]["abierto"][2] == False
+        d.objetos_death["M"]["abierto"][0] == False
+        d.objetos_death["M"]["abierto"][1] == False
 
 def cofre(): #Interacion con el cofre
     if d.cofre_abierto == True: #comprueba si el cofre ya esta abierto
@@ -783,41 +785,40 @@ def enemigos(): #Interacion con el enemigo
                 else:
                     d.posicion_enemigo[1] -= 1
             
-def comer(select): #Interaccion de comer
-    #-Habra que modificar el como se dirije a la comida
+def comer(select): #Interaccion de comer #mirar las direcciones
     if d.vidas == d.vidas_max: #Comprueba si el personaje ya tiene lla vida maxima
         d.texto_prompt.append("You already have your whole life complete")
     else:
         if select == "Eat vegetable": #Comprueba si como un vegetal
-            if d.inventarioComida[0] < 0: #Comprueba si la comida que quieres esta en el inventario
+            if d.dict_tipos["Vegetables"]["total"] < 0: #Comprueba si la comida que quieres esta en el inventario
                 d.texto_prompt.append("You have no vegetables left")
             else: #Si tienes entonces te elimina 1 de comida y te añade la vida que necesites
-                d.inventarioComida[0] -= 1
+                d.dict_tipos["Vegetables"]["total"] -= 1
                 d.vidas += 1
                 d.texto_prompt.append("You have increased 1 health and spent 1 vegetable")
         elif select == "Eat salad": #Comprueba si como un ensalada
-            if d.inventarioComida[0] < 0: #Comprueba si la comida que quieres esta en el inventario
+            if d.dict_tipos["Salads"]["total"] < 0: #Comprueba si la comida que quieres esta en el inventario
                 d.texto_prompt.append("You don't have any salad left")
             else:#Si tienes entonces te elimina 1 de comida y te añade la vida que necesites
-                d.inventarioComida[0] -= 1
+                d.dict_tipos["Salads"]["total"] -= 1
                 for i in range(2): #Para no pasarse de la vida maxima comprueba si ya esta en su maximo de vida o no
                     if not d.vidas == d.vidas_max:
                         d.vidas += 1
                 d.texto_prompt.append("You have increased 2 health and spent 1 salad")
         elif select == "Eat pescatarian": #Comprueba si como un pescado
-            if d.inventarioComida[0] < 0: #Comprueba si la comida que quieres esta en el inventario
+            if d.dict_tipos["Pescatarian"]["total"] < 0: #Comprueba si la comida que quieres esta en el inventario
                 d.texto_prompt.append("You don't have any pescatarian left")
             else:#Si tienes entonces te elimina 1 de comida y te añade la vida que necesites
-                d.inventarioComida[0] -= 1
+                d.dict_tipos["Pescatarian"]["total"] -= 1
                 for i in range(3): #Para no pasarse de la vida maxima comprueba si ya esta en su maximo de vida o no
                     if not d.vidas == d.vidas_max:
                         d.vidas += 1
                 d.texto_prompt.append("You have increased 3 health and spent 1 Pescatarian")
         elif select == "Eat roasted": #Comprueba si como una carne cocinada
-            if d.inventarioComida[0] < 0: #Comprueba si la comida que quieres esta en el inventario
+            if d.dict_tipos["Roasted"]["total"] < 0: #Comprueba si la comida que quieres esta en el inventario
                 d.texto_prompt.append("You don't have anything toasted")
             else:#Si tienes entonces te elimina 1 de comida y te añade la vida que necesites
-                d.inventarioComida[0] -= 1
+                d.dict_tipos["Roasted"]["total"] -= 1
                 for i in range(4): #Para no pasarse de la vida maxima comprueba si ya esta en su maximo de vida o no
                     if not d.vidas == d.vidas_max:
                         d.vidas += 1

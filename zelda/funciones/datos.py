@@ -1,9 +1,22 @@
 import funciones.funciones as f
 
 
-jugador = {"posicion" : [3,9], "arma_actual": " ", "escudo_actual" : " ", "vidas_max": 3, "vidas" : 3 }
+jugador = {"posicion" : [3,9], 
+           "arma_actual": " ", 
+           "escudo_actual" : " ", 
+           "vidas_max": 3, 
+           "vidas" : 3 }
 
-dict_tipos = {"Shield" : {"total": 0}, "Wood Shield" : {"total": 0}, "Sword" : {"total": 0}, "Wood Swort" : {"total": 0}, "Vegetables" :{"total": 0}, "Fish" :{"total": 0}, "Meat" :{"total": 0}, "Salads" :{"total": 0}, "Pescatarian" : {"total": 0}, "Roasted": {"total": 0} }
+dict_tipos = {"Shield" : {"total": 0}, 
+              "Wood Shield" : {"total": 0}, 
+              "Sword" : {"total": 0}, 
+              "Wood Swort" : {"total": 0}, 
+              "Vegetables" :{"total": 0}, 
+              "Fish" :{"total": 0}, 
+              "Meat" :{"total": 0}, 
+              "Salads" :{"total": 0}, 
+              "Pescatarian" : {"total": 0}, 
+              "Roasted": {"total": 0} }
 
 mapa_inicio = [["*"," ","M","a","p"," "," ","*","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"],
         ["*"," "," ","H","y","r","u","l","e"," "," "," "," "," "," "," ","S","O","?"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","D","e","a","t","h"," ","m","o","u","n","t","a","i","n"," "," ","*"],
@@ -106,7 +119,12 @@ castle_win = [["* ", "Castle  ", "* "*25],
 
 position_castle_win = [9,3]
 
-mapas_diccionario = {"hyrule":{"mapa":hyrule, "posicion": position_hyrule},"gerudo":{"mapa":gerudo, "posicion":position_gerudo},"necluda":{"mapa":necluda, "posicion": position_necluda},"death":{"mapa":death, "posicion":position_death},"castle":{"mapa":castle,"posicion":position_castle},"castle_win":{"mapa":castle_win,"posicion":position_castle_win}} #Diccionario de los mapas y sus posiciones
+mapas_diccionario = {"hyrule":{"mapa":hyrule, "posicion": position_hyrule},
+                     "gerudo":{"mapa":gerudo, "posicion":position_gerudo},
+                     "necluda":{"mapa":necluda, "posicion": position_necluda},
+                     "death":{"mapa":death, "posicion":position_death},
+                     "castle":{"mapa":castle,"posicion":position_castle},
+                     "castle_win":{"mapa":castle_win,"posicion":position_castle_win}} #Diccionario de los mapas y sus posiciones
 
 position_castle_win = [9,3]
 

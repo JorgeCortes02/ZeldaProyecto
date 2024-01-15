@@ -29,4 +29,4 @@ for i in d.necluda:
 
 print(linia)
     
-print(d.necluda[10][39])
+print(d.objetos_hyrule["M"]["abierto"])
