@@ -19,7 +19,8 @@ print("hola")
 cursor.execute(query)
 
 # Imprimir los resultados
-print("hola")
+for x in cursor:
+    print(x)
 # Cerrar el cursor y la conexión
 cursor.close()
 db.close()

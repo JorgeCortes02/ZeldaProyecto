@@ -357,7 +357,7 @@ objetos_necluda = {" ":{"funciones":f.cesped},
 
 objetos_hyrule = {" ":{"funciones":f.cesped},
                   "F":{"posicion":[9,50],"visibilidad":visibilidad_zorro,"funcion":f.zorro}, 
-                  "C":{"posicion":[3,17],"funcion":f.cocinar},
+                  "C":{"posicion":[3,17],"funcion":f.cocinar()},
                   "T":{"lista":[[4,6],[8,46],[9,44]],"vida":[4,4,4],"contador":[0,0,0],"funcion":f.arbol},
                   "~":{"posicion":[[1,37],[2,37],[2,38],[2,39],[2,40],[2,41],[2,42],[3,43],[3,44],[3,45],
                                    [3,46],[3,47],[3,48],[2,49],[3,52],[3,53],[3,54],[4,55],[4,56],[4,57]],"pesca":pesca,"funcion":f.agua},
