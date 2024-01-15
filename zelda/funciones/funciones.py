@@ -2,27 +2,27 @@ import funciones.datos as d
 import random
 mapaActual = []
 
-def mostrarInventario():
-    '''
-    if Select.lower() == "show inventory main":
-    '''  
-    inventario = [" * * * * Inventory * \n",
+def mostrarInventario(select):
+    
+    if select.lower() == "show inventory main":
+    
+        inventario = [" * * * * Inventory * \n",
                         "*\n".rjust(21),
-                        " Link".ljust(12) + "  {0}/{1}".format(d.vidas,d.vidas_max).rjust(6) + " * \n",
+                        " Link".ljust(12) + "  {0}/{1}".format(d.jugador["vidas"],d.jugador["vidas_max"]).rjust(6) + " * \n",
                         " Blod Moon in ".ljust(10) + "  {0}".format(25).rjust(4) + " * \n",
                         "* \n".rjust(22),
                         " Equipement ".ljust(19) + "* \n",
-                         "{0}".format(d.escudo_actual).rjust(18) + " * \n",
-                         "{0}".format(d.arma_actual).rjust(18) + " * \n",
+                         "{0}".format(d.jugador["escudo_actual"]).rjust(18) + " * \n",
+                         "{0}".format(d.jugador["arma_actual"]).rjust(18) + " * \n",
                          
                          "* \n".rjust(22),
                          " Food".ljust(15) + "{0}".format(5).rjust(3) +  " *\n",
                          " Weapons".ljust(15) + "{0}".format(5).rjust(3) +  " *"
                          ]
                         
-    return inventario
-    '''
-    elif Select.lower() == "Show inventory Food":
+        return inventario
+    
+    elif select.lower() == "show inventory food":
 
         inventario = [" * * * * * *  Food * \n",
                         "*\n".rjust(21),
@@ -37,38 +37,38 @@ def mostrarInventario():
 
         return inventario
 
-    elif Select.lower() == "Show inventory Weapons":
-    '''
-    inventario = [" * * * * *  Weapons * \n",
+    elif select.lower() == "show inventory weapons":
+    
+        inventario = [" * * * * *  Weapons * \n",
                     "*\n".rjust(22),
                     "*\n".rjust(22),
-                    " Wood Sword" + "{0}".format(5/2).rjust(8) + " * \n"]
+                    " Wood Sword" + "{0}".format("5/2").rjust(8) + " * \n"]
                     
-    if d.arma_actual == "Wood Sword":
+        if d.jugador["arma_actual"] == "Wood Sword":
             
             inventario += "  (equiped)" + "*\n".rjust(11)," Sword" + "{0}".format("5/2").rjust(13) + " * \n",
-    else:
+        else:
             inventario += "* \n".rjust(23)," Sword" + "{0}".format("5/2").rjust(13) + " * \n",
 
-    if d.arma_actual == "Sword":
+        if d.jugador["arma_actual"] == "Sword":
             
             inventario += "  (equiped)" + "*\n".rjust(11)," Wood shield" + "{0}".format("5/2").rjust(7) + " * \n",
-    else:
+        else:
             inventario += "* \n".rjust(23)," Wood shield" + "{0}".format("5/2").rjust(7) + " * \n",              
 
-    if d.escudo_actual == "Swood Shield":
+        if d.jugador["escudo_actual"] == "Swood Shield":
             
             inventario += "  (equiped)" + "*\n".rjust(11)," Shield" + "{0}".format("5/2").rjust(12) + " * \n",
-    else:
+        else:
             inventario += "* \n".rjust(23)," Shield" + "{0}".format("5/2").rjust(12) + " * \n",          
                         
-    if d.escudo_actual == "Shield":
+        if d.jugador["escudo_actual"] == "Shield":
             
             inventario += "  (equiped)" + "*\n".rjust(11),"*".rjust(22)
-    else:
+        else:
             inventario += "* \n".rjust(23),"*\n".rjust(8),"*".rjust(22)                          
                     
-    return inventario                
+        return inventario                
    
   
 
@@ -130,8 +130,7 @@ def introducirUserInicial(posicionUser, playermap):
     playermap[posicionUser[0]][posicionUser[1]] = "X"
     return playermap
 
-
-
+inventario1 = mostrarInventario(d.select)
             
 def imprimirmapa(mapaActual):
     mapa = ""
@@ -143,7 +142,7 @@ def imprimirmapa(mapaActual):
                 
         
 
-        mapa += d.inventario1[contadorInventario]
+        mapa += inventario1[contadorInventario]
         
         if contadorInventario < 10:
             contadorInventario += 1
@@ -191,8 +190,6 @@ def moverPersonaje(mapaActual, select, posicionplayer):
                 return["Invalid action"], posicionplayer[0], posicionplayer[1]
                        
                         
-
-   
 
     elif select[0:8] == "go right":
        
@@ -387,96 +384,131 @@ def menu_random():
     menu_aleatorio = random.randint(1, 3)
     map = []
     if menu_aleatorio == 1:
-        map = d.principal1
+        map = d.diccionarioMenuPrincipal["principal1"]
 
     elif menu_aleatorio == 2:
-        map = d.principal2
+        map = d.diccionarioMenuPrincipal["principal2"]
 
     elif menu_aleatorio == 3:
-        map = d.principal3
+        map = d.diccionarioMenuPrincipal["principal3"]
 
     return map
 
 
 
-def menu_principal(menu_inicial):
+def menu_principal():
+    menu_inicial = menu_random()
     menu = True
-    while menu == True:
-        imprimirmapa_menu(menu_inicial)
-        opc = input() #Guardar la opcion
-        if opc.lower() == "continue": #Si se elige continuar partida
-            print("Continue")
+    salir = False
+    while salir == False:
+        while menu == True:
+            limpiar_pantalla()
+            imprimirmapa_menu(menu_inicial)
+            prompt()
+            opc = input("What to do now? ") #Guardar la opcion
+            d.texto_prompt.append("What to do now? " + opc)
+            if opc.lower() == "continue": #Si se elige continuar partida
+                print("Continue")
 
-        elif opc.lower() == "new game": #Si se elige nueva partida
-            funcion_new_game()
+            elif opc.lower() == "new game": #Si se elige nueva partida
+                salir = funcion_new_game()
+                if salir == True:
+                    return True
 
-        elif opc.lower() == "help": #Si se elige la opcion help se ira a la pantalla de help, main menu
-            help(d.help_main)
+            elif opc.lower() == "help": #Si se elige la opcion help se ira a la pantalla de help, main menu
+                help(d.diccionarioMenuPrincipal["help_main"])
 
-        elif opc.lower() == "about": #Si se elige la opción about se ira a la pantalla about
-            help(d.about_main)
+            elif opc.lower() == "about": #Si se elige la opción about se ira a la pantalla about
+                help(d.diccionarioMenuPrincipal["about_main"])
 
-        elif opc.lower() == "exit": #Si la opción es exit se sale del juego.
-            break
+            elif opc.lower() == "exit": #Si la opción es exit se sale del juego.
+                return False
 
-        else: #Cuando la opcion sea incorrecta se mostrara que la opción es invalida
-            print("Invalid Option")
+            else: #Cuando la opcion sea incorrecta se mostrara que la opción es invalida
+                d.texto_prompt.append("Invalid Option")
 
 
 def funcion_new_game():
     back = True
     name = ""
-    while back == True:  # Mientras no se de la orden de volver atrás
-        imprimirmapa_menu(d.new_game) # Imprimir pantalla de nueva partida
-        opc = input()  # Guardar la opcion
-        if opc.lower() == "help":  # Si se elige la opcion Help
-            help(d.help_new_game)
+    salir = False
+    while salir == False:
+        while back == True:  # Mientras no se de la orden de volver atrás
+            limpiar_pantalla()
+            imprimirmapa_menu(d.diccionarioMenuPrincipal["new_game"]) # Imprimir pantalla de nueva partida
+            prompt()
+            opc = input("What to do now? ")  # Guardar la opcion
+            d.texto_prompt.append("What to do now? " + opc)
+            if opc.lower() == "help":  # Si se elige la opcion Help
+                help(d.diccionarioMenuPrincipal["help_new_game"])
 
-        elif opc.lower() == "back":  # Si se da la orden de volver atrás se sale del bucle
-            back = False
+            elif opc.lower() == "back":  # Si se da la orden de volver atrás se sale del bucle
+                back = False
+                salir = True
+                return False
 
-        elif opc.lower() == "":  # Si no se escribe nada se asigna el nombre Link
-            name = "Link" # Modificar variable name
-            print("Welcome to the game", name)
-            before_game(name)
+            elif opc.lower() == "":  # Si no se escribe nada se asigna el nombre Link
+                d.name = "Link" # Modificar variable name
+                d.texto_prompt.append("Welcome to the game " + d.name)
+                salir = before_game()
+                return True
 
-        elif opc.lower().replace(" ", "").isalnum() and len(opc) >= 3 and len(opc) <= 10:  # Cuando el nombre sea correcto se guarda
-            name = opc # Modificar variable name
-            print("Welcome to the game", name)
-            before_game(name)
+            elif opc.lower().replace(" ", "").isalnum() and len(opc) >= 3 and len(opc) <= 10:  # Cuando el nombre sea correcto se guarda
+                d.name = opc # Modificar variable name
+                d.texto_prompt.append("Welcome to the game " + d.name)
+                salir = before_game()
+                return True
 
-        else:  # Si es una opcion invalida se imprime escribe que no es valido
-            print(opc, "Is not a valid name")
+            else:  # Si es una opcion invalida se imprime escribe que no es valido
+                d.texto_prompt.append(opc + " Is not a valid name")
 
 
 def help(mapa):
-    imprimirmapa_menu(mapa)  # Se imprime la pantalla de ayuda
     back_help = True
     while back_help == True:  # Mientras no se de la orden de volver atrás
-        opc = input()  # Guardar la opcion
+        limpiar_pantalla()
+        imprimirmapa_menu(mapa)  # Se imprime la pantalla de ayuda
+        prompt()
+        opc = input("What to do now? ")  # Guardar la opcion
+        d.texto_prompt.append("What to do now? " + opc)
         if opc.lower() == "back":  # Si se elige la opcion de volver atrás se sale del bucle
             back_help = False
 
         else:  # Si la opcion es incorrecta se imprime invalid option
-            print("Invalid Option")
+            d.texto_prompt.append("Invalid Option")
 
-def before_game(name):
-    imprimirmapa_menu(d.legend)  # Se imprime la leyenda
-    opc = input()  # Se guarda la opcion
-
-    while opc.lower() != "continue":
-        print("Invalid action")
-        opc = input()
-
-    imprimirmapa_menu(d.plot) # Se imprime la pantalla de plot        
-    opc = input()
+def before_game():
+    limpiar_pantalla()
+    imprimirmapa_menu(d.diccionarioMenuPrincipal["legend"])  # Se imprime la leyenda
+    prompt()
+    opc = input("What to do now? ")  # Se guarda la opcion
+    d.texto_prompt.append("What to do now? " + opc)
 
     while opc.lower() != "continue":
-        print("Invalid action")
-        opc = input()
+        d.texto_prompt.append("Invalid Action")
+        limpiar_pantalla()
+        imprimirmapa_menu(d.diccionarioMenuPrincipal["plot"])
+        prompt()
+        opc = input("What to do now? ")
+        d.texto_prompt.append("Invalid Action")
+
+    limpiar_pantalla()
+    imprimirmapa_menu(d.diccionarioMenuPrincipal["plot"]) # Se imprime la pantalla de plot        
+    prompt()
+    opc = input("What to do now? ")
+    d.texto_prompt.append("What to do now? " + opc)
+
+    while opc.lower() != "continue":
+        d.texto_prompt.append("Invalid Action")
+        limpiar_pantalla()
+        imprimirmapa_menu(d.diccionarioMenuPrincipal["plot"])
+        prompt()
+        opc = input("What to do now? ")
+        d.texto_prompt.append("What to do now? " + opc)
     
-    print("The adventure begins")
-        
+    d.texto_prompt.append("The adventure begins")
+    return True
+
 
 
 
@@ -632,7 +664,7 @@ def conteoInventario():
                 d.dict_tipos["Vegetables"]["total"] += 1
                 
             elif  "Fish" in d.inventarioComida[element1]["tipo"]:
-                d.dict_tipos["Fish"]["total"] += fish
+                d.dict_tipos["Fish"]["total"] += 1
                 
             elif "Meat" in d.inventarioComida[element1]["tipo"]:
 
@@ -963,15 +995,15 @@ def menuInferior(mapa):
 def mostrar_mapa(santuarios_abiertos): # Faltaria ver como implementar los santuarios, si es un diccionario o una lista
     #santuarios_abiertos = ["S0?", "S2?"]
 
-    for linea in range(len(d.mapa_inicio)-1): # Este for va comprueba los santuarios abiertos, si hay santuario abierto, en el mapa se elimina el interrogante que tiene al lado
-        for elemento in range(len(d.mapa_inicio[linea])):
-            if d.mapa_inicio[linea][elemento] in santuarios_abiertos:
-                d.mapa_inicio[linea][elemento] = d.mapa_inicio[linea][elemento][:2] + " "
+    for linea in range(len(d.localitzacions["mapa_inicio"])-1): # Este for va comprueba los santuarios abiertos, si hay santuario abierto, en el mapa se elimina el interrogante que tiene al lado
+        for elemento in range(len(d.localitzacions["mapa_inicio"][linea])):
+            if d.localitzacions["mapa_inicio"][linea][elemento] in santuarios_abiertos:
+                d.localitzacions["mapa_inicio"][linea][elemento] = d.localitzacions["mapa_inicio"][linea][elemento][:2] + " "
                 
 
 
     mapa = "" # Imprimir el mapa de inicio
-    for element in d.mapa_inicio:
+    for element in d.localitzacions["mapa_inicio"]:
         for element1 in element:
             mapa += element1
         mapa += "\n"
@@ -996,3 +1028,91 @@ def frase_ganon():
     print(d.frases_ganon[frase_rand-1])
 
 
+#------------------------ Limpiar Pantalla ----------------
+
+import os
+
+def limpiar_pantalla():
+    # Verifica el sistema operativo y ejecuta el comando correspondiente para limpiar la pantalla
+    sistema_operativo = os.name
+    if sistema_operativo == 'posix':  # Unix/Linux/Mac
+        os.system('clear')
+    elif sistema_operativo == 'nt':   # Windows
+        os.system('cls')
+
+
+#----------------------- Cambiar Mapa -------------------
+
+
+def cambiar_mapa(select, mapaActual): # Funcion para cambiar de mapa
+    if select[6:].lower() == "hyrule":
+        if mapaActual == d.localitzacions["death"] or mapaActual == d.localitzacions["gerudo"]:
+            mapaActual = d.localitzacions["hyrule"]
+            d.texto_prompt.append("You are now in" + select[6:])
+            zorro_visivilidad() 
+            return mapaActual
+        
+        elif mapaActual == d.localitzacions["hyrule"]:
+            d.texto_prompt.append("You already are in " + select[6:])
+            return mapaActual
+        
+        else:
+            d.texto_prompt.append("You can't go to" + select[6:] + " from here")
+            return mapaActual
+
+        
+    elif select[6:].lower() == "gerudo":
+        if mapaActual == d.localitzacions["hyrule"] or mapaActual == d.localitzacions["necluda"]:
+            mapaActual = d.localitzacions["gerudo"]
+            d.texto_prompt.append("You are now in " + select[6:])
+            zorro_visivilidad() 
+            return mapaActual
+
+        elif mapaActual == d.localitzacions["gerudo"]:
+            d.texto_prompt.append("You already are in " + select[6:])
+            return mapaActual
+        
+        else:
+            d.texto_prompt.append("You can't go to " + select[6:] + " from here")
+            return mapaActual
+            
+    elif select[6:].lower() == "death mountain":
+        if mapaActual == d.localitzacions["hyrule"] or mapaActual == d.localitzacions["necluda"]:
+            mapaActual = d.localitzacions["death"]
+            d.texto_prompt.append("You are now in " + select[6:])
+            zorro_visivilidad() 
+            return mapaActual
+        
+        elif mapaActual == d.localitzacions["death"]:
+            d.texto_prompt.append("You already are in " + select[6:])
+            return mapaActual
+        
+        else:
+            d.texto_prompt.append("You can't go to " + select[6:] + " from here")
+            return mapaActual
+        
+    elif select[6:].lower() == "necluda":
+        if mapaActual == d.localitzacions["death"] or mapaActual == d.localitzacions["gerudo"]:
+            mapaActual = d.localitzacions["necluda"]
+            d.texto_prompt.append("You are now in " + select[6:])
+            zorro_visivilidad() 
+            return mapaActual
+        
+        elif mapaActual == d.localitzacions["necluda"]:
+            d.texto_prompt.append("You already are in " + select[6:])
+            return mapaActual
+        
+        else:
+            d.texto_prompt.append("You can't go to " + select[6:] + " from here")
+            return mapaActual
+        
+    elif select[6:].lower() == "castle":
+        if d.win == False:
+            mapaActual = d.localitzacions["castle"]
+            d.texto_prompt.append("You are now in " + select[6:])
+            return mapaActual
+
+        else:
+            mapaActual = d.localitzacions["castle_win"]
+            d.texto_prompt.append("You are now in " + select[6:])
+            return mapaActual

@@ -9,8 +9,7 @@ inventarioArmas = {"Wood Shield998" :{"nombre" :"Arma", "usos": 4}, "Wood Shield
 inventarioComida = { "Vegetables" : 0, "Fish" : 0, "Meat" : 0, "Salads" : 0, "Pescatarian" : 0, "Roasted" : 0 }
 dict_tipos = {"Shield" : {"total": 0}, "Wood Shield" : {"total": 0}, "Sword" : {"total": 0}, "Wood Swort" : {"total": 0}, "Vegetables" :{"total": 0}, "Fish" :{"total": 0}, "Meat" :{"total": 0}, "Salads" :{"total": 0}, "Pescatarian" : {"total": 0}, "Roasted": {"total": 0} }
 
-
-inventario1 = f.mostrarInventario()
+select = "show inventory main"
 
 
 name = "link" #funcion pàra que no se queje plot
@@ -28,8 +27,7 @@ localitzacions = {
         ["*"," "," "," "," ","~","~","~"," "," "," "," "," "," "," "," "," "," "," ","T"," "," "," "," "," "," "," "," ","O","O","O","O"," "," "," "," "," "," "," "," "," "," "," ","O","O"," "," "," "," "," "," "," "," "," "," "," "," "," ","*"],
         ["*"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","T"," "," "," "," "," "," "," "," "," "," ","O","O"," "," "," "," "," ","M"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","*"],
         ["*"," ","!"," "," "," ","C"," "," "," "," "," "," "," "," "," "," "," ","T"," "," "," "," "," "," "," "," "," "," ","O","O"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","S","3","?"," "," "," "," "," "," ","*"],
-        ["*"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","*"],
-        ], 
+        ["*"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","*"]], 
         
         "mapa_inicio" : [["*"," ","M","a","p"," "," ","*","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"],
         ["*"," "," ","H","y","r","u","l","e"," "," "," "," "," "," "," ","S","O"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","D","e","a","t","h"," ","m","o","u","n","t","a","i","n"," "," ","*"],
@@ -123,8 +121,7 @@ frases_ganon = ["Ganon is powerful, are you sure you can defeat him?", "Ganon's 
 
 
 
-
-mapaActual = f.obtenerMapa(death, jugador["posicion"])
+#mapaActual = f.obtenerMapa(localitzacions["death"], jugador["posicion"])
 diccionarioMenuPrincipal = {
     
   "principal1" : [["* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"],
@@ -300,7 +297,7 @@ diccionarioMenuPrincipal = {
               ["* Continue  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"]]
 }
 
-texto_prompt = ["","","","","","","","",""]
+texto_prompt = []
 
 
 pesca = False #Sirve para saber si ya has conseguido u pez o no
@@ -314,3 +311,7 @@ puerta_santuario = False #Saber si el santuario esta abierto o no
 
 cofre_abierto = False
 #cofre = {"posicion":posicion,"map":map,"cofre":cofre_abierto,"forma":"M"}
+
+win = False # Saber cuando has ganado, para que cuando entres a castle no salga Ganon
+
+ganon = {"vida":9}
