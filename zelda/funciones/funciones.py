@@ -406,7 +406,6 @@ def menu_principal():
             imprimirmapa_menu(menu_inicial)
             prompt()
             opc = input("What to do now? ") #Guardar la opcion
-            d.texto_prompt.append("What to do now? " + opc)
             if opc.lower() == "continue": #Si se elige continuar partida
                 print("Continue")
 
@@ -422,6 +421,7 @@ def menu_principal():
                 help(d.diccionarioMenuPrincipal["about_main"])
 
             elif opc.lower() == "exit": #Si la opción es exit se sale del juego.
+                salir = True
                 return False
 
             else: #Cuando la opcion sea incorrecta se mostrara que la opción es invalida
@@ -430,7 +430,6 @@ def menu_principal():
 
 def funcion_new_game():
     back = True
-    name = ""
     salir = False
     while salir == False:
         while back == True:  # Mientras no se de la orden de volver atrás
@@ -438,7 +437,6 @@ def funcion_new_game():
             imprimirmapa_menu(d.diccionarioMenuPrincipal["new_game"]) # Imprimir pantalla de nueva partida
             prompt()
             opc = input("What to do now? ")  # Guardar la opcion
-            d.texto_prompt.append("What to do now? " + opc)
             if opc.lower() == "help":  # Si se elige la opcion Help
                 help(d.diccionarioMenuPrincipal["help_new_game"])
 
@@ -448,14 +446,14 @@ def funcion_new_game():
                 return False
 
             elif opc.lower() == "":  # Si no se escribe nada se asigna el nombre Link
-                d.name = "Link" # Modificar variable name
-                d.texto_prompt.append("Welcome to the game " + d.name)
+                d.jugador["nombre"] = "Link" # Modificar variable name
+                d.texto_prompt.append("Welcome to the game Link")
                 salir = before_game()
                 return True
 
             elif opc.lower().replace(" ", "").isalnum() and len(opc) >= 3 and len(opc) <= 10:  # Cuando el nombre sea correcto se guarda
-                d.name = opc # Modificar variable name
-                d.texto_prompt.append("Welcome to the game " + d.name)
+                d.jugador["nombre"] = opc # Modificar variable name
+                d.texto_prompt.append("Welcome to the game " + d.jugador['nombre'])
                 salir = before_game()
                 return True
 
@@ -470,7 +468,6 @@ def help(mapa):
         imprimirmapa_menu(mapa)  # Se imprime la pantalla de ayuda
         prompt()
         opc = input("What to do now? ")  # Guardar la opcion
-        d.texto_prompt.append("What to do now? " + opc)
         if opc.lower() == "back":  # Si se elige la opcion de volver atrás se sale del bucle
             back_help = False
 
@@ -482,29 +479,26 @@ def before_game():
     imprimirmapa_menu(d.diccionarioMenuPrincipal["legend"])  # Se imprime la leyenda
     prompt()
     opc = input("What to do now? ")  # Se guarda la opcion
-    d.texto_prompt.append("What to do now? " + opc)
 
     while opc.lower() != "continue":
-        d.texto_prompt.append("Invalid Action")
+        d.texto_prompt.append("Invalid action")
         limpiar_pantalla()
-        imprimirmapa_menu(d.diccionarioMenuPrincipal["plot"])
+        imprimirmapa_menu(d.diccionarioMenuPrincipal["legend"])
         prompt()
         opc = input("What to do now? ")
-        d.texto_prompt.append("Invalid Action")
+        d.texto_prompt.append("Invalid action")
 
     limpiar_pantalla()
     imprimirmapa_menu(d.diccionarioMenuPrincipal["plot"]) # Se imprime la pantalla de plot        
     prompt()
     opc = input("What to do now? ")
-    d.texto_prompt.append("What to do now? " + opc)
 
     while opc.lower() != "continue":
-        d.texto_prompt.append("Invalid Action")
+        d.texto_prompt.append("Invalid action")
         limpiar_pantalla()
         imprimirmapa_menu(d.diccionarioMenuPrincipal["plot"])
         prompt()
         opc = input("What to do now? ")
-        d.texto_prompt.append("What to do now? " + opc)
     
     d.texto_prompt.append("The adventure begins")
     return True
@@ -513,6 +507,21 @@ def before_game():
 
 
 def imprimirmapa_menu(mapa):
+    if mapa == d.diccionarioMenuPrincipal["plot"]:
+        mapa = [["* Plot  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"],
+        ["*                                                                             *"],
+        ["*                                                                             *"],
+        ["*  Now history is repeating itself, and Princess Zelda has been captured by   *"],
+        ["*  Ganon. He has taken over the Guardians and filled Hyrule with monsters.    *"],
+        ["*                                                                             *"],
+        ["*                                                                             *"],
+        ["*  But a young man named {} has just awakened and".format(d.jugador["nombre"]).ljust(78)+"*"],
+        ["*  must reclaim the Guardians to defeat Ganon and save Hyrule.                *"],
+        ["*                                                                             *"],
+        ["*                                                                             *"],
+        ["* Continue  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"]]
+
+    
     for i in mapa:
         print(i[0])
         
@@ -626,10 +635,10 @@ def desequiparArma(Select):
 
     if "Sword" in Select:
         d.jugador["arma_actual"] = " "
-        return "Escudo desequipado."
+        return "Espada desequipado."
     elif "Shield" in Select:
         d.jugador["arma_actual"] = " "
-        return "Espada desequipado."
+        return "Escudo desequipado."
     else:
         return "Incorrect Option"
     
@@ -866,93 +875,65 @@ def comer(select): #Interaccion de comer
 #--------------- Cocinar ----------------------
      
 def cocinar(receta, inventario): # Funcion para cocinar comida 
-    if receta[5:].lower() == "salad": # Si se quiere cocinar una salad
-        cont = 0
-        claves_eliminar = []
+    if receta[5:].lower() == "salad": # Si se quiere cocinar una salad   
 
-        for i in inventario: # Por cada elemento del diccionario miramos si es el objeto vegetable
-            if inventario[i]["nombre"].lower() == "vegetable":
-                cont += 1
-                if cont <= 2:
-                    claves_eliminar.append(i)  # Los dos vegetables los añadimos en una lista para luego eliminarlas del diccionario     
-
-        if cont >= 2: # Si hay 2 o mas vegetables se puede hacer la salad
-            for claves in claves_eliminar: # Eliminamos los dos vegetables del inventario
-                del inventario[claves]
+        if d.inventarioComida["Vegetables"] >= 2: # Si hay 2 o mas vegetables se puede hacer la salad
+            aux = d.inventarioComida["Vegetables"]
+            aux = aux - 1
+            d.inventarioComida["Vegetables"] = aux # Eliminamos los dos vegetables del inventario
                 
-            print("You cooked a salad successfully")
+            d.texto_prompt.append("You cooked a salad successfully")
             añadirInventario("salad", inventario) # Añadimos salad al inventario
         
         else:
-            print("Not enough vegetable") # Si no hay mas 1 vegetable se imprime que no se puede cocinar la salad
+            d.texto_prompt.append("Not enough vegetable") # Si no hay mas 1 vegetable se imprime que no se puede cocinar la salad
 
     elif receta[5:].lower() == "pescatarian": # Si se elige cocinar el pescatarian
-        cont_vege = 0
-        cont_fish = 0
-        claves_eliminar = []
-
-        for i in inventario: #Por cada elemento del inventario contamos cuantos vegetables y fish hay
-            if inventario[i]["nombre"].lower() == "vegetable":
-                cont_vege += 1
-                if cont_vege <= 1:
-                    claves_eliminar.append(i) # El vegetable que usamos lo añadimos a la lista para eliminarlo
+                
+        if d.inventarioComida["Vegetables"] >= 1 and d.inventarioComida["Fish"] >= 1: # Si hay 1 fish y 1 vegetable se puede cocinar el pescatarian
+            aux = d.inventarioComida["Vegetables"]
+            aux = aux - 1
+            d.inventarioComida["Vegetables"] = aux # Eliminamos los dos objetos del inventario
+            aux2 = d.inventarioComida["Fish"]
+            aux2 = aux2 - 1
+            d.inventarioComida["Fish"] = aux2
             
-            elif inventario[i]["nombre"].lower() == "fish":
-                cont_fish += 1
-                if cont_fish <= 1:
-                    claves_eliminar.append(i)  # El fish que usamos también lo eliminamos después
-
-        if cont_vege >= 1 and cont_fish >= 1: # Si hay 1 fish y 1 vegetable se puede cocinar el pescatarian
-            for claves in claves_eliminar: # Eliminamos los dos objetos del inventario
-                del inventario[claves]
-            
-            print("You cooked a pescatarian successfully")
+            d.texto_prompt.append("You cooked a pescatarian successfully")
             añadirInventario("pescatarian", inventario) # Añadimos el pescatarian al inventario 
         
-        elif cont_vege < 1 and cont_fish < 1: # Si no hay suficientes fish y vegetables se informa
-            print("Not enough vegetable and fish")
+        elif d.inventarioComida["Vegetables"] < 1 and d.inventarioComida["Fish"] < 1: # Si no hay suficientes fish y vegetables se informa
+            d.texto_prompt.append("Not enough vegetable and fish")
         
-        elif cont_vege < 1: # Si no hay suficientes vegetables se informa
-            print("Not enough vegetable")
+        elif d.inventarioComida["Vegetables"] < 1: # Si no hay suficientes vegetables se informa
+            d.texto_prompt.append("Not enough vegetable")
         
         else: # Si no hay suficientes fish se informa
-            print("Not enough fish")
+            d.texto_prompt.append("Not enough fish")
 
     elif receta[5:].lower() == "roasted": # Si se elige cocinar el roasted
-        cont_vege = 0
-        cont_meat = 0
-        claves_eliminar = []
-
-        for i in inventario: # Por cada elemento del inventario se comprueba si es un vegetable o un meat
-            if inventario[i]["nombre"].lower() == "vegetable":
-                cont_vege += 1
-                if cont_vege <= 1:
-                    claves_eliminar.append(i) # Añadimos al vegetable en la lista para eliminar 
+                
+        if d.inventarioComida["Vegetables"] >= 1 and d.inventarioComida["Meat"] >= 1:
+            aux = d.inventarioComida["Vegetables"]
+            aux = aux - 1
+            d.inventarioComida["Vegetables"] = aux # Eliminamos los dos objetos del inventario
+            aux2 = d.inventarioComida["Meat"]
+            aux2 = aux2 - 1
+            d.inventarioComida["Meat"] = aux2
             
-            elif inventario[i]["nombre"].lower() == "meat":
-                cont_meat += 1
-                if cont_meat <= 1:
-                    claves_eliminar.append(i)  # Añadimos al met en la lista para eliminar
-
-        if cont_vege >= 1 and cont_meat >= 1:
-            for claves in claves_eliminar:
-                del inventario[claves] # Si hay suficientes objetos se eliminan los 2 que se usan del inventario
-            
-            print("You cooked a roasted successfully")
+            d.texto_prompt.append("You cooked a roasted successfully")
             añadirInventario("roasted", inventario) # Se añade el roasted al inventario
         
-        elif cont_vege < 1 and cont_meat < 1: # Si no hay ni vegetable ni meat suficientes se informa
-            print("Not enough vegetable and meat")
+        elif d.inventarioComida["Vegetables"] < 1 and d.inventarioComida["Meat"] < 1: # Si no hay ni vegetable ni meat suficientes se informa
+            d.texto_prompt.append("Not enough vegetable and meat")
         
-        elif cont_vege < 1: # Si no hay suficientes vegetables se informa
-            print("Not enough vegetable")
+        elif d.inventarioComida["Meat"] < 1: # Si no hay suficientes vegetables se informa
+            d.texto_prompt.append("Not enough vegetable")
         
         else: # Si no hay suficientes meat se informa
-            print("Not enough meat")
+            d.texto_prompt.append("Not enough meat")
 
     else: # Si lo que se quiere cocinar no existe, se muestra un mensaje de error
-        print("You can't cook", receta[5:])
-
+        d.texto_prompt.append("You can't cook", receta[5:])
 
 
 def menuInferior(mapa):
@@ -1050,7 +1031,8 @@ def cambiar_mapa(select, mapaActual): # Funcion para cambiar de mapa
             mapaActual = d.localitzacions["hyrule"]
             d.texto_prompt.append("You are now in" + select[6:])
             zorro_visivilidad() 
-            return mapaActual
+            posicion_player = d.dades["hyrule"]["position"]
+            return mapaActual, posicion_player
         
         elif mapaActual == d.localitzacions["hyrule"]:
             d.texto_prompt.append("You already are in " + select[6:])
@@ -1066,7 +1048,8 @@ def cambiar_mapa(select, mapaActual): # Funcion para cambiar de mapa
             mapaActual = d.localitzacions["gerudo"]
             d.texto_prompt.append("You are now in " + select[6:])
             zorro_visivilidad() 
-            return mapaActual
+            posicion_player = d.dades["gerudo"]["position"]
+            return mapaActual, posicion_player
 
         elif mapaActual == d.localitzacions["gerudo"]:
             d.texto_prompt.append("You already are in " + select[6:])
@@ -1081,7 +1064,8 @@ def cambiar_mapa(select, mapaActual): # Funcion para cambiar de mapa
             mapaActual = d.localitzacions["death"]
             d.texto_prompt.append("You are now in " + select[6:])
             zorro_visivilidad() 
-            return mapaActual
+            posicion_player = d.dades["death"]["position"]
+            return mapaActual, posicion_player
         
         elif mapaActual == d.localitzacions["death"]:
             d.texto_prompt.append("You already are in " + select[6:])
@@ -1096,7 +1080,8 @@ def cambiar_mapa(select, mapaActual): # Funcion para cambiar de mapa
             mapaActual = d.localitzacions["necluda"]
             d.texto_prompt.append("You are now in " + select[6:])
             zorro_visivilidad() 
-            return mapaActual
+            posicion_player = d.dades["necluda"]["position"]
+            return mapaActual, posicion_player
         
         elif mapaActual == d.localitzacions["necluda"]:
             d.texto_prompt.append("You already are in " + select[6:])
@@ -1107,12 +1092,88 @@ def cambiar_mapa(select, mapaActual): # Funcion para cambiar de mapa
             return mapaActual
         
     elif select[6:].lower() == "castle":
+        if mapaActual == d.localitzacions["hyrule"]:
+            d.mapa_anterior = "hyrule"
+
+        elif mapaActual == d.localitzacions["gerudo"]:
+            d.mapa_anterior = "gerudo"
+
+        elif mapaActual == d.localitzacions["death"]:
+            d.mapa_anterior = "death"
+        
+        elif mapaActual == d.localitzacions["necluda"]:
+            d.mapa_anterior = "necluda"
+
         if d.win == False:
             mapaActual = d.localitzacions["castle"]
             d.texto_prompt.append("You are now in " + select[6:])
-            return mapaActual
+            posicion_player = d.dades["castle"]["position"]
+            return mapaActual, posicion_player
 
         else:
             mapaActual = d.localitzacions["castle_win"]
             d.texto_prompt.append("You are now in " + select[6:])
-            return mapaActual
+            posicion_player = d.dades["castle"]["position"]
+            return mapaActual, posicion_player
+        
+
+def contador_arbol():
+    cont = 0
+    for i in d.objetos_gerudo["T"]["contador"]:
+        if i > 0:
+            d.objetos_gerudo["T"]["contador"][cont] = i - 1
+            
+        cont = cont + 1 
+        
+        
+        
+def trucos(select):
+    if select[0:22].lower() == "cheat rename player to":
+        if select[23:].lower().replace(" ", "").isalnum() and len(select[23:]) >= 3 and len(select[23:]) <= 10:
+            d.jugador["nombre"] = select[23:]
+            d.texto_prompt.append("Name changed to " + d.jugador["nombre"])
+        
+        else:
+            d.texto_prompt.append("Incorrect name")
+    
+    elif select.lower() == "cheat add vegetable":
+        añadirInventario("Vegetable", d.inventarioComida)
+    
+    elif select.lower() == "cheat add fish":
+        añadirInventario("Fish", d.inventarioComida)
+    
+    elif select.lower() == "cheat add meat":
+        añadirInventario("Meat", d.inventarioComida)
+        
+    elif select.lower() == "cheat cook salad":
+        cocinar("cook salad", d.inventarioComida)
+        
+    elif select.lower() == "cheat cook pescatarian":
+        cocinar("cook pescatarian", d.inventarioComida)
+        
+    elif select.lower() == "cheat cook roasted":
+        cocinar("cook roasted", d.inventarioComida)
+        
+    elif select.lower() == "cheat add wood sword":
+        añadirInventario("Wood Sword", d.inventarioArmas)
+    
+    elif select.lower() == "cheat add sword":
+        añadirInventario("Sword", d.inventarioArmas)
+        
+    elif select.lower() == "cheat add wood shield":
+        añadirInventario("Wood Shield", d.inventarioArmas)
+    
+    elif select.lower() == "cheat add shield":
+        añadirInventario("Shield", d.inventarioArmas)
+    
+    elif select.lower() == "cheat open sanctuaries":
+        print("a") # Falta hacerlo
+    
+    elif select.lower() == "cheat game over":
+        d.jugador["vidas"] = 0
+        
+    elif select.lower() == "cheat win game":
+        d.ganon["vida"] = 0
+    
+    else:
+        d.texto_prompt.append("Invalid option")
