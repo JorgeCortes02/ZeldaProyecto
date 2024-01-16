@@ -5,13 +5,8 @@ import funciones.funciones as f
 
 #Atributos jugador
 
-jugador = {"nombre" : " ",
-           "posicion" : [3,9], 
-           "arma_actual": " ", 
-           "escudo_actual" : " ", 
-           "vidas_max": 3, 
-           "vidas" : 3 ,
-           "mapa" : "hyrule"}
+jugador = {"name" : " ","posicion" : [3,9], "arma_actual": "Wood Shield998", "escudo_actual" : " ", "vidas_max": 3, "vidas" : 3, "bloodMoonCoutdown": 25, "totalBloodMoon" : 0, "mActual" : "", "id_game" : 16 }
+
 
 
 inventarioArmas = {}
