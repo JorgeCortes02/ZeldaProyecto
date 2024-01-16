@@ -8,12 +8,12 @@ def mostrarInventario():
     '''  
     inventario = [" * * * * Inventory * \n",
                         "*\n".rjust(21),
-                        " Link".ljust(12) + "  {0}/{1}".format(d.vidas,d.vidas_max).rjust(6) + " * \n",
+                        " Link".ljust(12) + "  {0}/{1}".format(d.jugador["vidas"],d.jugador["vidas_max"]).rjust(6) + " * \n",
                         " Blod Moon in ".ljust(10) + "  {0}".format(25).rjust(4) + " * \n",
                         "* \n".rjust(22),
                         " Equipement ".ljust(19) + "* \n",
-                         "{0}".format(d.escudo_actual).rjust(18) + " * \n",
-                         "{0}".format(d.arma_actual).rjust(18) + " * \n",
+                         "{0}".format(d.jugador["escudo_actual"]).rjust(18) + " * \n",
+                         "{0}".format(d.jugador["arma_actual"]).rjust(18) + " * \n",
                          
                          "* \n".rjust(22),
                          " Food".ljust(15) + "{0}".format(5).rjust(3) +  " *\n",
@@ -486,40 +486,24 @@ def añadirInventario(objeto, diccionario):
 
         for i in range(3):
 
-            numeroRandom += str(random.randint(0,20))
+            numeroRandom += str(random.randint(0,9))
 
         if objeto == "Wood Sword":
             
-            diccionario[objeto + numeroRandom] = {"nombre": "Wood Sword", "Usos": 5 }
+            diccionario[objeto + numeroRandom] = {"tipo": "Wood Sword", "Usos": 5 }
             
         elif objeto == "Wood Shield":
         
-            diccionario[objeto + numeroRandom] = {"nombre": "Wood Shield", "Usos": 5 }
+            diccionario[objeto + numeroRandom] = {"tipo": "Wood Shield", "Usos": 5 }
         
         elif objeto == "Shield":
             
-            diccionario[objeto + numeroRandom] = {"nombre": "Shield", "Usos": 9 }
+            diccionario[objeto + numeroRandom] = {"tipo": "Shield", "Usos": 9 }
             
         
         elif objeto == "Sword":
             
-            diccionario[objeto + numeroRandom] = {"nombre": "Sword", "Usos": 9 }
-
-        elif objeto == "Vegetable":
-            
-            diccionario[objeto + numeroRandom] = {"nombre": "Vegetable" }
-
-        elif  objeto == "salad":
-            
-            diccionario[objeto + numeroRandom] = {"nombre": "salad" }
-        
-        elif  objeto == "pescatarian":
-            
-            diccionario[objeto + numeroRandom] = {"nombre": "pescatarian" }
-        
-        elif objeto == "roasted":
-            
-            diccionario[objeto + numeroRandom] = {"nombre": "roasted" }
+            diccionario[objeto + numeroRandom] = {"tipo": "Sword", "Usos": 9 }
 
 
         
@@ -642,8 +626,16 @@ def conteoInventario():
             elif  "Roasted" in d.inventarioComida[element1]["tipo"]:
 
                 d.dict_tipos["Roasted"]["total"] += 1
-                
+
+#---------Encontrar mapa ----------------------
+
+def encontrar_mapa(): #-Hay que buscar de donde sale el mapa
+    for i in d.localitzacions:
+        if d.localitzacions[i] == d.mapaActual:
+            d.jugador["mapa"] = i
+
 #--------------- prompt ----------------------
+
 def prompt(): #PROMPT
     while len(d.texto_prompt) > 8:
         d.texto_prompt.remove(d.texto_prompt[0]) #Remueve el primer mensaje
@@ -654,54 +646,89 @@ def prompt(): #PROMPT
 
 def cesped(): #Interacion con el cesped
    porcentaje = random.randint(1,100)
-   if porcentaje in range(1,10):
-       d.texto_prompt.append("You got a lizard") #Si consigues una lagartija tine que salir esto en el promp
-       #-Falta hacer que se añada 1 de carne al inventario
+   if porcentaje in range(1,10):#Si consigues una lagartija tine que salir esto en el promp y sumar uno de Meat
+       d.texto_prompt.append("You got a lizard") 
+       d.inventarioComida["Meat"] += 1
    else:
        d.texto_prompt.append("The grass didn't give you anything")
 
-
-def arbol(espada): #Interacion con el arbol
-    #-Queda hacer lo de que aparezca despues de 10 movimientos
-    #-Tambien hay que hacer en el mapa que cuando un arbol caiga un contador que ponga cuantos turnos falta para que se vulva a regenerar
-    porcentaje = random.randint(1,100)
-    if d.vida_arbol == 0: #
-        d.texto_prompt.append("The tree is not ready yet")
+def arbol(): #Interacion con el arbol
+    objeto_mapa = ""
+    for i in d.dades: #busca en objetos en que mapa vamos a interactuar
+        if d.jugador["mapa"] in i:
+            objeto_mapa = i
+    arbol_encontrado = 0
+    for j in range(len(d.dades[objeto_mapa]["T"]["lista"])): #Busca en la lista del arbol cual esta cerca y que tenga toda la vida
+        if d.jugador["posicion"][0] == d.dades[objeto_mapa]["T"]["lista"][j][0] and d.jugador["posicion"][1]-1 == d.dades[objeto_mapa]["T"]["lista"][j][0]:
+            if not d.objetos[objeto_mapa]["T"]["vida"][j] == 0:
+                arbol_encontrado = j
+        elif d.jugador["posicion"][0]-1 == d.dades[objeto_mapa]["T"]["lista"][j][0] and d.jugador["posicion"][1] == d.dades[objeto_mapa]["T"]["lista"][j][0]:
+            if not d.objetos[objeto_mapa]["T"]["vida"][j] == 0:
+                arbol_encontrado = j
+        elif d.jugador["posicion"][0] == d.dades[objeto_mapa]["T"]["lista"][j][0] and d.jugador["posicion"][1]+1 == d.dades[objeto_mapa]["T"]["lista"][j][0]:
+            if not d.objetos[objeto_mapa]["T"]["vida"][j] == 0:
+                arbol_encontrado = j
+        elif d.jugador["posicion"][0]+1 == d.dades[objeto_mapa]["T"]["lista"][j][0] and d.jugador["posicion"][1] == d.dades[objeto_mapa]["T"]["lista"][j][0]:
+            if not d.objetos[objeto_mapa]["T"]["vida"][j] == 0:
+                arbol_encontrado = j
+    if arbol_encontrado == 0: #si no encuentra nigun arbol con vida no te deja hacer nada
+        d.texto_prompt.append("No trees available")
     else:
-        if d.espada == False: #compruba si cuando has atacado a sido con una espada o no
+        porcentaje = random.randint(1,100)
+        if d.jugador["arma_actual"] == " " or d.jugador["arma_actual"] == "" : #compruba si cuando has atacado a sido con una espada o no
             if porcentaje in range(1,6): #Te da una espada de madera y tiene que salir un mensaje en el promp
                 d.texto_prompt.append("You got a Wood sword")
-                #-Falta hacer que se añada al inventario
+                añadirInventario("Wood Sword",d.inventarioArmas)
             elif porcentaje in range(6,11): #Te da un escudo de madera y tiene que salir un mensaje en el promp
                 d.texto_prompt.append("You got a Wood shield")
-                #-Falta hacer que se añada al inventario
+                añadirInventario("Wood Shield",d.inventarioArmas)
             elif porcentaje in range(11,51): #Te da una manzana y tiene que salir un mensaje en el promp
                 d.texto_prompt.append("You got an apple")
-                #-Falta hacer que se añada al inventario
+                d.inventarioComida["Vegetables"] += 1
             else: #No te da nada y tiene que salir un mensaje en el promp
                 d.texto_prompt.append("The tree didn't give you anything")
         else:
             if porcentaje in range(1,21): #Te da una espada de madera y tiene que salir un mensaje en el promp
                 d.texto_prompt.append("You got a Wood sword")
-                #-Falta hacer que se añada al inventario
-                d.vida_espada_madera -= 1 #cuando atacas con la espda restas 1 de vida a la espada
-                d.vida_arbol -= 1 #Cuando atacas con la espda restas 1 de vida al arbol
+                añadirInventario("Wood Sword",d.inventarioArmas)
+                d.inventarioArmas[d.jugador["arma_actual"]]["Usos"] -= 1 #cuando atacas con la espda restas 1 de vida a la espada
+                d.dades[objeto_mapa]["T"]["vida"][arbol_encontrado] -= 1 #Cuando atacas con la espda restas 1 de vida al arbol
             elif porcentaje in range(21,41): #Te da un escudo de madera y tiene que salir un mensaje en el promp
                 d.texto_prompt.append("You got a Wood shield")
-                #-Falta hacer que se añada al inventario
-                d.vida_espada_madera -= 1 
-                d.vida_arbol -= 1
+                añadirInventario("Wood Shield",d.inventarioArmas)
+                d.inventarioArmas[d.jugador["arma_actual"]]["Usos"] -= 1 
+                d.dades[objeto_mapa]["T"]["vida"][arbol_encontrado] -= 1
             elif porcentaje in range(41,81): #Te da una manzana y tiene que salir un mensaje en el promp
                 d.texto_prompt.append("You got an apple")
-                #-Falta hacer que se añada al inventario
-                d.vida_espada_madera -= 1 
-                d.vida_arbol -= 1
+                d.inventarioArmas[d.jugador["arma_actual"]]["Usos"] -= 1 
+                d.dades[objeto_mapa]["T"]["vida"][arbol_encontrado] -= 1
+                d.inventarioComida["Vegetables"] += 1
             else: #No te da nada y tiene que salir un mensaje en el promp
                 d.texto_prompt.append("The tree didn't give you anything")
-                d.vida_espada_madera -= 1 
-                d.vida_arbol -= 1
-            if d.vida_arbol == 0: #Cuando el arbol llega a 0 se cae y no aparece hasta dentro de 10 movimientos
+                d.inventarioArmas[d.jugador["arma_actual"]]["Usos"] -= 1 
+                d.dades[objeto_mapa]["T"]["vida"][arbol_encontrado] -= 1
+            if d.dades[objeto_mapa]["T"]["vida"][arbol_encontrado] == 0: #Cuando el arbol llega a 0 se cae y no aparece hasta dentro de 10 movimientos
                 d.texto_prompt.append("The tree has fallen") #Este prom lo he añadido yo
+
+def contador_arbol_mapa():
+    objeto_mapa = ""
+    for i in d.dades:
+        if d.jugador["mapa"] in i:
+            objeto_mapa = i
+    for i in range(len(d.dades[objeto_mapa]["T"]["lista"])):
+        if not d.objetos[objeto_mapa]["T"]["vida"][i] == 0:
+            d.localitzacions[d.jugador["mapa"]][d.dades[objeto_mapa]["T"]["lista"][i][0]][d.dades[objeto_mapa]["T"]["lista"][i][1]] = d.dades[objeto_mapa]["T"]["contador"][i]
+
+
+def contador_arbol():
+    cont = 0
+    for i in d.dades["gerudo"]["T"]["contador"]:
+        if i > 0:
+            d.dades["gerudo"]["T"]["contador"][cont] = i - 1
+        else:
+            d.dades["gerudo"]["T"]["vida"][cont] == 4
+            d.localitzacions[d.jugador["mapa"]][d.dades[objeto_mapa]["T"]["lista"][i][0]][d.objetos[objeto_mapa]["T"]["lista"][i][1]] = "T" #-Falta terminarlo
+        cont = cont + 1
 
 def agua(): #Interacion con el agua
     porcentaje = random.randint(1,100)
@@ -725,9 +752,12 @@ def zorro_visivilidad(): #Dice si el zorro sera visible o no
         d.texto_prompt.append("You don't see a Fox")
     
 def zorro(): #Interacion con el zorro
-    d.vida_espada_madera -= 1
-    d.texto_prompt.append("You got meat")
-    #-Falta hacer que se añada 1 de carne al inventario
+    if d.visibilidad_zorro == False:
+        d.texto_prompt.append("You don't see any fox")
+    else:
+        d.vida_espada_madera -= 1
+        d.texto_prompt.append("You got meat")
+        #-Falta hacer que se añada 1 de carne al inventario
 
 def abrir_santuario(): #Interacion con el santuario
     if d.puerta_santuario == True: #Comprueba si esta abierto
@@ -956,4 +986,3 @@ def menuInferior(mapa):
             menuInferior += " "
             menuInferior += "*"
     print (menuInferior)
-
