@@ -6,7 +6,6 @@ cook = True
 cesped = True
 tree = False
 fish = True
-santuario = False
 chest = False
 enemic = False
 
@@ -22,28 +21,30 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
         
         posicionplayer = d.dades["hyrule"]["position"] # guardamos posicion inicial
         mapaActual = d.localitzacions["hyrule"] # guardamos mapa inicial
+        d.jugador["mapa"] = "hyrule"
         f.zorro_visivilidad() # miramos visibilidad del zorro
         final = False 
         while final == False: # Bucle para la partida
             f.limpiar_pantalla()
             # Crear diccionario de ganon con sus vidas
             if d.ganon["vida"] == 0: # si la vida de ganon es 0, se muestra la pantalla de win
-                        f.limpiar_pantalla()
-                        f.imprimirmapa_menu(d.diccionarioMenuPrincipal["zelda_saved"])
-                        d.texto_prompt.append("It has been an exhausting fight, but with persistence, you have achieved it.") # Se añade esta frase al prompt
-                        f.prompt()
-                        opc = input("What to do now? ")
-                        while opc.lower() != "continue": # Mientras no se escriba la opcion continue, no saldran de la pantalla de win
-                            f.limpiar_pantalla()
-                            f.imprimirmapa_menu(d.diccionarioMenuPrincipal["zelda_saved"])
-                            d.texto_prompt.append("Invalid action")
-                            f.prompt()
-                            opc = input("What to do now? ")
-                        
-                        # Esto hay que camiarlo, y resetear todo
-                        d.texto_prompt = [] # Se reinicia el prompt
-                        d.ganon["vida"] = 9 # Se reinician las vidas de Ganon
-                        return False # Devolvemos falso para no terminar el bulce y que vuelva a aparecer el menu principal
+                d.win = True
+                f.limpiar_pantalla()
+                f.imprimirmapa_menu(d.diccionarioMenuPrincipal["zelda_saved"])
+                d.texto_prompt.append("It has been an exhausting fight, but with persistence, you have achieved it.") # Se añade esta frase al prompt
+                f.prompt()
+                opc = input("What to do now? ")
+                while opc.lower() != "continue": # Mientras no se escriba la opcion continue, no saldran de la pantalla de win
+                    f.limpiar_pantalla()
+                    f.imprimirmapa_menu(d.diccionarioMenuPrincipal["zelda_saved"])
+                    d.texto_prompt.append("Invalid action")
+                    f.prompt()
+                    opc = input("What to do now? ")
+                
+                # Esto hay que camiarlo, y resetear todo
+                d.texto_prompt = [] # Se reinicia el prompt
+                d.ganon["vida"] = 9 # Se reinician las vidas de Ganon
+                return False # Devolvemos falso para no terminar el bulce y que vuelva a aparecer el menu principal
             
             elif d.jugador["vidas"] == 0: # si la vida del jugador es 0, se muestra la pantalla de muerte
                 f.imprimirmapa_menu(d.diccionarioMenuPrincipal["link_death"])
@@ -69,22 +70,35 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
             select = input("What to do now? ") # select de la accion a realizar
             d.texto_prompt.append(select) # se añade el la accion al prompt
             
-            if mapaActual == d.localitzacions["hyrule"] or mapaActual == d.localitzacions["gerudo"] or mapaActual == d.localitzacions["death"] or mapaActual == d.localitzacions["necluda"]: # si no estas en castillo, movimiento y acciones normales
+            if d.jugador["mapa"] == "hyrule" or d.jugador["mapa"] == "gerudo" or d.jugador["mapa"] == "death" or d.jugador["mapa"] == "necluda": # si no estas en castillo, movimiento y acciones normales
             
                 if select[0:7].lower() == "go left" or select[0:8].lower() == "go right" or select[0:5].lower() == "go up" or select[0:7].lower() == "go down": # mover personaje
                     retorno = f.moverPersonaje(mapaActual, select, posicionplayer) # llanmada a la funcion de mover el personaje
                     posicionplayer = [retorno[1], retorno[2]] # nueva posicion del jugador
                 
                 # No me cambia de menu, hay que cambiar datos de prueba a los del diccionario
-                elif select[0:14].lower() == "show inventory": # si se escribe show inventory
-                    if select.lower() == "show inventory food": # se cambia al inventario de comida
+                elif select[0:14].lower() == "show inventary": # si se escribe show inventory
+                    if select.lower() == "show inventary food": # se cambia al inventario de comida
                         d.select = "show inventory food"
                     
-                    elif select.lower() == "show inventory weapons": # se cambia al inventario de armas
+                    elif select.lower() == "show inventary weapons": # se cambia al inventario de armas
                         d.select = "show inventory weapons"
                     
-                    elif select.lower() == "show inventory main": # se cambia al inventario principal
+                    elif select.lower() == "show inventary main": # se cambia al inventario principal
                         d.select = "show inventory main"
+                    
+                    elif select.lower() == "show inventary help": # se muestra la pantalla de help del menu
+                        f.limpiar_pantalla()
+                        f.imprimirmapa_menu(d.diccionarioMenuPrincipal["help_inventory"])
+                        f.prompt()
+                        opc = input("What to do now? ")
+                        while opc.lower() != "back":
+                            d.texto_prompt.append("Invalid option")
+                            f.limpiar_pantalla()
+                            f.imprimirmapa_menu(d.diccionarioMenuPrincipal["help_inventory"])
+                            f.prompt()
+                            opc = input("What to do now? ")
+                        
                     
                     else: # opcion incorrecta se añade al prompt
                         d.texto_prompt.append("Invalid action")
@@ -123,9 +137,8 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                 elif select.lower() == "fish" and fish == True: # Pescar cuando estas al lado de una ~
                     f.agua() # Falta añadir al inventario el pez conseguido
                 
-                elif select.lower() == "open sanctuary" and santuario == True: # Abrir un santuario, cuando estas al lado de un santuario 
-                    f.abrir_santuario() # Hay que crear un diccionario o lista con los santuarios y que cuando abres uno se ponga en True en el diccionario.
-                    # Tambien hay que mirar que al mostrar el mapa de la región los santuarios abiertos se tiene que eliminar el ?, y igual con los del mapa jugable
+                elif select.lower() == "open sanctuary": # Abrir un santuario, cuando estas al lado de un santuario 
+                    f.abrir_santuario(posicionplayer) # Hay que crear un diccionario o lista con los santuarios y que cuando abres uno se ponga en True en el diccionario.
                 
                 elif select[0:5].lower() == "go to": # Cambiar de región
                     # en el pdf no pone nada, asi que a castle se puede ir desde cualquier sitio, y dentro de castle no se puede ir a otro sitio, tienes que atacar a ganon o escribir back y volver a la ultima region donde has estado.

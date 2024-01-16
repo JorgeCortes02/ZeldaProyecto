@@ -133,6 +133,21 @@ def introducirUserInicial(posicionUser, playermap):
 inventario1 = mostrarInventario(d.select)
             
 def imprimirmapa(mapaActual):
+    santuarios_abiertos = []
+    for i in d.dades:
+        if i != "castle":
+            matriz = d.dades[i]["Santuarios"]["posicion"]
+            for j in matriz:
+                if j[3] == True:
+                    santuarios_abiertos.append(j[2] + "?")
+                
+    for linea in range(len(mapaActual)-1): # Este for va comprueba los santuarios abiertos, si hay santuario abierto, en el mapa se elimina el interrogante que tiene al lado
+        for elemento in range(len(mapaActual[linea])):
+            if mapaActual[linea][elemento] in santuarios_abiertos:
+                mapaActual[linea][elemento] = mapaActual[linea][elemento][:2] + " "
+                
+    
+    
     mapa = ""
     contadorInventario = 0
     for element in mapaActual:
@@ -776,14 +791,38 @@ def zorro(): #Interacion con el zorro
     d.texto_prompt.append("You got meat")
     #-Falta hacer que se añada 1 de carne al inventario
 
-def abrir_santuario(): #Interacion con el santuario
-    if d.puerta_santuario == True: #Comprueba si esta abierto
-        d.texto_prompt.append("You already opened this sanctuary")
-    else: #Lo abre y añade 1 de vida maxima y escribe en el prompt
-        d.puerta_santuario = True
-        d.vidas_max += 1
-        d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
-
+def abrir_santuario(posicionplayer): #Interacion con el santuario
+    posicion_igual = False
+    for i in d.dades[d.jugador["mapa"]]["Santuario"][0]:
+        santuario = [d.dades[d.jugador["mapa"]]["Santuario"][i][0], d.dades[d.jugador["mapa"]]["Santuario"][i][1]]
+        
+        posicionplayer[0] += 1
+        if posicionplayer == santuario:
+            posicion_igual = True
+        
+        posicionplayer[0] -= 1
+        if posicionplayer == santuario:
+            posicion_igual = True
+        
+        posicionplayer[1] += 1
+        if posicionplayer == santuario:
+            posicion_igual = True
+        
+        posicionplayer[1] -= 1
+        if posicionplayer == santuario:
+            posicion_igual = True
+        
+        if posicion_igual == True:
+            if d.dades[d.jugador["mapa"]]["Santuario"][i][3] == True: #Comprueba si esta abierto
+                d.texto_prompt.append("You already opened this sanctuary")
+            else: #Lo abre y añade 1 de vida maxima y escribe en el prompt
+                d.dades[d.jugador["mapa"]]["Santuario"][i][3] = True
+                d.jugador["vidas_max"] += 1
+                d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
+    
+    if posicion_igual == False:
+        d.texto_prompt.append("Invalid Option")
+    
 def cofre_cerrar(): #Comprueba si en tu inventario tienes alguna espada
     if len(d.inventarioArmas) == 0:
         d.cofre_abierto = False
@@ -973,8 +1012,15 @@ def menuInferior(mapa):
 
 #----------------- Mapa -------------------
 
-def mostrar_mapa(santuarios_abiertos): # Faltaria ver como implementar los santuarios, si es un diccionario o una lista
-    #santuarios_abiertos = ["S0?", "S2?"]
+def mostrar_mapa(): # Faltaria ver como implementar los santuarios, si es un diccionario o una lista
+    santuarios_abiertos = []
+    for i in d.dades:
+        if i != "castle":
+            matriz = d.dades[i]["Santuarios"]["posicion"]
+            for j in matriz:
+                if j[3] == True:
+                    santuarios_abiertos.append(j[2] + "?")
+            
 
     for linea in range(len(d.localitzacions["mapa_inicio"])-1): # Este for va comprueba los santuarios abiertos, si hay santuario abierto, en el mapa se elimina el interrogante que tiene al lado
         for elemento in range(len(d.localitzacions["mapa_inicio"][linea])):
@@ -989,7 +1035,9 @@ def mostrar_mapa(santuarios_abiertos): # Faltaria ver como implementar los santu
             mapa += element1
         mapa += "\n"
 
+    limpiar_pantalla()
     print(mapa)
+    prompt()
 
     back = True
     while back == True: # Hasta que no se de la orden de "back" no se sale del mapa
@@ -1030,6 +1078,7 @@ def cambiar_mapa(select, mapaActual): # Funcion para cambiar de mapa
         if mapaActual == d.localitzacions["death"] or mapaActual == d.localitzacions["gerudo"]:
             mapaActual = d.localitzacions["hyrule"]
             d.texto_prompt.append("You are now in" + select[6:])
+            d.jugador["mapa"] = "hyrule"
             zorro_visivilidad() 
             posicion_player = d.dades["hyrule"]["position"]
             return mapaActual, posicion_player
@@ -1047,6 +1096,7 @@ def cambiar_mapa(select, mapaActual): # Funcion para cambiar de mapa
         if mapaActual == d.localitzacions["hyrule"] or mapaActual == d.localitzacions["necluda"]:
             mapaActual = d.localitzacions["gerudo"]
             d.texto_prompt.append("You are now in " + select[6:])
+            d.jugador["mapa"] = "gerudo"
             zorro_visivilidad() 
             posicion_player = d.dades["gerudo"]["position"]
             return mapaActual, posicion_player
@@ -1063,6 +1113,7 @@ def cambiar_mapa(select, mapaActual): # Funcion para cambiar de mapa
         if mapaActual == d.localitzacions["hyrule"] or mapaActual == d.localitzacions["necluda"]:
             mapaActual = d.localitzacions["death"]
             d.texto_prompt.append("You are now in " + select[6:])
+            d.jugador["mapa"] = "death"
             zorro_visivilidad() 
             posicion_player = d.dades["death"]["position"]
             return mapaActual, posicion_player
@@ -1079,6 +1130,7 @@ def cambiar_mapa(select, mapaActual): # Funcion para cambiar de mapa
         if mapaActual == d.localitzacions["death"] or mapaActual == d.localitzacions["gerudo"]:
             mapaActual = d.localitzacions["necluda"]
             d.texto_prompt.append("You are now in " + select[6:])
+            d.jugador["mapa"] = "necluda"
             zorro_visivilidad() 
             posicion_player = d.dades["necluda"]["position"]
             return mapaActual, posicion_player
