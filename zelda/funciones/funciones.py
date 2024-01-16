@@ -496,40 +496,40 @@ def añadirInventario(objeto, diccionario):
 
         for i in range(3):
 
-            numeroRandom += str(random.randint(0,20))
+            numeroRandom += str(random.randint(0,9))
 
         if objeto == "Wood Sword":
             
-            diccionario[objeto + numeroRandom] = {"nombre": "Wood Sword", "Usos": 5 }
+            diccionario[objeto + numeroRandom] = {"tipo": "Wood Sword", "Usos": 5 }
             
         elif objeto == "Wood Shield":
         
-            diccionario[objeto + numeroRandom] = {"nombre": "Wood Shield", "Usos": 5 }
+            diccionario[objeto + numeroRandom] = {"tipo": "Wood Shield", "Usos": 5 }
         
         elif objeto == "Shield":
             
-            diccionario[objeto + numeroRandom] = {"nombre": "Shield", "Usos": 9 }
+            diccionario[objeto + numeroRandom] = {"tipo": "Shield", "Usos": 9 }
             
         
         elif objeto == "Sword":
             
-            diccionario[objeto + numeroRandom] = {"nombre": "Sword", "Usos": 9 }
+            diccionario[objeto + numeroRandom] = {"tipo": "Sword", "Usos": 9 }
 
         elif objeto == "Vegetable":
             
-            diccionario[objeto + numeroRandom] = {"nombre": "Vegetable" }
+            diccionario[objeto + numeroRandom] = {"tipo": "Vegetable" }
 
         elif  objeto == "salad":
             
-            diccionario[objeto + numeroRandom] = {"nombre": "salad" }
+            diccionario[objeto + numeroRandom] = {"tipo": "salad" }
         
         elif  objeto == "pescatarian":
             
-            diccionario[objeto + numeroRandom] = {"nombre": "pescatarian" }
+            diccionario[objeto + numeroRandom] = {"tipo": "pescatarian" }
         
         elif objeto == "roasted":
             
-            diccionario[objeto + numeroRandom] = {"nombre": "roasted" }
+            diccionario[objeto + numeroRandom] = {"tipo": "roasted" }
 
         
 def equiparArma(Select):
