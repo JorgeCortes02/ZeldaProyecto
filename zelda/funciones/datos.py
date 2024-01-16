@@ -5,7 +5,7 @@ import funciones.funciones as f
 
 #Atributos jugador
 
-jugador = {"name" : " ","posicion" : [3,9], "arma_actual": "Wood Shield998", "escudo_actual" : " ", "vidas_max": 3, "vidas" : 3, "bloodMoonCoutdown": 25, "totalBloodMoon" : 0, "mActual" : "", "id_game" : 16 }
+jugador = {"name" : " ","posicion" : [3,9], "arma_actual": "Wood Shield998", "escudo_actual" : " ", "vidas_max": 3, "vidas" : 3, "bloodMoonCoutdown": 25, "totalBloodMoon" : 0, "mActual" : "", "id_game" : 3 }
 
 
 
@@ -30,7 +30,7 @@ dict_tipos = {"Shield" : {"total": 0},
               "Roasted": {"total": 0} }
 
 
-inventario1 = f.mostrarInventario()
+#inventario1 = f.mostrarInventario()
 
 
 #Localizaciones y datoså
@@ -163,9 +163,7 @@ dades = { "death" : {"position" : (9,2),
                                     [9,48],[9,47],[9,46],[9,45],[10,44],[10,43],[10,42],[10,41],[10,40]]},
                       "Santuarios":{"posicion":[[6,50,"S5",False,5],[9,33,"S6",False,6]]},
                       "M":{"posicion":[[1,22,False,5],[9,23,False,6],[2,51,False,7]]},
-                      "E":{"posicion":[[2,10,7,1],[6,38,8,2]]}},
-         "castle" : {"position" : (9,3)},
-}
+                      "E":{"posicion":[[2,10,7,1],[6,38,8,2]]}}}
 
 
 frases_ganon = ["Ganon is powerful, are you sure you can defeat him?", "Ganon's strength is supernatural, Zelda fought with bravery.", "To Ganon, you are like a fly, find a weak spot and attack.", "Ganon will not surrender easily.", "Ganon has fought great battles, is an expert fighter.", "Link, transform your fears into strengths.", "Keep it up, Link, Ganon can't hold out much longer.", "Link, history repeats itself, Ganon can be defeated.", "Think of all the warriors who have tried before.", "You fight for the weaker ones, Link, persevere."]
@@ -299,7 +297,7 @@ diccionarioMenuPrincipal = {
         ["*  Ganon. He has taken over the Guardians and filled Hyrule with monsters.    *"],
         ["*                                                                             *"],
         ["*                                                                             *"],
-        [f"*  But a young man named {jugador['nombre']} has just awakened and".ljust(78)+"*"],
+        [f"*  But a young man named {jugador['name']} has just awakened and".ljust(78)+"*"],
         ["*  must reclaim the Guardians to defeat Ganon and save Hyrule.                *"],
         ["*                                                                             *"],
         ["*                                                                             *"],
@@ -351,3 +349,9 @@ texto_prompt = ["","","","","","","","",""]
 visibilidad_zorro = False
 
 pesca = False
+
+
+
+#Nuevas variables BBDD.
+
+datosPartidas = []

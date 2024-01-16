@@ -5,8 +5,8 @@ import funciones.datos as d
 def saveInicialGame():
 
         #Al iniciar la partida guarda la tabla game.
-        query = "Insert into game(user_name,date_started,hearts_remaining, blood_moon_countdown,blood_moon_appearances, region, max_live ) Values(%s, CURRENT_TIMESTAMP, %s, %s, %s,%s, %s)"
-        val = (d.jugador["name"], d.jugador["vidas"], 25,0, "Hyrule", d.jugador["vidas_max"])
+        query = "Insert into game(user_name,date_started,hearts_remaining, blood_moon_countdown,blood_moon_appearances, region, max_live, xpos, ypos ) Values(%s, CURRENT_TIMESTAMP, %s, %s, %s,%s, %s,%s, %s)"
+        val = (d.jugador["name"], d.jugador["vidas"], 25,0, "Hyrule", d.jugador["vidas_max"], d.jugador["posicion"][0], d.jugador["posicion"][1])
         cursor.execute(query, val)
         d.jugador["id_game"] = cursor.lastrowid
         print(d.jugador["id_game"])
@@ -28,8 +28,8 @@ def saveGame():
     lista_inventario = []
 
     #Actualizar tabla game.
-    query = "UPDATE game SET hearts_remaining = %s, blood_moon_countdown = %s, blood_moon_appearances = %s, region = %s, max_live = %s WHERE game_id = %s;"
-    val = (d.jugador["vidas"], d.jugador["bloodMoonCoutdown"], d.jugador["totalBloodMoon"], d.jugador["mActual"], d.jugador["vidas_max"], d.jugador["id_game"])
+    query = "UPDATE game SET hearts_remaining = %s, blood_moon_countdown = %s, blood_moon_appearances = %s, region = %s, max_live = %s WHERE game_id = %s, xpos = %s, ypos = %s;"
+    val = (d.jugador["vidas"], d.jugador["bloodMoonCoutdown"], d.jugador["totalBloodMoon"], d.jugador["mActual"], d.jugador["vidas_max"], d.jugador["id_game"], d.jugador["posicion"][0], d.jugador["posicion"][1])
     print(d.jugador["id_game"])
     cursor.execute(query, val)
     db.commit()
@@ -71,7 +71,7 @@ def saveGame():
     #Actualizar/insertar armas
 
     lista_inventario = d.inventarioArmas.keys()
-    query = "INSERT INTO game_weapons(game_id, weapon_name, lives_remaining, equiped) VALUES (%s, %s, %s, %s) ON DUPLICATE KEY UPDATE lives_remaining = %s, equiped = %s;"
+    query = "INSERT INTO game_weapons(game_id, weapon_name, lives_remaining, equiped, tipo) VALUES (%s, %s, %s, %s, %s) ON DUPLICATE KEY UPDATE lives_remaining = %s, equiped = %s;"
     
     for element in lista_inventario:
         
@@ -80,7 +80,7 @@ def saveGame():
         else:
              equiped = False
 
-        val = (d.jugador["id_game"], element , d.inventarioArmas[element]["usos"], equiped, d.inventarioArmas[element]["usos"], equiped )
+        val = (d.jugador["id_game"], element , d.inventarioArmas[element]["usos"], equiped, d.inventarioArmas[element]["usos"], equiped,d.inventarioArmas[element]["tipo"]  )
         cursor.execute(query, val)
     db.commit()
 
@@ -101,7 +101,77 @@ def saveGame():
                     cursor.execute(query, val)
     db.commit()
 
-print("hola1")
+#Descarga los datos de jugador (tabla game) para mostrarlos en el menu de seleccion de partida.
+def descargarGuardadas():
+    
+    query = "Select game_id, user_name, xpos, ypos, date_started, hearts_remaining, max_lives ,blood_moon_countdown, blood_moon_appearances, region from game limit 8;"
+    cursor.execute(query)
+    resultados = cursor.fetchall()
+
+    if resultados:
+        for element in resultados:
+            
+            d.datosPartidas.append(element)
+
+    else: d.datosPartidas.append("No hay partidas guardadas, inicia una nueva.")
+
+
+
+#Se le pasa el numero de partida que se ha seleccionado.
+def selectAndChargePartida(numero):
+    datos = []
+    for element in d.datosPartidas:
+        
+        if numero == element[0]:
+             
+            d.jugador["name"] = element[1]
+            d.jugador["posicion"].append(element[2])
+            d.jugador["posicion"].append(element[3])
+            d.jugador["vidas_max"] = element[6]
+            d.jugador["vidas"] = element[5]
+            d.jugador["bloodMoonCoutdown"] = element[7]
+            d.jugador["mActual"] = element[9]
+            d.jugador["id_game"] = element[0]
+        
+        break
+
+    #Recuperamos la comida
+    query = "Select food_name, quanntity_remaining  from game_food where game_id = %s;"
+    val=(d.jugador["id_game"],)
+    cursor.execute(query,val)
+    resultados = cursor.fetchall()
+
+    if resultados:
+        for element in resultados:
+            
+            d.inventarioComida[element[0]] = element[1] 
+    
+    
+    #Recuperamos armas
+        
+    query = "Select weapon_name, equiped, tipo, lives_remaining from game_weapons where game_id = %s;"
+    val=(d.jugador["id_game"],)
+    cursor.execute(query,val)
+    resultados = cursor.fetchall()
+
+    if resultados:
+        for element in resultados:
+            
+            d.inventarioArmas[element[0]] = {
+                
+                "tipo" : element[2],
+                "usos" : element[3]
+                }
+
+            if element[1] == True and "Shield" in element[0]:
+                
+                d.jugador["escudo_actual"] = element[0]
+            
+            elif element[1] == True and "Sword" in element[0]: 
+
+                d.jugador["arma_actual"] = element[0]   
+
+   
 # Conectar a la base de datos
 db = mysql.connector.connect(
     host="172.187.226.29",  # Cambia a tu dirección IP
@@ -110,12 +180,20 @@ db = mysql.connector.connect(
     database="ZeldaBBDD"
 )
 
+
+
+
+
+
+     
+
+
+
+
+
 # Crear un cursor
 cursor = db.cursor()
 
-
-saveGame()
-
-
+selectAndChargePartida(3)
 
 
