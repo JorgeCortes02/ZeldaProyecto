@@ -1,23 +1,15 @@
 import funciones.datos as d
 import funciones.funciones as f
 
+'''linia = ""
+for i in d.localitzacions["hyrule"]:
+    for j in i:
+        linia += j
+    linia += "\n"
 
-
-#espada = False #prubas arbol
-#while True:
-#    f.prom()
-#    atacar = input("Escribe: ")
-#    if atacar == "espada":
-#        espada = True
-#    else:
-#        espada = False
-#    f.arbol(espada)
-
-
-while True:
-    print(d.vidas)
-    print(d.vidas_max)
-    print(d.inventarioComida1)
-    f.prompt()
-    texto = input("Su: ")
-    f.comer(texto)
+print(linia)
+    
+print(d.localitzacions["hyrule"][5][9])
+'''
+for j in range(len(d.objetos["objetos_hyrule"]["T"]["lista"])):
+    print(j)
