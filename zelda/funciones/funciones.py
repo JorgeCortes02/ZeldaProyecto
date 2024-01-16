@@ -633,10 +633,10 @@ def equiparArma(Select):
             
 def desequiparArma(Select):
 
-    if "Sword" in Select:
+    if "sword" in Select.lower():
         d.jugador["arma_actual"] = " "
         return "Espada desequipado."
-    elif "Shield" in Select:
+    elif "shield" in Select.lower():
         d.jugador["arma_actual"] = " "
         return "Escudo desequipado."
     else:

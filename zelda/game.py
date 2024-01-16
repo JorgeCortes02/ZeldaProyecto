@@ -75,6 +75,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     retorno = f.moverPersonaje(mapaActual, select, posicionplayer) # llanmada a la funcion de mover el personaje
                     posicionplayer = [retorno[1], retorno[2]] # nueva posicion del jugador
                 
+                # No me cambia de menu, hay que cambiar datos de prueba a los del diccionario
                 elif select[0:14].lower() == "show inventory": # si se escribe show inventory
                     if select.lower() == "show inventory food": # se cambia al inventario de comida
                         d.select = "show inventory food"
@@ -96,11 +97,11 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     print("a")
                 
                 elif select[0:11].lower() == "unequip the": # Desequipar arma
-                    # Hay que mirar por que cuando desequipo un arma sigue saliendo en el inventario.
+                    # Sigue saliendo en el inventario, y si no tienes espada o escudo equipado te tiene que dar un texto de error.
                     d.texto_prompt.append(f.desequiparArma(select))
                     
                 elif select[0:9].lower() == "equip the": # Equipar arma
-                    # Me da error la funcion
+                    # Me da error la funcion cuando busca las armas disponibles
                     f.equiparArma(select)
                 
                 elif select[0:4].lower() == "cook" and cook == True:  # Cocinar comida, cuando estas al lado de una C
@@ -138,7 +139,8 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     print("a")
                 
                 elif select.lower() == "open chest" and chest == True: # Abrir cofre, cuando estas al lado de una M o W
-                    f.cofre() # Falta ver como hacemos lo de los cofres abiertos, que se reinicien y tal.
+                    # Falta ver como hacemos lo de los cofres abiertos, que se reinicien y tal.
+                    f.cofre() 
                     
                 elif select[0:5].lower() == "cheat": # Trucos
                     # Falta terminar la funcion de trucos

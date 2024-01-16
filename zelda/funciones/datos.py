@@ -3,7 +3,7 @@ import funciones.funciones as f
 
 #Atributos jugador
 
-jugador = {"nombre": "" ,"posicion" : [3,9], "arma_actual": " ", "escudo_actual" : " ", "vidas_max": 3, "vidas" : 3 }
+jugador = {"nombre": "" ,"posicion" : [3,9], "arma_actual": "Sword", "escudo_actual" : " ", "vidas_max": 3, "vidas" : 3 }
 
 inventarioArmas = {"Wood Shield998" :{"nombre" :"Arma", "usos": 4}, "Wood Shield98" :{"nombre" :"Arma", "usos": 4}}
 inventarioComida = {"Vegetables" : 0, "Fish" : 0, "Meat" : 0, "Salads" : 0, "Pescatarian" : 0, "Roasted" : 0 }
@@ -188,7 +188,7 @@ diccionarioMenuPrincipal = {
 
   "about_main" : [["* About * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"],
               ["*                                                                             *"],
-              ["*       Game developed by 'Team 4,                                            *"],
+              ["*       Game developed by 'Team 4':                                           *"],
               ["*                                                                             *"],
               ["*                                                                             *"],
               ["*             Jorge Cortés                                                    *"],
