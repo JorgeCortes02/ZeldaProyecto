@@ -512,7 +512,6 @@ def añadirInventario(objeto, diccionario):
             
             diccionario[objeto + numeroRandom] = {"tipo": "Sword", "Usos": 9 }
 
-        
 def equiparArma(Select):
 
     if len(d.inventarioArmas )== 0:
@@ -542,7 +541,7 @@ def equiparArma(Select):
 
         if Select[Select.find("Sword"): ] :
 
-             Select = Select[Select.find("Shield"): ]
+             Select = Select[Select.find("Sword"): ]
     
     lista_dict = list(d.inventarioArmas.keys())
     
@@ -573,14 +572,14 @@ def equiparArma(Select):
             
 def desequiparArma(Select):
 
-    if "Sword" in Select:
-        d.jugador["arma_actual"] = " "
-        return "Escudo desequipado."
-    elif "Shield" in Select:
+    if "Sword" in Select and (d.jugador["arma_actual"] != "" or d.jugador["arma_actual"] != " "):
         d.jugador["arma_actual"] = " "
         return "Espada desequipado."
+    elif "Shield" in Select and (d.jugador["escudo_actual"] != "" or d.jugador["escudo_actual"] != " "):
+        d.jugador["escudo_actual"] = " "
+        return "Escudo desequipado."
     else:
-        return "Incorrect Option"
+        return "Este elemento no estaba equipado."
     
 
 def conteoInventario():
@@ -606,6 +605,7 @@ def conteoInventario():
 
             d.dict_tipos["Sword"]["total"] += 1
 
+
     for element1 in d.inventarioComida:
             
 
@@ -613,7 +613,7 @@ def conteoInventario():
                 d.dict_tipos["Vegetables"]["total"] += 1
                 
             elif  "Fish" in d.inventarioComida[element1]["tipo"]:
-                d.dict_tipos["Fish"]["total"] += fish
+                d.dict_tipos["Fish"]["total"] += 1
                 
             elif "Meat" in d.inventarioComida[element1]["tipo"]:
 
@@ -993,6 +993,7 @@ def menuInferior(mapa):
     print (menuInferior)
 
 
+
 #----------------- Mapa -------------------
 
 def mostrar_mapa(santuarios_abiertos): # Faltaria ver como implementar los santuarios, si es un diccionario o una lista
@@ -1029,4 +1030,65 @@ def frase_ganon():
     frase_rand = random.randint(1,10)
 
     print(d.frases_ganon[frase_rand-1])
+
+
+
+
+
+def movimientoCercano(Select):
+
+    lista_arboles = []
+
+    if Select[len(Select)-1] == "T":
+
+        for element in d.dades["death"]["arboles"]:
+
+            suma1 =  d.jugador["posicion"][0] - element[0]
+            suma2= d.jugador["posicion"][1] - element[1]
+            suma3 = abs(suma1 + suma2)
+            lista_arboles.append(suma3)
+
+    for i in range(len(lista_arboles)-1):
+
+        for j in range(len(lista_arboles)-1-i):
+
+            if lista_arboles[j] > lista_arboles[j+1]:
+
+                lista_arboles[j], lista_arboles[j+1] = lista_arboles[j+1],lista_arboles[j]
+                d.dades["death"]["arboles"][j], d.dades["death"]["arboles"][j+1] = d.dades["death"]["arboles"][j+1],d.dades["death"]["arboles"][j]
+    print(lista_arboles)
+    
+    element = d.dades["death"]["arboles"][0]
+        
+    print([element])
+    if d.mapaActual[element[0]-1][element[1]] == " ":
+
+        d.jugador["posicion"][0] = element[0]
+        d.jugador["posicion"][1] = element[1] 
+        d.mapaActual[element[0]-1][element[1]] = "P"
+        print(d.mapaActual)
+    elif d.mapaActual[element[0]][element[1]] == " ":
+
+        d.jugador["posicion"][0] = element[0]+1
+        d.jugador["posicion"][1] = element[1] 
+        d.mapaActual[element[0]+1][element[1]] = "O"
+        print(d.mapaActual)
+    
+    elif d.mapaActual[element[0]][element[1]] == " ":
+
+        d.jugador["posicion"][0] = element[0]
+        d.jugador["posicion"][1] = element[1]+1
+        d.mapaActual[element[0]][element[1]+1] = "S"
+        print(d.mapaActual)
+
+    elif d.mapaActual[element[0]][element[1]-1] == " ":
+
+        d.jugador["posicion"][0] = element[0]
+        d.jugador["posicion"][1] = element[1] -1
+        d.mapaActual[element[0]][element[1]-1] = "D"
+        print(d.mapaActual)
+    else:
+        print("Invalid Action.") 
+
+
 

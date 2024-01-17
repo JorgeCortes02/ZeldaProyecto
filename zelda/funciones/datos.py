@@ -1,14 +1,12 @@
 import funciones.funciones as f
 
+
+
+
 #Atributos jugador
 
-jugador = {"nombre" : " ",
-           "posicion" : [3,9], 
-           "arma_actual": " ", 
-           "escudo_actual" : " ", 
-           "vidas_max": 3, 
-           "vidas" : 3 ,
-           "mapa" : ""}
+jugador = {"name" : " ","posicion" : [3,9], "arma_actual": "Wood Shield998", "escudo_actual" : " ", "vidas_max": 3, "vidas" : 3, "bloodMoonCoutdown": 25, "totalBloodMoon" : 0, "mActual" : "Hyrule", "id_game" : 16 }
+
 
 
 inventarioArmas = {}
@@ -32,10 +30,25 @@ dict_tipos = {"Shield" : {"total": 0},
               "Roasted": {"total": 0} }
 
 
-inventario1 = f.mostrarInventario()
+
+dict_tipos = {"Shield" : {"total": 0}, 
+              "Wood Shield" : {"total": 0}, 
+              "Sword" : {"total": 0}, 
+              "Wood Swort" : {"total": 0}, 
+              "Vegetables" :{"total": 0}, 
+              "Fish" :{"total": 0}, 
+              "Meat" :{"total": 0}, 
+              "Salads" :{"total": 0}, 
+              "Pescatarian" : {"total": 0}, 
+              "Roasted": {"total": 0} }
 
 
-#Localizaciones y datoså
+#inventario1 = f.mostrarInventario()
+
+
+
+
+#Localizaciones y datos
 localitzacions = {
     "death" : [["*"," ","D","e","a","t","h"," ","M","o","u","n","t","a","i","n"," "," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*", " ", "*"],
         ["*"," ","O"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","O","O","O","O"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","*"],
@@ -128,6 +141,7 @@ localitzacions = {
           ["* " * 30]]
 }
 
+
 dades = { "death" : {"position" : (9,2),
                      "F":{"posicion":[2,30]}, 
                      "C":{"posicion":[9,6]},
@@ -164,11 +178,12 @@ dades = { "death" : {"position" : (9,2),
                                     [9,48],[9,47],[9,46],[9,45],[10,44],[10,43],[10,42],[10,41],[10,40]]},
                       "Santuarios":{"posicion":[[6,50,"S5",False,5],[9,33,"S6",False,6]]},
                       "M":{"posicion":[[1,22,False,5],[9,23,False,6],[2,51,False,7]]},
-                      "E":{"posicion":[[2,10,7,1],[6,38,8,2]]}},
-         "castle" : {"position" : (9,3)},
-}
+                      "E":{"posicion":[[2,10,7,1],[6,38,8,2]]}}}
+
+
 
 frases_ganon = ["Ganon is powerful, are you sure you can defeat him?", "Ganon's strength is supernatural, Zelda fought with bravery.", "To Ganon, you are like a fly, find a weak spot and attack.", "Ganon will not surrender easily.", "Ganon has fought great battles, is an expert fighter.", "Link, transform your fears into strengths.", "Keep it up, Link, Ganon can't hold out much longer.", "Link, history repeats itself, Ganon can be defeated.", "Think of all the warriors who have tried before.", "You fight for the weaker ones, Link, persevere."]
+
 
 diccionarioMenuPrincipal = {
     
@@ -298,7 +313,7 @@ diccionarioMenuPrincipal = {
         ["*  Ganon. He has taken over the Guardians and filled Hyrule with monsters.    *"],
         ["*                                                                             *"],
         ["*                                                                             *"],
-        [f"*  But a young man named {jugador['nombre']} has just awakened and".ljust(78)+"*"],
+        [f"*  But a young man named {jugador['name']} has just awakened and".ljust(78)+"*"],
         ["*  must reclaim the Guardians to defeat Ganon and save Hyrule.                *"],
         ["*                                                                             *"],
         ["*                                                                             *"],
@@ -347,8 +362,13 @@ diccionarioMenuPrincipal = {
 
 texto_prompt = ["","","","","","","","",""]
 
+visibilidad_zorro = False
+
+pesca = False
 
 
 
+#Nuevas variables BBDD.
 
+datosPartidas = []
 
