@@ -5,7 +5,7 @@ import funciones.funciones as f
 
 #Atributos jugador
 
-jugador = {"name" : " ","posicion" : [3,9], "arma_actual": "Wood Shield998", "escudo_actual" : " ", "vidas_max": 3, "vidas" : 3, "bloodMoonCoutdown": 25, "totalBloodMoon" : 0, "mActual" : "", "id_game" : 3 }
+jugador = {"name" : " ","posicion" : [3,9], "arma_actual": "Wood Shield998", "escudo_actual" : " ", "vidas_max": 3, "vidas" : 3, "bloodMoonCoutdown": 25, "totalBloodMoon" : 0, "mActual" : "", "id_game" : 16 }
 
 
 

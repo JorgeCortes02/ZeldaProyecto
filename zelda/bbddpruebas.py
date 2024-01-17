@@ -171,6 +171,66 @@ def selectAndChargePartida(numero):
 
                 d.jugador["arma_actual"] = element[0]   
 
+    #Recuperamos enemigos
+                
+    query = "Select region, num, xpos, ypos,lives_remaining from game_enemies where game_id = %s;"
+    val=(d.jugador["id_game"],)
+    cursor.execute(query,val)
+    resultados = cursor.fetchall()
+
+    
+    if resultados:
+         
+         for element in resultados:
+            index = resultados.index(element)
+            for element1 in d.dades[resultados[index][0]]["E"]["posicion"]:
+                index2 = d.dades[resultados[index][0]]["E"]["posicion"].index(element1)
+               
+                if element[1] == element1[2]:
+
+                    d.dades[resultados[index][0]]["E"]["posicion"][index2][0] = element[2]
+                    d.dades[resultados[index][0]]["E"]["posicion"][index2][1] = element[3]
+                    d.dades[resultados[index][0]]["E"]["posicion"][index2][3] = element[4]
+                    print(d.dades[resultados[index][0]]["E"]["posicion"][index2])
+                     
+   
+    #Recuperamos Santuarios abiertos:
+                
+    query = "Select region, num from game_sactuaries_opened where game_id = %s;"
+    val=(d.jugador["id_game"],)
+    cursor.execute(query,val)
+    resultados = cursor.fetchall()
+
+    
+    if resultados:
+         
+         for element in resultados:
+            index = resultados.index(element)
+            for element1 in d.dades[resultados[index][0]]["Santuarios"]["posicion"]:
+                index2 = d.dades[resultados[index][0]]["Santuarios"]["posicion"].index(element1)
+               
+                if element[1] == element1[4]:
+
+                    d.dades[resultados[index][0]]["Santuarios"]["posicion"][index2][3] = True
+                    
+    #Recuperamos cofes abiertos:
+                
+    query = "Select region, num from game_chests_opened where game_id = %s;"
+    val=(d.jugador["id_game"],)
+    cursor.execute(query,val)
+    resultados = cursor.fetchall()
+
+    
+    if resultados:
+         
+         for element in resultados:
+            index = resultados.index(element)
+            for element1 in d.dades[resultados[index][0]]["M"]["posicion"]:
+                index2 = d.dades[resultados[index][0]]["M"]["posicion"].index(element1)
+               
+                if element[1] == element1[3]:
+
+                    d.dades[resultados[index][0]]["M"]["posicion"][index2][2] = True
    
 # Conectar a la base de datos
 db = mysql.connector.connect(
@@ -194,6 +254,6 @@ db = mysql.connector.connect(
 # Crear un cursor
 cursor = db.cursor()
 
-selectAndChargePartida(3)
+selectAndChargePartida(16)
 
 
