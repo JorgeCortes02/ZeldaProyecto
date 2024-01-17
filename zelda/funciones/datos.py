@@ -5,8 +5,14 @@ import funciones.funciones as f
 
 #Atributos jugador
 
-jugador = {"name" : " ","posicion" : [3,9], "arma_actual": "Wood Shield998", "escudo_actual" : " ", "vidas_max": 3, "vidas" : 3, "bloodMoonCoutdown": 25, "totalBloodMoon" : 0, "mActual" : "Hyrule", "id_game" : 16 }
 
+jugador = {"nombre" : " ",
+           "posicion" : [8,54], 
+           "arma_actual": " ", 
+           "escudo_actual" : " ", 
+           "vidas_max": 3, 
+           "vidas" : 3 ,
+           "mapa" : " "}
 
 
 inventarioArmas = {}
@@ -148,7 +154,7 @@ dades = { "death" : {"position" : (9,2),
                      "T":{"lista":[[7,19],[8,18],[9,18]],"vida":[4,4,4],"contador":[0,0,0]},
                      "~":{"posicion":[[3,2],[3,3],[4,2],[4,4],[5,5],[5,6],[5,7],[5,8],[5,9],[5,10],
                                     [6,8],[6,9],[6,10],[7,7],[7,6],[7,5],[6,4],[6,3],[6,2]]},
-                     "Santuarios":{"posicion":[[3,6,"S2",False,2],[9,49,"S3",False,3]]}, #X/Y/Nombre/ID
+                     "Santuarios":{"posicion":[[3,6,"S2",False,2],[9,49,"S3",False,3]]}, #X/Y/Nombre/False/ID
                      "M":{"posicion":[[8,36,False,2]]}, #X/Y/Comprueba si esta abierto/ID
                      "E":{"posicion":[[4,13,3,2],[3,51,4,2]]}}, #X/Y/ID/Vida
          "hyrule" : {"position" : (8,11),
@@ -362,7 +368,7 @@ diccionarioMenuPrincipal = {
 
 texto_prompt = ["","","","","","","","",""]
 
-visibilidad_zorro = False
+visibilidad_zorro = True
 
 pesca = False
 
