@@ -30,10 +30,25 @@ dict_tipos = {"Shield" : {"total": 0},
               "Roasted": {"total": 0} }
 
 
+
+dict_tipos = {"Shield" : {"total": 0}, 
+              "Wood Shield" : {"total": 0}, 
+              "Sword" : {"total": 0}, 
+              "Wood Swort" : {"total": 0}, 
+              "Vegetables" :{"total": 0}, 
+              "Fish" :{"total": 0}, 
+              "Meat" :{"total": 0}, 
+              "Salads" :{"total": 0}, 
+              "Pescatarian" : {"total": 0}, 
+              "Roasted": {"total": 0} }
+
+
 #inventario1 = f.mostrarInventario()
 
 
-#Localizaciones y datoså
+
+
+#Localizaciones y datos
 localitzacions = {
     "death" : [["*"," ","D","e","a","t","h"," ","M","o","u","n","t","a","i","n"," "," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*", " ", "*"],
         ["*"," ","O"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","O","O","O","O"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","*"],
@@ -164,6 +179,7 @@ dades = { "death" : {"position" : (9,2),
                       "Santuarios":{"posicion":[[6,50,"S5",False,5],[9,33,"S6",False,6]]},
                       "M":{"posicion":[[1,22,False,5],[9,23,False,6],[2,51,False,7]]},
                       "E":{"posicion":[[2,10,7,1],[6,38,8,2]]}}}
+
 
 
 frases_ganon = ["Ganon is powerful, are you sure you can defeat him?", "Ganon's strength is supernatural, Zelda fought with bravery.", "To Ganon, you are like a fly, find a weak spot and attack.", "Ganon will not surrender easily.", "Ganon has fought great battles, is an expert fighter.", "Link, transform your fears into strengths.", "Keep it up, Link, Ganon can't hold out much longer.", "Link, history repeats itself, Ganon can be defeated.", "Think of all the warriors who have tried before.", "You fight for the weaker ones, Link, persevere."]
@@ -355,3 +371,4 @@ pesca = False
 #Nuevas variables BBDD.
 
 datosPartidas = []
+

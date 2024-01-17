@@ -487,7 +487,6 @@ def imprimirmapa_menu(mapa):
         
 #--------------- Inventario ----------------------       
 
-
 def añadirInventario(objeto, diccionario):
 
         numeroRandom = "" 
@@ -512,7 +511,6 @@ def añadirInventario(objeto, diccionario):
         elif objeto == "Sword":
             
             diccionario[objeto + numeroRandom] = {"tipo": "Sword", "Usos": 9 }
-
 
 def equiparArma(Select):
 
@@ -1032,6 +1030,7 @@ def frase_ganon():
     frase_rand = random.randint(1,10)
 
     print(d.frases_ganon[frase_rand-1])
+
 
 
 
