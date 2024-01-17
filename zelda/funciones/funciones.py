@@ -899,6 +899,7 @@ def abrir_santuario(): #Interacion con el santuario
                 d.texto_prompt.append("You already opened this sanctuary")
             else: #Lo abre y añade 1 de vida maxima y escribe en el prompt
                 d.dades[d.jugador["mapa"]]["Santuarios"][i][3] = True
+                d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][1]+2] == " "
                 d.jugador["vidas_max"] += 1
                 d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
         elif d.jugador["posicion"][0] == d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][0] and d.jugador["posicion"][1]-1 == d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][1]:
@@ -906,6 +907,7 @@ def abrir_santuario(): #Interacion con el santuario
                 d.texto_prompt.append("You already opened this sanctuary")
             else: #Lo abre y añade 1 de vida maxima y escribe en el prompt
                 d.dades[d.jugador["mapa"]]["Santuarios"][i][3] = True
+                d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][1]+2] == " "
                 d.jugador["vidas_max"] += 1
                 d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
         elif d.jugador["posicion"][0]+1 == d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][0] and d.jugador["posicion"][1] == d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][1]:
@@ -913,6 +915,7 @@ def abrir_santuario(): #Interacion con el santuario
                 d.texto_prompt.append("You already opened this sanctuary")
             else: #Lo abre y añade 1 de vida maxima y escribe en el prompt
                 d.dades[d.jugador["mapa"]]["Santuarios"][i][3] = True
+                d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][1]+2] == " "
                 d.jugador["vidas_max"] += 1
                 d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
         elif d.jugador["posicion"][0]-1 == d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][0] and d.jugador["posicion"][1] == d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][1]:
@@ -920,22 +923,33 @@ def abrir_santuario(): #Interacion con el santuario
                 d.texto_prompt.append("You already opened this sanctuary")
             else: #Lo abre y añade 1 de vida maxima y escribe en el prompt
                 d.dades[d.jugador["mapa"]]["Santuarios"][i][3] = True
+                d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][1]+2] == " "
                 d.jugador["vidas_max"] += 1
                 d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
 
 def cofre_cerrar_sword(): #Comprueba si en tu inventario tienes alguna espada
-    if len(d.dict_tipos["Sword"]["total"]) == 0: #-mirar direcciones
-       d.dades["hyrule"]["M"]["posicion"][0][2] == False
-       d.dades["gerudo"]["M"]["posicion"][0][2] == False
-       d.dades["gerudo"]["M"]["posicion"][1][2] == False
+    if d.dades["hyrule"]["M"]["posicion"][0][2] == True and d.dades["gerudo"]["M"]["posicion"][0][2] == True and d.dades["gerudo"]["M"]["posicion"][1][2] == True:
+        if d.dict_tipos["Sword"]["total"] == 0: #-mirar direcciones
+            d.dades["hyrule"]["M"]["posicion"][0][2] = False
+            d.localitzacions["hyrule"][d.dades["hyrule"]["M"]["posicion"][0][0]][d.dades["hyrule"]["M"]["posicion"][0][1]] = "M"
+            d.dades["gerudo"]["M"]["posicion"][0][2] = False
+            d.localitzacions["gerudo"][d.dades["gerudo"]["M"]["posicion"][0][0]][d.dades["gerudo"]["M"]["posicion"][0][1]] = "M"
+            d.dades["gerudo"]["M"]["posicion"][1][2] = False
+            d.localitzacions["gerudo"][d.dades["gerudo"]["M"]["posicion"][1][0]][d.dades["gerudo"]["M"]["posicion"][1][1]] = "M"
 
 def cofre_cerrar_shield(): #Comprueba si en tu inventario tienes algun escudo
-    if len(d.dict_tipos["Shield"]["total"]) == 0: #-mirar direcciones
-        d.dades["necluda"]["M"]["posicion"][0][2] == False
-        d.dades["necluda"]["M"]["posicion"][1][2] == False
-        d.dades["necluda"]["M"]["posicion"][2][2] == False
-        d.dades["death"]["M"]["posicion"][0][2] == False
-        d.dades["death"]["M"]["posicion"][1][2] == False
+    if d.dades["necluda"]["M"]["posicion"][0][2] == True and d.dades["necluda"]["M"]["posicion"][1][2] == True and d.dades["necluda"]["M"]["posicion"][2][2] == True and d.dades["death"]["M"]["posicion"][0][2] == True and d.dades["death"]["M"]["posicion"][1][2] == True:
+        if d.dict_tipos["Shield"]["total"] == 0: #-mirar direcciones
+            d.dades["necluda"]["M"]["posicion"][0][2] = False
+            d.localitzacions["necluda"][d.dades["necluda"]["M"]["posicion"][0][0]][d.dades["necluda"]["M"]["posicion"][0][1]] = "M"
+            d.dades["necluda"]["M"]["posicion"][1][2] = False
+            d.localitzacions["necluda"][d.dades["necluda"]["M"]["posicion"][1][0]][d.dades["necluda"]["M"]["posicion"][1][1]] = "M"
+            d.dades["necluda"]["M"]["posicion"][2][2] = False
+            d.localitzacions["necluda"][d.dades["necluda"]["M"]["posicion"][2][0]][d.dades["necluda"]["M"]["posicion"][2][1]] = "M"
+            d.dades["death"]["M"]["posicion"][0][2] = False
+            d.localitzacions["death"][d.dades["death"]["M"]["posicion"][0][0]][d.dades["death"]["M"]["posicion"][0][1]] = "M"
+            d.dades["death"]["M"]["posicion"][1][2] = False
+            d.localitzacions["death"][d.dades["death"]["M"]["posicion"][1][0]][d.dades["death"]["M"]["posicion"][1][1]] = "M"
 
 def cofre(): #Interacion con el cofre
     for j in range(len(d.dades[d.jugador["mapa"]]["M"]["posicion"])):
@@ -946,10 +960,12 @@ def cofre(): #Interacion con el cofre
                 if d.jugador["mapa"] == ("hyrule" or "gerudo"): #Dependiendo del mapa te dara una espada o un escudo
                     d.texto_prompt.append("You got a sword")
                     d.dades[d.jugador["mapa"]]["M"]["posicion"][j][2] = True
+                    d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]] = "W"
                     añadirInventario("Sword",d.inventarioArmas)
                 else:
                     d.texto_prompt.append("You got a shield")
                     d.dades[d.jugador["mapa"]]["M"]["posicion"][j][2] = True
+                    d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]] = "W"
                     añadirInventario("Shield",d.inventarioArmas)
         elif d.jugador["posicion"][0] == d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0] and d.jugador["posicion"][1]-1 == d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]:
             if d.dades[d.jugador["mapa"]]["M"]["posicion"][j][2] == True: #comprueba si el cofre ya esta abierto
@@ -958,10 +974,12 @@ def cofre(): #Interacion con el cofre
                 if d.jugador["mapa"] == ("hyrule" or "gerudo"): #Dependiendo del mapa te dara una espada o un escudo
                     d.texto_prompt.append("You got a sword")
                     d.dades[d.jugador["mapa"]]["M"]["posicion"][j][2] = True
+                    d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]] = "W"
                     añadirInventario("Sword",d.inventarioArmas)
                 else:
                     d.texto_prompt.append("You got a shield")
                     d.dades[d.jugador["mapa"]]["M"]["posicion"][j][2] = True
+                    d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]] = "W"
                     añadirInventario("Shield",d.inventarioArmas)
         elif d.jugador["posicion"][0]+1 == d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0] and d.jugador["posicion"][1] == d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]:
             if d.dades[d.jugador["mapa"]]["M"]["posicion"][j][2] == True: #comprueba si el cofre ya esta abierto
@@ -970,10 +988,12 @@ def cofre(): #Interacion con el cofre
                 if d.jugador["mapa"] == ("hyrule" or "gerudo"): #Dependiendo del mapa te dara una espada o un escudo
                     d.texto_prompt.append("You got a sword")
                     d.dades[d.jugador["mapa"]]["M"]["posicion"][j][2] = True
+                    d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]] = "W"
                     añadirInventario("Sword",d.inventarioArmas)
                 else:
                     d.texto_prompt.append("You got a shield")
                     d.dades[d.jugador["mapa"]]["M"]["posicion"][j][2] = True
+                    d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]] = "W"
                     añadirInventario("Shield",d.inventarioArmas)
         elif d.jugador["posicion"][0]-1 == d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0] and d.jugador["posicion"][1] == d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]:
             if d.dades[d.jugador["mapa"]]["M"]["posicion"][j][2] == True: #comprueba si el cofre ya esta abierto
@@ -982,10 +1002,12 @@ def cofre(): #Interacion con el cofre
                 if d.jugador["mapa"] == ("hyrule" or "gerudo"): #Dependiendo del mapa te dara una espada o un escudo
                     d.texto_prompt.append("You got a sword")
                     d.dades[d.jugador["mapa"]]["M"]["posicion"][j][2] = True
+                    d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]] = "W"
                     añadirInventario("Sword",d.inventarioArmas)
                 else:
                     d.texto_prompt.append("You got a shield")
                     d.dades[d.jugador["mapa"]]["M"]["posicion"][j][2] = True
+                    d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]] = "W"
                     añadirInventario("Shield",d.inventarioArmas)
 
 def enemigos(): #Interacion con el enemigo
