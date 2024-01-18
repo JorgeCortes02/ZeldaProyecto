@@ -31,6 +31,11 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
         final = False 
         while final == False: # Bucle para la partida
             f.limpiar_pantalla()
+            f.cofre_cerrar_sword()
+            f.cofre_cerrar_shield()
+            mapaActual = f.contador_arbol_mapa(mapaActual)
+            mapaActual = f.contador_arbol(mapaActual)
+            
             # Crear diccionario de ganon con sus vidas
             if d.ganon["vida"] == 0: # si la vida de ganon es 0, se muestra la pantalla de win
                 d.win = True
@@ -113,8 +118,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     f.mostrar_mapa()
                 
                 elif select[0:3].lower() == "eat": # Consumir comida
-                    # Falta la funcion de comer 
-                    print("a")
+                    f.comer()
                 
                 elif select[0:11].lower() == "unequip the": # Desequipar arma
                     # Sigue saliendo en el inventario, y si no tienes espada o escudo equipado te tiene que dar un texto de error.
@@ -128,17 +132,17 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     f.cocinar(select, d.inventarioComida)
                     
                 elif select.lower() == "attack": # Atacar a un enemigo, cuando esta a tu lado
-                    # Falta funcion de enemigo
-                    print("a")
+                    ejecutado = False
+                    ejecutado = f.atacar(posicionplayer, mapaActual, "E")
                 
-                elif select.lower() == "attack": # Atacar a un zorro, cuando estas al lado de una F
-                    f.zorro() # Falta quitarle vida al arma y añadir carne al inventario
+                    if ejecutado == False:
+                        ejecutado = f.atacar(posicionplayer, mapaActual, "F") # Falta quitarle vida al arma y añadir carne al inventario
                 
-                elif select.lower() == "attack": # Atacar a un arbol, cuando estas al lado de una T
-                    f.arbol(d.jugador["arma_actual"]) # Falta acabar la funcion de arboles, da error con la vida
+                    if ejecutado == False:
+                        ejecutado = f.atacar(posicionplayer, mapaActual, "T") # Falta acabar la funcion de arboles, da error con la vida
                     
-                elif select.lower() == "attack": # Atacat al cesped, cuando estas en un " "
-                    f.cesped()
+                    if ejecutado == False:
+                        ejecutado = f.atacar(posicionplayer, mapaActual, " ")
                 
                 elif select.lower() == "fish": # Pescar cuando estas al lado de una ~
                     f.agua() # Falta añadir al inventario el pez conseguido
@@ -148,22 +152,20 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                 
                 elif select[0:5].lower() == "go to": # Cambiar de región
                     # en el pdf no pone nada, asi que a castle se puede ir desde cualquier sitio, y dentro de castle no se puede ir a otro sitio, tienes que atacar a ganon o escribir back y volver a la ultima region donde has estado.
-                    retorno = f.cambiar_mapa(select, mapaActual)
+                    retorno = f.cambiar_mapa(select, mapaActual, posicionplayer)
                     mapaActual = retorno[0]
                     posicionplayer = retorno[1]
                     
                 
                 elif select[0:5].lower() == "go by": # moverte al objeto indicado más cercano a donde estas
-                    # Falta terminar la funcion para del movimiento cercano
-                    print("a")
+                    f.movimientoCercano(select)
                 
                 elif select.lower() == "open chest": # Abrir cofre, cuando estas al lado de una M o W
-                    # Falta ver como hacemos lo de los cofres abiertos, que se reinicien y tal.
                     f.cofre() 
                     
                 elif select[0:5].lower() == "cheat": # Trucos
                     # Falta terminar la funcion de trucos
-                    f.trucos(select)
+                    print("a")
                 
                 else: # Opcion invalida, se añade al prompt
                     d.texto_prompt.append("Invalid action")
@@ -186,7 +188,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                 
                 elif select[0:5].lower() == "cheat": # Trucos
                     # Falta terminar funcion trucos
-                    f.trucos(select)
+                    print("a")
                 
                 else: # Opción invalida, se añade al prompt
                     d.texto_prompt.append("Invalid action")

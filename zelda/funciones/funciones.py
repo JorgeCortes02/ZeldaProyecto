@@ -138,7 +138,7 @@ def imprimirmapa(mapaActual):
     for element in mapaActual:
 
         for element1 in element:
-                mapa += element1
+                mapa += str(element1)
                 
         
 
@@ -886,7 +886,7 @@ def cesped(): #Interacion con el cesped
        d.texto_prompt.append("The grass didn't give you anything")
 
 def arbol(): #Interacion con el arbol
-    arbol_encontrado = 0
+    arbol_encontrado = 10
     for j in range(len(d.dades[d.jugador["mapa"]]["T"]["lista"])): #Busca en la lista del arbol cual esta cerca y que tenga toda la vida
         if d.jugador["posicion"][0] == d.dades[d.jugador["mapa"]]["T"]["lista"][j][0] and d.jugador["posicion"][1]-1 == d.dades[d.jugador["mapa"]]["T"]["lista"][j][1]:
             if not d.dades[d.jugador["mapa"]]["T"]["vida"][j] == 0:
@@ -900,11 +900,11 @@ def arbol(): #Interacion con el arbol
         elif d.jugador["posicion"][0]+1 == d.dades[d.jugador["mapa"]]["T"]["lista"][j][0] and d.jugador["posicion"][1] == d.dades[d.jugador["mapa"]]["T"]["lista"][j][1]:
             if not d.dades[d.jugador["mapa"]]["T"]["vida"][j] == 0:
                 arbol_encontrado = j
-    if arbol_encontrado == 0: #si no encuentra nigun arbol con vida no te deja hacer nada
+    if arbol_encontrado == 10: #si no encuentra nigun arbol con vida no te deja hacer nada
         d.texto_prompt.append("No trees available")
     else:
         porcentaje = random.randint(1,100)
-        if not d.inventarioArmas[d.jugador["arma_actual"]]["tipo"] == "Sword" : #compruba si cuando has atacado a sido con una espada o no
+        if d.jugador["arma_actual"] == " " or d.jugador["arma_actual"] == "" or not d.inventarioArmas[d.jugador["arma_actual"]]["tipo"] == "Sword": #compruba si cuando has atacado a sido con una espada o no
             if porcentaje in range(1,6): #Te da una espada de madera y tiene que salir un mensaje en el promp
                 d.texto_prompt.append("You got a Wood sword")
                 añadirInventario("Wood Sword",d.inventarioArmas)
@@ -940,21 +940,26 @@ def arbol(): #Interacion con el arbol
                 d.texto_prompt.append("The tree has fallen") #Este prom lo he añadido yo
                 d.dades[d.jugador["mapa"]]["T"]["contador"][arbol_encontrado] == 10
 
-def contador_arbol_mapa(): #Cambia los arboles por su numero del contador 
-    for i in range(len(d.dades[d.jugador["mapa"]]["T"]["lista"])): #Busca que arbol tiene la vida al 0 y lo cambia por el numero del contador que tenga en ese momento
-        if not d.dades[d.jugador["mapa"]]["T"]["vida"][i] == 0:
-            d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["T"]["lista"][i][0]][d.dades[d.jugador["mapa"]]["T"]["lista"][i][1]] = d.dades[d.jugador["mapa"]]["T"]["contador"][i]
+def contador_arbol_mapa(mapaActual): #Cambia los arboles por su numero del contador 
+    if d.jugador["mapa"] != "castle":
+        for i in range(len(d.dades[d.jugador["mapa"]]["T"]["lista"])): #Busca que arbol tiene la vida al 0 y lo cambia por el numero del contador que tenga en ese momento
+            if not d.dades[d.jugador["mapa"]]["T"]["vida"][i] == 0:
+                mapaActual[d.dades[d.jugador["mapa"]]["T"]["lista"][i][0]][d.dades[d.jugador["mapa"]]["T"]["lista"][i][1]] = str(d.dades[d.jugador["mapa"]]["T"]["contador"][i])
+    
+    return mapaActual
 
-def contador_arbol(): #Baja el contador de todos los arboles
-    for x in d.dades: #Busca un mapa
+def contador_arbol(mapaActual): #Baja el contador de todos los arboles
+    if d.jugador["mapa"] != "castle":
         cont = 0
-        for i in d.dades[x]["T"]["contador"]: #Mira si x arbol tiene más de 0 de contador 
-            if i > 0: #Si es superior a 0 pues le resta uno
-                d.dades[x]["T"]["contador"][cont] = i - 1
+        for i in d.dades[d.jugador["mapa"]]["T"]["contador"]: #Mira si x arbol tiene más de 0 de contador 
+            if i != 0: #Si es superior a 0 pues le resta uno
+                d.dades[d.jugador["mapa"]]["T"]["contador"][cont] = i - 1
             else: #Sino le pone la vida al 4 y cambia el mapa para que tenga el arbol
-                d.dades[x]["T"]["vida"][cont] == 4
-                d.localitzacions[d.jugador["mapa"]][d.dades[x]["T"]["lista"][i][0]][d.dades[x]["T"]["lista"][i][1]] = "T"
+                d.dades[d.jugador["mapa"]]["T"]["vida"][cont] == 4
+                mapaActual[d.dades[d.jugador["mapa"]]["T"]["lista"][cont][0]][d.dades[d.jugador["mapa"]]["T"]["lista"][cont][1]] = "T"
             cont = cont + 1
+    
+    return mapaActual
 
 def agua(): #Interacion con el agua #-Falata que reinicie lo del pez
     if d.pesca == True: #Comprueba si ya has conseguido un pez
@@ -1380,13 +1385,14 @@ def limpiar_pantalla():
 #----------------------- Cambiar Mapa -------------------
 
 
-def cambiar_mapa(select, mapaActual): # Funcion para cambiar de mapa
+def cambiar_mapa(select, mapaActual, posicionfallo): # Funcion para cambiar de mapa
     if select[6:].lower() == "hyrule":
         if mapaActual == d.localitzacions["death"] or mapaActual == d.localitzacions["gerudo"]:
             mapaActual = d.localitzacions["hyrule"]
             d.texto_prompt.append("You are now in" + select[6:])
             d.jugador["mapa"] = "hyrule"
             zorro_visivilidad() 
+            reiniciar_pesca()
             posicion_player = d.dades["hyrule"]["position"]
             return mapaActual, posicion_player
         
@@ -1405,6 +1411,7 @@ def cambiar_mapa(select, mapaActual): # Funcion para cambiar de mapa
             d.texto_prompt.append("You are now in " + select[6:])
             d.jugador["mapa"] = "gerudo"
             zorro_visivilidad() 
+            reiniciar_pesca()
             posicion_player = d.dades["gerudo"]["position"]
             return mapaActual, posicion_player
 
@@ -1421,7 +1428,8 @@ def cambiar_mapa(select, mapaActual): # Funcion para cambiar de mapa
             mapaActual = d.localitzacions["death"]
             d.texto_prompt.append("You are now in " + select[6:])
             d.jugador["mapa"] = "death"
-            zorro_visivilidad() 
+            zorro_visivilidad()
+            reiniciar_pesca() 
             posicion_player = d.dades["death"]["position"]
             return mapaActual, posicion_player
         
@@ -1439,6 +1447,7 @@ def cambiar_mapa(select, mapaActual): # Funcion para cambiar de mapa
             d.texto_prompt.append("You are now in " + select[6:])
             d.jugador["mapa"] = "necluda"
             zorro_visivilidad() 
+            reiniciar_pesca()
             posicion_player = d.dades["necluda"]["position"]
             return mapaActual, posicion_player
         
@@ -1464,25 +1473,22 @@ def cambiar_mapa(select, mapaActual): # Funcion para cambiar de mapa
             d.mapa_anterior = "necluda"
 
         if d.win == False:
+            d.jugador["mapa"] = "castle"
             mapaActual = d.localitzacions["castle"]
             d.texto_prompt.append("You are now in " + select[6:])
             posicion_player = d.dades["castle"]["position"]
             return mapaActual, posicion_player
 
         else:
+            d.jugador["mapa"] = "castle_win"
             mapaActual = d.localitzacions["castle_win"]
             d.texto_prompt.append("You are now in " + select[6:])
             posicion_player = d.dades["castle"]["position"]
             return mapaActual, posicion_player
-        
-
-def contador_arbol():
-    cont = 0
-    for i in d.objetos_gerudo["T"]["contador"]:
-        if i > 0:
-            d.objetos_gerudo["T"]["contador"][cont] = i - 1
-            
-        cont = cont + 1 
+    
+    else:
+        d.texto_prompt.append("Invalid option")
+        return mapaActual, posicionfallo
         
         
 # Lo dejo comentado por si no da tiempo, no esta perfecto, hay que modificar algunas cosas     
@@ -1566,3 +1572,78 @@ def imprimir_partidas_guardadas():
     
     imprimirmapa_menu(saved_games)
 
+
+
+
+def atacar(posicionplayer, mapaActual, objeto):
+    if mapaActual[posicionplayer[0]+1][posicionplayer[1]] == objeto:
+        if objeto == "E":
+            enemigos()
+            return True
+        
+        elif objeto == "F":
+            zorro()
+            return True
+        
+        elif objeto == "T":
+            arbol()
+            return True
+        
+        elif objeto == " ":
+            cesped()
+            return True
+        
+            
+    elif mapaActual[posicionplayer[0]-1][posicionplayer[1]] == objeto:
+        if objeto == "E":
+            enemigos()
+            return True
+        
+        elif objeto == "F":
+            zorro()
+            return True
+        
+        elif objeto == "T":
+            arbol()
+            return True
+        
+        elif objeto == " ":
+            cesped()
+            return True
+        
+    elif mapaActual[posicionplayer[0]][posicionplayer[1]+1] == objeto:
+        if objeto == "E":
+            enemigos()
+            return True
+        
+        elif objeto == "F":
+            zorro()
+            return True
+        
+        elif objeto == "T":
+            arbol()
+            return True
+        
+        elif objeto == " ":
+            cesped()
+            return True
+        
+    elif mapaActual[posicionplayer[0]][posicionplayer[1]-1] == objeto:
+        if objeto == "E":
+            enemigos()
+            return True
+        
+        elif objeto == "F":
+            zorro()
+            return True
+        
+        elif objeto == "T":
+            arbol()
+            return True
+        
+        elif objeto == " ":
+            cesped()
+            return True
+
+    else:
+        return False
