@@ -196,7 +196,7 @@ def moverPersonaje(mapaActual, select, posicionplayer):
 
     elif select[0:8] == "go right":
        
-        if posicionplayer[1] + int(select[8:]) > 57:
+        if posicionplayer[1] + int(select[9:]) > 57:
             
 
             return["Invalid action1"], posicionplayer[0], posicionplayer[1]
@@ -790,12 +790,9 @@ def cesped(): #Interacion con el cesped
        d.texto_prompt.append("The grass didn't give you anything")
 
 def arbol(): #Interacion con el arbol
-    arbol_encontrado = 0
+    arbol_encontrado = 10
     for j in range(len(d.dades[d.jugador["mapa"]]["T"]["lista"])): #Busca en la lista del arbol cual esta cerca y que tenga toda la vida
         if d.jugador["posicion"][0] == d.dades[d.jugador["mapa"]]["T"]["lista"][j][0] and d.jugador["posicion"][1]-1 == d.dades[d.jugador["mapa"]]["T"]["lista"][j][1]:
-            if not d.dades[d.jugador["mapa"]]["T"]["vida"][j] == 0:
-                arbol_encontrado = j
-        elif d.jugador["posicion"][0]-1 == d.dades[d.jugador["mapa"]]["T"]["lista"][j][0] and d.jugador["posicion"][1] == d.dades[d.jugador["mapa"]]["T"]["lista"][j][1]:
             if not d.dades[d.jugador["mapa"]]["T"]["vida"][j] == 0:
                 arbol_encontrado = j
         elif d.jugador["posicion"][0] == d.dades[d.jugador["mapa"]]["T"]["lista"][j][0] and d.jugador["posicion"][1]+1 == d.dades[d.jugador["mapa"]]["T"]["lista"][j][1]:
@@ -804,7 +801,11 @@ def arbol(): #Interacion con el arbol
         elif d.jugador["posicion"][0]+1 == d.dades[d.jugador["mapa"]]["T"]["lista"][j][0] and d.jugador["posicion"][1] == d.dades[d.jugador["mapa"]]["T"]["lista"][j][1]:
             if not d.dades[d.jugador["mapa"]]["T"]["vida"][j] == 0:
                 arbol_encontrado = j
-    if arbol_encontrado == 0: #si no encuentra nigun arbol con vida no te deja hacer nada
+        elif d.jugador["posicion"][0] != 10:
+            if d.jugador["posicion"][0]-1 == d.dades[d.jugador["mapa"]]["T"]["lista"][j][0] and d.jugador["posicion"][1] == d.dades[d.jugador["mapa"]]["T"]["lista"][j][1]:
+                if not d.dades[d.jugador["mapa"]]["T"]["vida"][j] == 0:
+                    arbol_encontrado = j
+    if arbol_encontrado == 10: #si no encuentra nigun arbol con vida no te deja hacer nada
         d.texto_prompt.append("No trees available")
     else:
         porcentaje = random.randint(1,100)

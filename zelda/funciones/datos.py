@@ -8,7 +8,7 @@ jugador = {"nombre" : " ",
            "escudo_actual" : " ", 
            "vidas_max": 3, 
            "vidas" : 3 ,
-           "mapa" : " "}
+           "mapa" : "gerudo"}
 
 
 inventarioArmas = {}
@@ -141,7 +141,7 @@ dades = { "death" : {"position" : (9,2),
          "hyrule" : {"position" : (8,11),
                      "F":{"posicion":[9,52]}, 
                      "C":{"posicion":[3,17]},
-                     "T":{"lista":[[4,6],[5,9],[8,48],[9,46]],"vida":[4,4,4,4],"contador":[0,0,0,0]},
+                     "T":{"lista":[[4,6],[8,48],[9,46]],"vida":[4,4,4,4],"contador":[0,0,0,0]},
                      "~":{"posicion":[[1,37],[2,37],[2,38],[2,39],[2,40],[2,41],[2,42],[3,43],[3,44],[3,45],
                                     [3,46],[3,47],[3,48],[2,49],[3,52],[3,53],[3,54],[4,55],[4,56],[4,57]]},
                      "Santuarios":{"posicion":[[6,44,"S0",False,0],[9,31,"S1",False,1]]},

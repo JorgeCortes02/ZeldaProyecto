@@ -14,7 +14,8 @@ print(d.localitzacions["hyrule"][5][9])
 '''for j in range(len(d.objetos["objetos_hyrule"]["T"]["lista"])):
     print(j)'''
 
-print(d.dades["hyrule"]["E"]["posicion"][1][3])
+for i in range(len(d.dades[d.jugador["mapa"]]["T"]["lista"])):
+    print(i)
 
 '''f.movimientoCercano("Go to S0")
 f.obtenerMapa(d.localitzacions["hyrule"],d.jugador["posicion"])
