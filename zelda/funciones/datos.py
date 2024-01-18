@@ -7,12 +7,12 @@ import funciones.funciones as f
 
 
 jugador = {"nombre" : " ",
-           "posicion" : [8,54], 
+           "posicion" : [8,31], 
            "arma_actual": " ", 
            "escudo_actual" : " ", 
            "vidas_max": 3, 
            "vidas" : 3 ,
-           "mapa" : " "}
+           "mapa" : "hyrule"}
 
 
 inventarioArmas = {}
@@ -88,7 +88,7 @@ localitzacions = {
         ["*"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","C"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","~","~","~","~","~","~"," "," "," ","~","~","~","~","~","~","*"],
         ["*"," "," "," "," "," ","T"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","~","~","~","*"],
         ["*"," "," "," "," "," "," "," "," ","T"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","E","9"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","*"],
-        ["*"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","S","0"," "," "," "," "," "," "," "," "," "," "," "," ","*"],
+        ["*"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","S","0","?"," "," "," "," "," "," "," "," "," "," "," ","*"],
         ["*"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","*"],
         ["*"," "," "," "," "," "," "," "," "," "," ","!"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","T"," "," "," "," "," "," "," "," "," ","*"],
         ["*"," ","O","O"," "," "," "," ","O","O","O","O","O"," "," "," "," "," "," "," "," ","E","1"," "," "," "," "," "," "," "," ","S","1","?"," "," "," "," "," "," "," "," "," "," "," "," ","T"," ","M"," "," "," ","F"," "," "," "," "," ","*"],
@@ -186,7 +186,7 @@ dades = { "death" : {"position" : (9,2),
                       "M":{"posicion":[[1,22,False,5],[9,23,False,6],[2,51,False,7]]},
                       "E":{"posicion":[[2,10,7,1],[6,38,8,2]]}}}
 
-
+name = "link"
 
 frases_ganon = ["Ganon is powerful, are you sure you can defeat him?", "Ganon's strength is supernatural, Zelda fought with bravery.", "To Ganon, you are like a fly, find a weak spot and attack.", "Ganon will not surrender easily.", "Ganon has fought great battles, is an expert fighter.", "Link, transform your fears into strengths.", "Keep it up, Link, Ganon can't hold out much longer.", "Link, history repeats itself, Ganon can be defeated.", "Think of all the warriors who have tried before.", "You fight for the weaker ones, Link, persevere."]
 
@@ -319,7 +319,7 @@ diccionarioMenuPrincipal = {
         ["*  Ganon. He has taken over the Guardians and filled Hyrule with monsters.    *"],
         ["*                                                                             *"],
         ["*                                                                             *"],
-        [f"*  But a young man named {jugador['name']} has just awakened and".ljust(78)+"*"],
+        [f"*  But a young man named {name} has just awakened and".ljust(78)+"*"],
         ["*  must reclaim the Guardians to defeat Ganon and save Hyrule.                *"],
         ["*                                                                             *"],
         ["*                                                                             *"],

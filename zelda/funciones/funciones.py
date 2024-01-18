@@ -897,40 +897,40 @@ def zorro(): #Interacion con el zorro
         d.texto_prompt.append("You got meat")
         d.inventarioComida["Meat"] += 1
 
-def abrir_santuario(): #Interacion con el santuario
-    for i in range(d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"]):
+'''def abrir_santuario(): #Interacion con el santuario
+    for i in range(len(d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"])):
         if d.jugador["posicion"][0] == d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][0] and d.jugador["posicion"][1]+1 == d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][1]:
-            if d.dades[d.jugador["mapa"]]["Santuarios"][i][3] == True: #Comprueba si esta abierto
+            if d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][3] == True: #Comprueba si esta abierto
                 d.texto_prompt.append("You already opened this sanctuary")
             else: #Lo abre y añade 1 de vida maxima y escribe en el prompt
-                d.dades[d.jugador["mapa"]]["Santuarios"][i][3] = True
-                d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][1]+2] == " "
+                d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][3] = True
+                d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][1]+2] = " "
                 d.jugador["vidas_max"] += 1
                 d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
         elif d.jugador["posicion"][0] == d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][0] and d.jugador["posicion"][1]-1 == d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][1]:
-            if d.dades[d.jugador["mapa"]]["Santuarios"][i][3] == True: #Comprueba si esta abierto
+            if d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][3] == True: #Comprueba si esta abierto
                 d.texto_prompt.append("You already opened this sanctuary")
             else: #Lo abre y añade 1 de vida maxima y escribe en el prompt
                 d.dades[d.jugador["mapa"]]["Santuarios"][i][3] = True
-                d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][1]+2] == " "
+                d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][1]+2] = " "
                 d.jugador["vidas_max"] += 1
                 d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
         elif d.jugador["posicion"][0]+1 == d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][0] and d.jugador["posicion"][1] == d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][1]:
-            if d.dades[d.jugador["mapa"]]["Santuarios"][i][3] == True: #Comprueba si esta abierto
+            if d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][3] == True: #Comprueba si esta abierto
                 d.texto_prompt.append("You already opened this sanctuary")
             else: #Lo abre y añade 1 de vida maxima y escribe en el prompt
-                d.dades[d.jugador["mapa"]]["Santuarios"][i][3] = True
-                d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][1]+2] == " "
+                d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][3] = True
+                d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][1]+2] = " "
                 d.jugador["vidas_max"] += 1
                 d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
         elif d.jugador["posicion"][0]-1 == d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][0] and d.jugador["posicion"][1] == d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][1]:
-            if d.dades[d.jugador["mapa"]]["Santuarios"][i][3] == True: #Comprueba si esta abierto
+            if d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][3] == True: #Comprueba si esta abierto
                 d.texto_prompt.append("You already opened this sanctuary")
             else: #Lo abre y añade 1 de vida maxima y escribe en el prompt
-                d.dades[d.jugador["mapa"]]["Santuarios"][i][3] = True
-                d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][1]+2] == " "
+                d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][3] = True
+                d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][1]+2] = " "
                 d.jugador["vidas_max"] += 1
-                d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
+                d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")'''
 
 def cofre_cerrar_sword(): #Comprueba si en tu inventario tienes alguna espada
     if d.dades["hyrule"]["M"]["posicion"][0][2] == True and d.dades["gerudo"]["M"]["posicion"][0][2] == True and d.dades["gerudo"]["M"]["posicion"][1][2] == True:
