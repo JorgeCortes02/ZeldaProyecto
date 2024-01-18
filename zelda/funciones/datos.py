@@ -5,7 +5,7 @@ import funciones.funciones as f
 
 #Atributos jugador
 
-jugador = {"name" : " ","posicion" : [3,9], "arma_actual": "", "escudo_actual" : "Shield998", "vidas_max": 3, "vidas" : 3, "bloodMoonCoutdown": 25, "totalBloodMoon" : 0, "mActual" : "Hyrule", "id_game" : 16 }
+jugador = {"name" : " ","posicion" : [3,9], "arma_actual": "", "escudo_actual" : "Shield998", "vidas_max": 3, "vidas" : 3, "bloodMoonCoutdown": 25, "totalBloodMoon" : 0, "mapa" : "Hyrule", "id_game" : 16 }
 
 
 dict_tipos = {"Shield" : {"total": 0, "minUsos" : 0}, "Wood Shield" : {"total": 0, "minUsos" : 0}, "Sword" : {"total": 0, "minUsos" : 0}, "Wood Sword" : {"total": 0, "minUsos" : 0} }

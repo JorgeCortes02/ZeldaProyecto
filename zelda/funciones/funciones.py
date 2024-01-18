@@ -600,7 +600,7 @@ def imprimirmapa_menu(mapa):
 
 #Equipa el arma que le pasemos en el Select.
 def equiparArma(Select):
-    armaMenosUsos()
+    conteoInventario()
     Select = Select.lower()
     #Comprueba si hay armas en el inventario
     if len(d.inventarioArmas )== 0:
