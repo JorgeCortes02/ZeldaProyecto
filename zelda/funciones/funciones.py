@@ -8,7 +8,7 @@ def mostrarInventario(select):
     
         inventario = [" * * * * Inventory * \n",
                         "*\n".rjust(21),
-                        " Link".ljust(12) + "  {0}/{1}".format(d.jugador["vidas"],d.jugador["vidas_max"]).rjust(6) + " * \n",
+                        " Link".ljust(12) + "  {0}/{1}".format(d.jugador["vidas"], d.jugador["vidas_max"]).rjust(6) + " * \n",
                         " Blod Moon in ".ljust(10) + "  {0}".format(25).rjust(4) + " * \n",
                         "* \n".rjust(22),
                         " Equipement ".ljust(19) + "* \n",
@@ -130,24 +130,9 @@ def introducirUserInicial(posicionUser, playermap):
     playermap[posicionUser[0]][posicionUser[1]] = "X"
     return playermap
 
-inventario1 = mostrarInventario(d.select)
+#inventario1 = mostrarInventario(d.select)
             
 def imprimirmapa(mapaActual):
-    santuarios_abiertos = []
-    for i in d.dades:
-        if i != "castle":
-            matriz = d.dades[i]["Santuarios"]["posicion"]
-            for j in matriz:
-                if j[3] == True:
-                    santuarios_abiertos.append(j[2] + "?")
-                
-    for linea in range(len(mapaActual)-1): # Este for va comprueba los santuarios abiertos, si hay santuario abierto, en el mapa se elimina el interrogante que tiene al lado
-        for elemento in range(len(mapaActual[linea])):
-            if mapaActual[linea][elemento] in santuarios_abiertos:
-                mapaActual[linea][elemento] = mapaActual[linea][elemento][:2] + " "
-                
-    
-    
     mapa = ""
     contadorInventario = 0
     for element in mapaActual:
@@ -157,7 +142,7 @@ def imprimirmapa(mapaActual):
                 
         
 
-        mapa += inventario1[contadorInventario]
+        mapa += mostrarInventario(d.select)[contadorInventario]
         
         if contadorInventario < 10:
             contadorInventario += 1
@@ -422,7 +407,56 @@ def menu_principal():
             prompt()
             opc = input("What to do now? ") #Guardar la opcion
             if opc.lower() == "continue": #Si se elige continuar partida
-                print("Continue")
+                back = False
+                while back == False:
+                    limpiar_pantalla()
+                    imprimir_partidas_guardadas()
+                    prompt()
+                    opc = input("What to do now? ")
+                    
+                    if opc.lower() == "help":
+                        limpiar_pantalla()
+                        help(d.diccionarioMenuPrincipal["help_saved_games"])
+                    
+                    elif opc.lower() == "back":
+                        back = True
+
+                    elif opc[:4].lower() == "play":
+                        if opc[5].isdigit():
+                            guardado = False
+                            for i in d.datosPartidas:
+                                if i[0] == int(opc[5]):
+                                    # cargar los datos guardados
+                                    #selectAndChargePartida(opc[5])
+                                    # Funcion para guardar que tiene jorge en su rama
+                                    guardado = True
+                            
+                            if guardado == False:
+                                d.texto_prompt.append("Invalid option")  
+                        
+                        else:
+                            d.texto_prompt.append("Invalid option")
+                    
+                    elif opc[:5].lower() == "erase": 
+                        if opc[6].isdigit():
+                            eliminado = False
+                            for i in d.datosPartidas:
+                                if i[0] == int(opc[6]):
+                                    # eliminar los datos guardados
+                                    d.datosPartidas.remove(i) 
+                                    eliminado = True
+                                    if len(d.datosPartidas) == 0:
+                                        d.datosPartidas.append("No hay partidas guardadas, inicia una nueva.")
+                            
+                            if eliminado == False:
+                                d.texto_prompt.append("Invalid option")  
+                        
+                        else:
+                            d.texto_prompt.append("Invalid option") 
+                    
+                    else:
+                        d.texto_prompt.append("Invalid option")      
+                
 
             elif opc.lower() == "new game": #Si se elige nueva partida
                 salir = funcion_new_game()
@@ -648,14 +682,14 @@ def equiparArma(Select):
             
 def desequiparArma(Select):
 
-    if "sword" in Select.lower():
+    if "Sword" in Select and (d.jugador["arma_actual"] != "" or d.jugador["arma_actual"] != " "):
         d.jugador["arma_actual"] = " "
         return "Espada desequipado."
-    elif "shield" in Select.lower():
-        d.jugador["arma_actual"] = " "
+    elif "Shield" in Select and (d.jugador["escudo_actual"] != "" or d.jugador["escudo_actual"] != " "):
+        d.jugador["escudo_actual"] = " "
         return "Escudo desequipado."
     else:
-        return "Incorrect Option"
+        return "Este elemento no estaba equipado."
     
 
 def conteoInventario():
@@ -791,34 +825,90 @@ def zorro(): #Interacion con el zorro
     d.texto_prompt.append("You got meat")
     #-Falta hacer que se añada 1 de carne al inventario
 
-def abrir_santuario(posicionplayer): #Interacion con el santuario
-    posicion_igual = False
-    for i in d.dades[d.jugador["mapa"]]["Santuario"][0]:
-        santuario = [d.dades[d.jugador["mapa"]]["Santuario"][i][0], d.dades[d.jugador["mapa"]]["Santuario"][i][1]]
-        
-        posicionplayer[0] += 1
-        if posicionplayer == santuario:
-            posicion_igual = True
-        
-        posicionplayer[0] -= 1
-        if posicionplayer == santuario:
-            posicion_igual = True
-        
-        posicionplayer[1] += 1
-        if posicionplayer == santuario:
-            posicion_igual = True
-        
-        posicionplayer[1] -= 1
-        if posicionplayer == santuario:
-            posicion_igual = True
-        
-        if posicion_igual == True:
-            if d.dades[d.jugador["mapa"]]["Santuario"][i][3] == True: #Comprueba si esta abierto
+'''def abrir_santuario(): #Interacion con el santuario
+    for i in range(len(d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"])):
+        if d.jugador["posicion"][0] == d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][0] and d.jugador["posicion"][1]+1 == d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][1]:
+            if d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][3] == True: #Comprueba si esta abierto
                 d.texto_prompt.append("You already opened this sanctuary")
-            else: #Lo abre y añade 1 de vida maxima y escribe en el prompt
-                d.dades[d.jugador["mapa"]]["Santuario"][i][3] = True
+            else: #Lo abre y a単ade 1 de vida maxima y escribe en el prompt
+                d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][3] = True
+                d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][1]+2] = " "
                 d.jugador["vidas_max"] += 1
                 d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
+        elif d.jugador["posicion"][0] == d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][0] and d.jugador["posicion"][1]-1 == d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][1]:
+            if d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][3] == True: #Comprueba si esta abierto
+                d.texto_prompt.append("You already opened this sanctuary")
+            else: #Lo abre y a単ade 1 de vida maxima y escribe en el prompt
+                d.dades[d.jugador["mapa"]]["Santuarios"][i][3] = True
+                d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][1]+2] = " "
+                d.jugador["vidas_max"] += 1
+                d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
+        elif d.jugador["posicion"][0]+1 == d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][0] and d.jugador["posicion"][1] == d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][1]:
+            if d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][3] == True: #Comprueba si esta abierto
+                d.texto_prompt.append("You already opened this sanctuary")
+            else: #Lo abre y a単ade 1 de vida maxima y escribe en el prompt
+                d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][3] = True
+                d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][1]+2] = " "
+                d.jugador["vidas_max"] += 1
+                d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
+        elif d.jugador["posicion"][0]-1 == d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][0] and d.jugador["posicion"][1] == d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][1]:
+            if d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][3] == True: #Comprueba si esta abierto
+                d.texto_prompt.append("You already opened this sanctuary")
+            else: #Lo abre y a単ade 1 de vida maxima y escribe en el prompt
+                d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][3] = True
+                d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][1]+2] = " "
+                d.jugador["vidas_max"] += 1'''
+                
+                
+def abrir_santuario(posicionplayer, mapaActual): #Interacion con el santuario
+    posicion_igual = False
+    for i in d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"]:
+        santuario = [i[0], i[1]]
+        
+        
+        if [posicionplayer[0]+1, posicionplayer[1]] == santuario:
+            posicion_igual = True
+            if i[3] == True: #Comprueba si esta abierto
+                d.texto_prompt.append("You already opened this sanctuary")
+        
+            else: #Lo abre y añade 1 de vida maxima y escribe en el prompt
+                i[3] = True
+                d.jugador["vidas_max"] = d.jugador["vidas_max"] + 1
+                d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
+                mapaActual[i[0]][i[1]+2] = " "
+        
+        elif [posicionplayer[0]-1, posicionplayer[1]] == santuario:
+            posicion_igual = True
+            if i[3] == True: #Comprueba si esta abierto
+                d.texto_prompt.append("You already opened this sanctuary")
+                
+            else: #Lo abre y añade 1 de vida maxima y escribe en el prompt
+                i[3] = True
+                d.jugador["vidas_max"] = d.jugador["vidas_max"] + 1
+                d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
+                mapaActual[i[0]][i[1]+2] = " "
+        
+        elif [posicionplayer[0], posicionplayer[1]+1] == santuario:
+            posicion_igual = True
+            if i[3] == True: #Comprueba si esta abierto
+                d.texto_prompt.append("You already opened this sanctuary")
+
+            else: #Lo abre y añade 1 de vida maxima y escribe en el prompt
+                i[3] = True
+                d.jugador["vidas_max"] = d.jugador["vidas_max"] + 1
+                d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
+                mapaActual[i[0]][i[1]+2] = " "
+        
+        elif [posicionplayer[0], posicionplayer[1]-1] == santuario:
+            posicion_igual = True
+            if i[3] == True: #Comprueba si esta abierto
+                d.texto_prompt.append("You already opened this sanctuary")
+
+            else: #Lo abre y añade 1 de vida maxima y escribe en el prompt
+                i[3] = True
+                d.jugador["vidas_max"] = d.jugador["vidas_max"] + 1
+                d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
+                mapaActual[i[0]][i[1]+2] = " "
     
     if posicion_igual == False:
         d.texto_prompt.append("Invalid Option")
@@ -1229,3 +1319,32 @@ def trucos(select):
     
     else:
         d.texto_prompt.append("Invalid option")
+        
+        
+
+def imprimir_partidas_guardadas():
+    saved_games = [["* Saved games * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"]]
+    
+    if len(d.datosPartidas) > 1:
+        for i in d.datosPartidas:
+            saved_games.append(["* {}: {} {} - {}, {}".format(i[0], i[4], "18:37:15", i[1], i[9]).ljust(72) + "♥ {}/{} *".format(i[5], i[6])])
+        
+        while len(saved_games) != 11:
+            saved_games.append(["* ".ljust(78) + "*"]) 
+    
+    elif len(d.datosPartidas) == 1 and type(d.datosPartidas[0]) == list:
+        for i in d.datosPartidas:
+            saved_games.append(["* {}: {} {} - {}, {}".format(i[0], i[4], "18:37:15", i[1], i[9]).ljust(72) + "♥ {}/{} *".format(i[5], i[6])])
+        
+        while len(saved_games) != 11:
+            saved_games.append(["* ".ljust(78) + "*"])
+    
+    else:
+        saved_games.append(["* {}".format(d.datosPartidas[0]).ljust(78) + "*"])
+        
+        while len(saved_games) != 11:
+            saved_games.append(["* ".ljust(78) + "*"]) 
+        
+    saved_games.append(["* Play X, Erase X, Help, Back * * * * * * * * * * * * * * * * * * * * * * * * *"])
+    
+    imprimirmapa_menu(saved_games)
