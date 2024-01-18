@@ -3,12 +3,12 @@ import funciones.funciones as f
 
 posicionplayer = [8,19]
 mapaActual = []
-playermap = d.gerudo
+playermap = d.localitzacions["hyrule"]
 mapa = ""
 retorno = []
 
 
-mapaActual = f.obtenerMapa(d.death, posicionplayer)
+mapaActual = f.obtenerMapa(d.localitzacions["hyrule"], posicionplayer)
 print(f.menuInferior(mapaActual))
 
 

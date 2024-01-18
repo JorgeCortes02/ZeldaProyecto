@@ -44,8 +44,3 @@ diccio = {"vegetable123456":{"nombre":"vegetable"}, "vegetable654321":{"nombre":
 #         print("Invalid action")
 
 
-
-while True:
-    f.frase_ganon()
-    input("")
-
