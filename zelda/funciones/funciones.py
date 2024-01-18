@@ -1,12 +1,63 @@
 import funciones.datos as d
 import random
 mapaActual = []
+#Contea la cantidad de cada tipo de arma.
+def conteoInventario():
+
+    for element in d.inventarioArmas:
+       
+        if "Wood Shield" in element:
+              d.dict_tipos["Wood Shield"]["total"] += 1
+
+            
+        elif  "Shield" in element and not "Wood" in element:
+
+            d.dict_tipos["Shield"]["total"] += 1
+        elif "Wood Sword" in element:
+
+            d.dict_tipos["Wood Sword"]["total"] += 1        
+
+        elif  "Sword" in element and not "Wood" in element:
+
+            d.dict_tipos["Sword"]["total"] += 1
+
+    
+    woodSwort = 5
+    woodShield = 5
+    swort = 9
+    shield = 9
+
+    #Calcula cual es el arma con menos usos.    
+    for element in d.inventarioArmas:
+
+        if "Wood Swort" in element and d.inventarioArmas[element]["usos"] < woodSwort:
+
+            d.dict_tipos["Wood Swort"]["minUsos"] = element
+            woodSwort = d.inventarioArmas[element]["usos"]
+
+        elif "Swort" in element and d.inventarioArmas[element]["usos"] < swort:
+
+             d.dict_tipos["Swort"]["minUsos"] = element
+             swort = d.inventarioArmas[element]["usos"]
+
+        elif "Wood Shield" in element and d.inventarioArmas[element]["usos"] < woodShield:
+
+            d.dict_tipos["Wood Shield"]["minUsos"] = element
+            woodShield = d.inventarioArmas[element]["usos"]
+
+        elif "Shield" in element and d.inventarioArmas[element]["usos"] < shield:
+
+           d.dict_tipos["Shield"]["minUsos"] = element
+           swort = d.inventarioArmas[element]["usos"]
+
+
+
 
 #Funcion mostrar inventario.
 def mostrarInventario(Select):
     
     #Le pasamos un select el cual define que ventana del inventario muestra, necesitara que s ele pase por defecto show inventory main para que lo muestre.
-    if Select.lower(Select) == "show inventory main": 
+    if Select.lower() == "show inventory main": 
         #Sumaremos la candidad de armas y la cantidad total de alimentos que tenemos.
         sumArmas = 0
 
@@ -28,8 +79,8 @@ def mostrarInventario(Select):
                             " Blod Moon in ".ljust() + "  {0}".format(25 - d.jugador["bloodMoonCoutdown"]).rjust(4) + " * \n",
                             "* \n".rjust(22),
                             " Equipement ".ljust(19) + "* \n",
-                            "{0}".format(d.jugador["escudo_actual"]).rjust(18) + " * \n",
-                            "{0}".format(d.jugador["arma_actual"]).rjust(18) + " * \n",
+                            "{0}".format(d.inventarioArmas[d.jugador["escudo_actual"]]["tipo"]).rjust(18) + " * \n",
+                            "{0}".format(d.inventarioArmas[d.jugador["arma_actual"]]["tipo"]).rjust(18) + " * \n",
                             
                             "* \n".rjust(22),
                             " Food".ljust(15) + "{0}".format(sumComida).rjust(3) +  " *\n",
@@ -39,7 +90,7 @@ def mostrarInventario(Select):
         return inventario
     
     #Muestra el inventario de comida
-    elif Select.lower() == "Show inventory Food":
+    elif Select.lower() == "show inventory food":
 
         inventario = [" * * * * * *  Food * \n",
                         "*\n".rjust(21),
@@ -55,37 +106,68 @@ def mostrarInventario(Select):
         return inventario
 
     #Muestra el inventario de armas.
-    elif Select.lower() == "Show inventory Weapons":
-
+    elif Select.lower() == "show inventory weapons":
+        #Calculamos cuales son las armas de cada tipo que tienen menos usos para poder imprimir los usos de sa arma.
+        conteoInventario()
         inventario = [" * * * * *  Weapons * \n",
                         "*\n".rjust(22),
                         "*\n".rjust(22),
-                        " Wood Sword" + "{0}/{1}".format(d.inventarioArmas["0"]["usos"], d.dict_tipos[d.inventarioArmas["Wood Sword"]]).rjust(8) + " * \n"]
+        ]
         
-        #Cada if determina como será esa linea en función de si el arma esta equipada o no.              
-        if d.arma_actual == "Wood Sword":
-                
-                inventario += "  (equiped)" + "*\n".rjust(11)," Sword" + "{0}/{1}".format(d.inventarioArmas[d.jugador["arma_actual"]["usos"]], d.dict_tipos[d.inventarioArmas[d.jugador["arma_actual"]["tipo"]]]).rjust(13) + " * \n",
+        #Cada if determina como será esa linea en función de si el arma esta equipada o no.   
+         
+        if d.dict_tipos["Wood Sword"]["total"] == 0:
+            inventario += " Wood Sword" + "0/0".rjust(8) + " * \n","* \n".rjust(23),
         else:
-                inventario += "* \n".rjust(23)," Sword" + "{0}".format("5/2").rjust(13) + " * \n",
 
-        if d.arma_actual == "Sword":
-                
-                inventario += "  (equiped)" + "*\n".rjust(11)," Wood shield" + "{0}/{1}".format(d.inventarioArmas[d.jugador["escudo_actual"]["usos"]], d.dict_tipos[d.inventarioArmas[d.jugador["arma_actual"]["tipo"]]]).rjust(7) + " * \n",
+            inventario += " Wood Sword" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Wood Sword"]["minUsos"]]["usos"], d.dict_tipos[d.inventarioArmas["Wood Sword"]]).rjust(8) + " * \n",
+        
+            if d.inventarioArmas[d.jugador["arma_actual"]]["tipo"] == "Wood Sword":
+                    
+                    inventario += "  (equiped)" + "*\n".rjust(11),
+            else:
+                    inventario += "* \n".rjust(23),
+        
+        if d.dict_tipos["Sword"]["total"] == 0:
+            inventario += " Sword" + "0/0".rjust(13) + " * \n","* \n".rjust(23),
         else:
-                inventario += "* \n".rjust(23)," Wood shield" + "{0}".format("5/2").rjust(7) + " * \n",              
 
-        if d.escudo_actual == "Swood Shield":
-                
-                inventario += "  (equiped)" + "*\n".rjust(11)," Shield" + "{0}".format("5/2").rjust(12) + " * \n",
+            inventario +=" Sword" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Sword"]["minUsos"]]["usos"], d.dict_tipos[d.inventarioArmas["Sword"]]).rjust(13) + " * \n",
+       
+            if d.jugador["arma_actual"] in d.inventarioArmas and d.inventarioArmas[d.jugador["arma_actual"]]["tipo"] == "Sword":
+                    
+                    inventario += "  (equiped)" + "*\n".rjust(11),
+            else:
+                    inventario += "* \n".rjust(23),
+        
+        if d.dict_tipos["Wood Shield"]["total"] == 0:
+            
+            inventario += " Wood shield" + "0/0".rjust(7) + " * \n",  "* \n".rjust(23),            
+       
         else:
-                inventario += "* \n".rjust(23)," Shield" + "{0}".format("5/2").rjust(12) + " * \n",          
+
+            inventario += " Wood shield" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Wood Shield"]["minUsos"]]["usos"], d.dict_tipos[d.inventarioArmas["Wood Shield"]]).rjust(7) + " * \n",              
+        
+            if d.jugador["escudo_actual"] in d.inventarioArmas and d.inventarioArmas[d.jugador["escudo_actual"]]["tipo"] == "Swood Shield":
+                    
+                    inventario += "  (equiped)" + "*\n".rjust(11),
+            else:
+                    inventario += "* \n".rjust(23)," Shield" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Shield"]["minUsos"]]["usos"], d.dict_tipos[d.inventarioArmas["Shield"]]).rjust(12) + " * \n",          
+        
+        if d.dict_tipos["Shield"]["total"] == 0:
+            
+            inventario += " Shield" + "0/0".rjust(12) + " * \n",  "* \n".rjust(23),         
+       
+        else:
+
+            inventario += " Shield" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Shield"]["minUsos"]]["usos"], d.dict_tipos[d.inventarioArmas["Shield"]]).rjust(12) + " * \n",          
+        
                             
-        if d.escudo_actual == "Shield":
-                
-                inventario += "  (equiped)" + "*\n".rjust(11),"*".rjust(22)
-        else:
-                inventario += "* \n".rjust(23),"*\n".rjust(8),"*".rjust(22)                          
+            if d.jugador["escudo_actual"] in d.inventarioArmas and d.inventarioArmas[d.jugador["escudo_actual"]]["tipo"] == "Shield":
+                    
+                    inventario += "  (equiped)" + "*\n".rjust(11),"*".rjust(22)
+            else:
+                    inventario += "* \n".rjust(23),"*\n".rjust(8),"*".rjust(22)                          
                         
     return inventario                
    
@@ -519,7 +601,7 @@ def imprimirmapa_menu(mapa):
 
 #Equipa el arma que le pasemos en el Select.
 def equiparArma(Select):
-
+    armaMenosUsos()
     Select = Select.lower()
     #Comprueba si hay armas en el inventario
     if len(d.inventarioArmas )== 0:
@@ -528,62 +610,23 @@ def equiparArma(Select):
     #Comprueba el arma que le hemos pedido equipar y guarda el tipo de arma en la misma variable select.
     if Select.find("wood shield") != -1:
 
-        if Select[Select.find("wood shield"): ]:
-
-            Select = Select[Select.find("wood shield"): ]
+        d.jugador["escudo_actual"] = d.dict_tipos["Wood Shield"]["minUsos"]
     
     elif Select.find("shield") != -1 and Select.find("wood") == -1:
 
-        if Select[Select.find("shield"): ] :
-
-             Select = Select[Select.find("shield"): ]
+        d.jugador["escudo_actual"] = d.dict_tipos["Shield"]["minUsos"]
 
     elif Select.find("wood sword") != -1:
 
-        if Select[Select.find("wood sword"): ]:
-
-            Select = Select[Select.find("wood shield"): ]
+       d.jugador["arma_actual"] = d.dict_tipos["Wood Sword"]["minUsos"]
 
      
     elif Select.find("sword") != -1 and Select.find("wood") == -1:
 
-        if Select[Select.find("sword"): ] :
-
-             Select = Select[Select.find("sword"): ]
+        d.jugador["arma_actual"] = d.dict_tipos["Sword"]["minUsos"]
+        
     
-    #Creamos una lista con todas las armas del inventario
-    lista_dict = list(d.inventarioArmas.keys())
-    
-    #Eliminamos aquellos cuyo tipo no coincida con nuestra peticion.
-    for element in lista_dict:
-
-        if d.inventarioArmas[element]["tipo"].lower() != Select:
-
-            lista_dict.remove(element)
-
-    if len(lista_dict)== 0:
-
-        return "No dispones de este arma en tu inventario."
-    #Ordenamos la lista de armas del inventario en base a su uso
-    for i in range(len(lista_dict)):
-        for j in range(0, len(lista_dict)-i-1):
-            if lista_dict[j]["usos"] > lista_dict[j+1]["usos"]:
-                lista_dict[j]["usos"], lista_dict[j+1]["usos"] = lista_dict[j+1]["usos"], lista_dict[j]["usos"]
-    
-    #Comprobamos que no este ya equipada el arma y  en el caso contrario, la equipamos.
-    if "shield" in lista_dict[0]:
-        if d.jugador["escudo_actual"].lower() == lista_dict[0]:
-            return "You already have {lista_dict[0]} equiped"
-        else:
-            d.jugador["escudo_actual"] = lista_dict[0]
-    
-    elif "sword" in lista_dict[0]:
-
-        if d.jugador["arma_actual"].lower() == lista_dict[0]:
-            return "You already have {lista_dict[0]} equiped"
-        else:
-            d.jugador["escudo_actual"] = lista_dict[0]
-            return "You already have {lista_dict[0]} equiped"
+  
         
             
 def desequiparArma(Select):
@@ -598,24 +641,6 @@ def desequiparArma(Select):
     else:
         return "Este elemento no estaba equipado."
     
-#Contea la cantidad de cada tipo de arma.
-def conteoInventario():
-
-    for element in d.inventarioArmas:
-       
-        if "Wood Shield" in element:
-              d.dict_tipos["Wood Shield"]["total"] += 1
-            
-        elif  "Shield" in element and not "Wood" in element:
-
-            d.dict_tipos["Shield"]["total"] += 1
-        elif "Wood Sword" in element:
-
-            d.dict_tipos["Wood Sword"]["total"] += 1        
-
-        elif  "Sword" in element and not "Wood" in element:
-
-            d.dict_tipos["Sword"]["total"] += 1
 
 #---------Encontrar mapa ----------------------
 
