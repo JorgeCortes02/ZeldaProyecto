@@ -6,49 +6,49 @@ def conteoInventario():
 
     for element in d.inventarioArmas:
        
-        if "Wood Shield" in element:
+        if d.inventarioArmas[element]["tipo"] == "Wood Shield":
               d.dict_tipos["Wood Shield"]["total"] += 1
 
             
-        elif  "Shield" in element and not "Wood" in element:
+        elif  d.inventarioArmas[element]["tipo"] == "Shield":
 
             d.dict_tipos["Shield"]["total"] += 1
-        elif "Wood Sword" in element:
+        elif d.inventarioArmas[element]["tipo"] == "Wood Sword":
 
             d.dict_tipos["Wood Sword"]["total"] += 1        
 
-        elif  "Sword" in element and not "Wood" in element:
+        elif  d.inventarioArmas[element]["tipo"] == "Sword":
 
             d.dict_tipos["Sword"]["total"] += 1
 
     
-    woodSwort = 5
-    woodShield = 5
-    swort = 9
-    shield = 9
+    woodSwort = 10
+    woodShield = 6
+    swort = 10
+    shield = 6
 
     #Calcula cual es el arma con menos usos.    
-    for element in d.inventarioArmas:
+    for element1 in d.inventarioArmas:
 
-        if "Wood Swort" in element and d.inventarioArmas[element]["usos"] < woodSwort:
+        if d.inventarioArmas[element1]["tipo"] == "Wood Sword" and d.inventarioArmas[element1]["usos"] < woodSwort:
 
-            d.dict_tipos["Wood Swort"]["minUsos"] = element
-            woodSwort = d.inventarioArmas[element]["usos"]
+            d.dict_tipos["Wood Sword"]["minUsos"] = element1
+            woodSwort = d.inventarioArmas[element1]["usos"]
 
-        elif "Swort" in element and d.inventarioArmas[element]["usos"] < swort:
+        elif d.inventarioArmas[element1]["tipo"] == "Sword" and d.inventarioArmas[element1]["usos"] < swort:
 
-             d.dict_tipos["Swort"]["minUsos"] = element
-             swort = d.inventarioArmas[element]["usos"]
+             d.dict_tipos["Sword"]["minUsos"] = element1
+             swort = d.inventarioArmas[element1]["usos"]
 
-        elif "Wood Shield" in element and d.inventarioArmas[element]["usos"] < woodShield:
+        elif d.inventarioArmas[element1]["tipo"] == "Wood Shield" and d.inventarioArmas[element1]["usos"] < woodShield:
 
-            d.dict_tipos["Wood Shield"]["minUsos"] = element
-            woodShield = d.inventarioArmas[element]["usos"]
+            d.dict_tipos["Wood Shield"]["minUsos"] = element1
+            woodShield = d.inventarioArmas[element1]["usos"]
 
-        elif "Shield" in element and d.inventarioArmas[element]["usos"] < shield:
+        elif d.inventarioArmas[element1]["tipo"] == "Shield" and d.inventarioArmas[element1]["usos"] < shield:
 
-           d.dict_tipos["Shield"]["minUsos"] = element
-           swort = d.inventarioArmas[element]["usos"]
+           d.dict_tipos["Shield"]["minUsos"] = element1
+           shield = d.inventarioArmas[element1]["usos"]
 
 
 
@@ -120,9 +120,9 @@ def mostrarInventario(Select):
             inventario += " Wood Sword" + "0/0".rjust(8) + " * \n","* \n".rjust(23),
         else:
 
-            inventario += " Wood Sword" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Wood Sword"]["minUsos"]]["usos"], d.dict_tipos[d.inventarioArmas["Wood Sword"]]).rjust(8) + " * \n",
+            inventario += " Wood Sword" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Wood Sword"]["minUsos"]]["usos"], d.dict_tipos["Wood Sword"]["total"]).rjust(8) + " * \n",
         
-            if d.inventarioArmas[d.jugador["arma_actual"]]["tipo"] == "Wood Sword":
+            if d.jugador["arma_actual"] in d.inventarioArmas and d.inventarioArmas[d.jugador["arma_actual"]]["tipo"] == "Wood Sword":
                     
                     inventario += "  (equiped)" + "*\n".rjust(11),
             else:
@@ -132,7 +132,7 @@ def mostrarInventario(Select):
             inventario += " Sword" + "0/0".rjust(13) + " * \n","* \n".rjust(23),
         else:
 
-            inventario +=" Sword" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Sword"]["minUsos"]]["usos"], d.dict_tipos[d.inventarioArmas["Sword"]]).rjust(13) + " * \n",
+            inventario +=" Sword" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Sword"]["minUsos"]]["usos"], d.dict_tipos["Sword"]["total"]).rjust(13) + " * \n",
        
             if d.jugador["arma_actual"] in d.inventarioArmas and d.inventarioArmas[d.jugador["arma_actual"]]["tipo"] == "Sword":
                     
@@ -146,21 +146,20 @@ def mostrarInventario(Select):
        
         else:
 
-            inventario += " Wood shield" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Wood Shield"]["minUsos"]]["usos"], d.dict_tipos[d.inventarioArmas["Wood Shield"]]).rjust(7) + " * \n",              
+            inventario += " Wood shield" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Wood Shield"]["minUsos"]]["usos"], d.dict_tipos["Wood Shield"]["total"]).rjust(7) + " * \n",              
         
             if d.jugador["escudo_actual"] in d.inventarioArmas and d.inventarioArmas[d.jugador["escudo_actual"]]["tipo"] == "Swood Shield":
                     
                     inventario += "  (equiped)" + "*\n".rjust(11),
             else:
-                    inventario += "* \n".rjust(23)," Shield" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Shield"]["minUsos"]]["usos"], d.dict_tipos[d.inventarioArmas["Shield"]]).rjust(12) + " * \n",          
-        
+                    inventario += "* \n".rjust(23),
         if d.dict_tipos["Shield"]["total"] == 0:
             
             inventario += " Shield" + "0/0".rjust(12) + " * \n",  "* \n".rjust(23),         
        
         else:
 
-            inventario += " Shield" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Shield"]["minUsos"]]["usos"], d.dict_tipos[d.inventarioArmas["Shield"]]).rjust(12) + " * \n",          
+            inventario += " Shield" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Shield"]["minUsos"]]["usos"], d.dict_tipos["Shield"]["total"]).rjust(12) + " * \n",          
         
                             
             if d.jugador["escudo_actual"] in d.inventarioArmas and d.inventarioArmas[d.jugador["escudo_actual"]]["tipo"] == "Shield":

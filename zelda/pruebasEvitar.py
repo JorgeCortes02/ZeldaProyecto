@@ -6,7 +6,7 @@ mapaActual = []
 playermap = d.localitzacions["hyrule"]
 mapa = ""
 retorno = []
-print(len(d.inventario1))
+print(d.dict_tipos)
 print(d.dict_tipos)
 mapaActual = f.obtenerMapa(d.localitzacions["hyrule"])
 print(f.menuInferior(mapaActual))
