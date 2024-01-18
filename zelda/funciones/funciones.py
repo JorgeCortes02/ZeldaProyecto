@@ -263,7 +263,7 @@ def moverPersonaje(mapaActual, select, posicionplayer):
                    
     elif select[0:7] == "go down":
         
-        if posicionplayer[0] + int(select[8:]) > len(mapaActual)-2:
+        if posicionplayer[0] + int(select[8:]) > len(mapaActual)-1:
 
             return["Invalid action1"], posicionplayer[0], posicionplayer[1]
         else:
@@ -1294,9 +1294,15 @@ def menuInferior(mapa):
     
     menuInferior = "* Exit, Show, Go, Eat"
 
-    if mapa[posicion[0]+1][posicion[1]] == "T" or mapa[posicion[0]-1][posicion[1]] == "T" or mapa[posicion[0]+1][posicion[1]+1]  == "T" or mapa[posicion[0]+1][posicion[1]-1]  == "T" or mapa[posicion[0]][posicion[1]+1]  == "T" or mapa[posicion[0]][posicion[1]-1]  == "T" or mapa[posicion[0]-1][posicion[1]+1] or mapa[posicion[0]-1][posicion[1]-1]  == "T":
+    if posicion[0] == 10:
+        if mapa[posicion[0]+1][posicion[1]] == "T" or mapa[posicion[0]+1][posicion[1]+1]  == "T" or mapa[posicion[0]+1][posicion[1]-1]  == "T" or mapa[posicion[0]][posicion[1]+1]  == "T" or mapa[posicion[0]][posicion[1]-1]  == "T":
 
-        menuInferior += ", Attack"
+            menuInferior += ", Attack"
+    
+    else:
+        if mapa[posicion[0]+1][posicion[1]] == "T" or mapa[posicion[0]-1][posicion[1]] == "T" or mapa[posicion[0]+1][posicion[1]+1]  == "T" or mapa[posicion[0]+1][posicion[1]-1]  == "T" or mapa[posicion[0]][posicion[1]+1]  == "T" or mapa[posicion[0]][posicion[1]-1]  == "T" or mapa[posicion[0]-1][posicion[1]+1] or mapa[posicion[0]-1][posicion[1]-1]  == "T":
+
+            menuInferior += ", Attack"
 
     '''
     if menuInferior.find("Attack") == -1:
