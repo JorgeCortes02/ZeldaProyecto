@@ -28,7 +28,8 @@ Create table game_weapons(
 game_id int,
 weapon_name varchar(15),
 equiped boolean,
-lives_remaining int 
+lives_remaining int, 
+tipo varchar(25)
 
 );
 
@@ -49,8 +50,8 @@ game_id int,
 region varchar(20),
 num int,
 xpos int,
-ypos int,
-lives_remaining int
+ypos int
+
 
 );
 
@@ -60,8 +61,8 @@ game_id int,
 region varchar(20),
 num int,
 xpos int,
-ypos int,
-lives_remaining int 
+ypos int
+
 
 );
 

@@ -1107,5 +1107,8 @@ def movimientoCercano(Select):
 #hay que añadir en el menu la comprobacion de que sea mayor a 3 y menor a 10 caracteres y que sea alphanumerico     
 def renamePlayer(newName):
 
-   
+   d.jugador["name"] = newName
+
+
+
 
