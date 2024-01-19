@@ -19,13 +19,8 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
         #    exit = True
         #    return True
         
-        if d.jugador["mapa"] == "hyrule":
-            posicionplayer = d.jugador["posicion"] # guardamos posicion inicial
-            mapaActual = d.localitzacions["hyrule"] # guardamos mapa inicial
-        
-        else:
-            posicionplayer = d.jugador["posicion"]
-            mapaActual = d.localitzacions[d.jugador["mapa"]]
+        posicionplayer = d.jugador["posicion"]
+        mapaActual = d.localitzacions[d.jugador["mapa"]]
             
         f.zorro_visivilidad() # miramos visibilidad del zorro
         final = False 
@@ -74,8 +69,8 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                 d.jugador["vidas"] = 3 # Se reinician las vidas
                 return False # Devolvemos falso para no terminar el bulce y que vuelva a aparecer el menu principal
             
-            mapaActual = f.obtenerMapa(mapaActual, posicionplayer) # Se imprime el mapa, y se deja al jugador en su posicion
-            f.menuInferior(mapaActual) # se imprime el menu inferior
+            mapaActual = f.obtenerMapa(mapaActual) # Se imprime el mapa, y se deja al jugador en su posicion
+            f.menuInferior() # se imprime el menu inferior
             f.prompt() # se imprime el prompt
             select = input("What to do now? ") # select de la accion a realizar
             d.texto_prompt.append(select) # se añade el la accion al prompt
@@ -118,7 +113,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     f.mostrar_mapa()
                 
                 elif select[0:3].lower() == "eat": # Consumir comida
-                    f.comer()
+                    f.comer(select)
                 
                 elif select[0:11].lower() == "unequip the": # Desequipar arma
                     # Sigue saliendo en el inventario, y si no tienes espada o escudo equipado te tiene que dar un texto de error.
@@ -129,7 +124,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     f.equiparArma(select)
                 
                 elif select[0:4].lower() == "cook":  # Cocinar comida, cuando estas al lado de una C
-                    f.cocinar(select, d.inventarioComida)
+                    f.cocinar(select, d.inventarioComida, mapaActual)
                     
                 elif select.lower() == "attack": # Atacar a un enemigo, cuando esta a tu lado
                     ejecutado = False
@@ -145,7 +140,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                         ejecutado = f.atacar(posicionplayer, mapaActual, " ")
                 
                 elif select.lower() == "fish": # Pescar cuando estas al lado de una ~
-                    f.agua() # Falta añadir al inventario el pez conseguido
+                    f.agua(mapaActual) # Falta añadir al inventario el pez conseguido
                 
                 elif select.lower() == "open sanctuary": # Abrir un santuario, cuando estas al lado de un santuario 
                     f.abrir_santuario(posicionplayer, mapaActual) # Hay que crear un diccionario o lista con los santuarios y que cuando abres uno se ponga en True en el diccionario.
@@ -158,10 +153,10 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     
                 
                 elif select[0:5].lower() == "go by": # moverte al objeto indicado más cercano a donde estas
-                    f.movimientoCercano(select)
+                    f.movimientoCercano(select, mapaActual)
                 
                 elif select.lower() == "open chest": # Abrir cofre, cuando estas al lado de una M o W
-                    f.cofre() 
+                    f.cofre(mapaActual) 
                     
                 elif select[0:5].lower() == "cheat": # Trucos
                     # Falta terminar la funcion de trucos
