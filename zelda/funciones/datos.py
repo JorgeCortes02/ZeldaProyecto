@@ -5,7 +5,7 @@ import funciones.funciones as f
 
 #Atributos jugador
 
-jugador = {"name" : " ","posicion" : [3,9], "arma_actual": "", "escudo_actual" : "Shield998", "vidas_max": 3, "vidas" : 3, "bloodMoonCoutdown": 25, "totalBloodMoon" : 0, "mapa" : "Hyrule", "id_game" : 16 }
+jugador = {"name" : " ","posicion" : [3,9], "arma_actual": "", "escudo_actual" : "Shield998", "vidas_max": 3, "vidas" : 3, "bloodMoonCoutdown": 25, "totalBloodMoon" : 0, "mapa" : "Hyrule", "id_game" : 3 }
 
 
 dict_tipos = {"Shield" : {"total": 0, "minUsos" : 0}, "Wood Shield" : {"total": 0, "minUsos" : 0}, "Sword" : {"total": 0, "minUsos" : 0}, "Wood Sword" : {"total": 0, "minUsos" : 0} }
@@ -13,11 +13,11 @@ dict_tipos = {"Shield" : {"total": 0, "minUsos" : 0}, "Wood Shield" : {"total": 
 inventarioArmas = {"Shield998" :{"tipo" :"Shield", "usos": 4}, "Wood Shield98" :{"tipo" :"Wood Shield", "usos": 4},"Wood Shield798" :{"tipo" :"Wood Shield", "usos": 3}, "Wood Sword98" :{"tipo" :"Wood Sword", "usos": 4}, "Sword989" :{"tipo" :"Sword", "usos": 9}}
 
 inventarioComida = { "Vegetables" : 0, 
-                    "Fish" : 0, 
-                    "Meat" : 0, 
+                    "Fish" : 20, 
+                    "Meat" : 2, 
                     "Salads" : 0, 
                     "Pescatarian" : 0, 
-                    "Roasted" : 0 }
+                    "Roasted" : 1 }
 
 
 
