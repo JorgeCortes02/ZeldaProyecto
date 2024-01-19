@@ -1,95 +1,196 @@
 import funciones.datos as d
 import random
 mapaActual = []
+#Contea la cantidad de cada tipo de arma.
+def conteoInventario():
 
-def mostrarInventario(select):
+
+    for element in d.inventarioArmas:
+       
+        if d.inventarioArmas[element]["tipo"] == "Wood Shield":
+              d.dict_tipos["Wood Shield"]["total"] += 1
+
+            
+        elif  d.inventarioArmas[element]["tipo"] == "Shield":
+
+            d.dict_tipos["Shield"]["total"] += 1
+        elif d.inventarioArmas[element]["tipo"] == "Wood Sword":
+
+            d.dict_tipos["Wood Sword"]["total"] += 1        
+
+        elif  d.inventarioArmas[element]["tipo"] == "Sword":
+
+            d.dict_tipos["Sword"]["total"] += 1
+
     
-    if select.lower() == "show inventory main":
+    woodSwort = 10
+    woodShield = 6
+    swort = 10
+    shield = 6
+
+    #Calcula cual es el arma con menos usos.    
+    for element1 in d.inventarioArmas:
+
+        if d.inventarioArmas[element1]["tipo"] == "Wood Sword" and d.inventarioArmas[element1]["usos"] < woodSwort:
+
+            d.dict_tipos["Wood Sword"]["minUsos"] = element1
+            woodSwort = d.inventarioArmas[element1]["usos"]
+
+        elif d.inventarioArmas[element1]["tipo"] == "Sword" and d.inventarioArmas[element1]["usos"] < swort:
+
+             d.dict_tipos["Sword"]["minUsos"] = element1
+             swort = d.inventarioArmas[element1]["usos"]
+
+        elif d.inventarioArmas[element1]["tipo"] == "Wood Shield" and d.inventarioArmas[element1]["usos"] < woodShield:
+
+            d.dict_tipos["Wood Shield"]["minUsos"] = element1
+            woodShield = d.inventarioArmas[element1]["usos"]
+
+        elif d.inventarioArmas[element1]["tipo"] == "Shield" and d.inventarioArmas[element1]["usos"] < shield:
+
+           d.dict_tipos["Shield"]["minUsos"] = element1
+           shield = d.inventarioArmas[element1]["usos"]
+
+
+
+
+#Funcion mostrar inventario.
+def mostrarInventario(Select):
     
+    #Le pasamos un select el cual define que ventana del inventario muestra, necesitara que s ele pase por defecto show inventory main para que lo muestre.
+    if Select.lower() == "show inventory main": 
+        #Sumaremos la candidad de armas y la cantidad total de alimentos que tenemos.
+        sumArmas = 0
+
+        sumComida = 0
+
+        for element in d.inventarioArmas:
+
+            sumArmas += 1
+
+        for element in d.inventarioComida:
+
+            sumComida += d.inventarioComida[element]
+
+
+      #Muestra el main del inventario
         inventario = [" * * * * Inventory * \n",
-                        "*\n".rjust(21),
-                        " Link".ljust(12) + "  {0}/{1}".format(d.jugador["vidas"],d.jugador["vidas_max"]).rjust(6) + " * \n",
-                        " Blod Moon in ".ljust(10) + "  {0}".format(25).rjust(4) + " * \n",
-                        "* \n".rjust(22),
-                        " Equipement ".ljust(19) + "* \n",
-                         "{0}".format(d.jugador["escudo_actual"]).rjust(18) + " * \n",
-                         "{0}".format(d.jugador["arma_actual"]).rjust(18) + " * \n",
-                         
-                         "* \n".rjust(22),
-                         " Food".ljust(15) + "{0}".format(5).rjust(3) +  " *\n",
-                         " Weapons".ljust(15) + "{0}".format(5).rjust(3) +  " *"
-                         ]
-                        
+                            "*\n".rjust(21),
+                            " Link".ljust(12) + "  {0}/{1}".format(d.jugador["vidas"],d.jugador["vidas_max"]).rjust(6) + " * \n",
+                            " Blod Moon in ".ljust() + "  {0}".format(25 - d.jugador["bloodMoonCoutdown"]).rjust(4) + " * \n",
+                            "* \n".rjust(22),
+                            " Equipement ".ljust(19) + "* \n",
+                            "{0}".format(d.inventarioArmas[d.jugador["escudo_actual"]]["tipo"]).rjust(18) + " * \n",
+                            "{0}".format(d.inventarioArmas[d.jugador["arma_actual"]]["tipo"]).rjust(18) + " * \n",
+                            
+                            "* \n".rjust(22),
+                            " Food".ljust(15) + "{0}".format(sumComida).rjust(3) +  " *\n",
+                            " Weapons".ljust(15) + "{0}".format(sumArmas).rjust(3) +  " *"
+                            ]
+                            
         return inventario
     
-    elif select.lower() == "show inventory food":
+    #Muestra el inventario de comida
+    elif Select.lower() == "show inventory food":
 
         inventario = [" * * * * * *  Food * \n",
                         "*\n".rjust(21),
                         "*\n".rjust(21),
-                        " Vegetables".ljust(16) + "10".rjust(2) + " * \n",
-                         " Fish".ljust(16) + "10".rjust(2) + " * \n",
-                         " Meat".ljust(16) + "10".rjust(2) + " * \n",
+                        " Vegetables".ljust(16) + "{0}".format(d.inventarioComida["Vegetables"]).rjust(2) + " * \n",
+                         " Fish".ljust(16) + "{0}".format(d.inventarioComida["Fish"]).rjust(2) + " * \n",
+                         " Meat".ljust(16) + "{0}".format(d.inventarioComida["Meat"]).rjust(2) + " * \n",
                          "* \n".rjust(22),
-                         " Salads".ljust(16) + "10".rjust(2) + " * \n",
-                         " Pescatarian".ljust(16) + "10".rjust(2) + " * \n",
-                         " Roasted".ljust(16) + "10".rjust(2) + " *"]
+                         " Salads".ljust(16) + "{0}".format(d.inventarioComida["Salads"]).rjust(2) + " * \n",
+                         " Pescatarian".ljust(16) + "{0}".format(d.inventarioComida["Pescatarian"]).rjust(2) + " * \n",
+                         " Roasted".ljust(16) + "{0}".format(d.inventarioComida["Roasted"]).rjust(2) + " *"]
 
         return inventario
 
-    elif select.lower() == "show inventory weapons":
-    
+    #Muestra el inventario de armas.
+    elif Select.lower() == "show inventory weapons":
+        #Calculamos cuales son las armas de cada tipo que tienen menos usos para poder imprimir los usos de sa arma.
+        conteoInventario()
         inventario = [" * * * * *  Weapons * \n",
-                    "*\n".rjust(22),
-                    "*\n".rjust(22),
-                    " Wood Sword" + "{0}".format("5/2").rjust(8) + " * \n"]
+                        "*\n".rjust(22),
+                        "*\n".rjust(22),
+        ]
+        
+        #Cada if determina como será esa linea en función de si el arma esta equipada o no.   
+         
+        if d.dict_tipos["Wood Sword"]["total"] == 0:
+            inventario += " Wood Sword" + "0/0".rjust(8) + " * \n","* \n".rjust(23),
+        else:
+
+            inventario += " Wood Sword" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Wood Sword"]["minUsos"]]["usos"], d.dict_tipos["Wood Sword"]["total"]).rjust(8) + " * \n",
+        
+            if d.jugador["arma_actual"] in d.inventarioArmas and d.inventarioArmas[d.jugador["arma_actual"]]["tipo"] == "Wood Sword":
                     
-        if d.jugador["arma_actual"] == "Wood Sword":
-            
-            inventario += "  (equiped)" + "*\n".rjust(11)," Sword" + "{0}".format("5/2").rjust(13) + " * \n",
+                    inventario += "  (equiped)" + "*\n".rjust(11),
+            else:
+                    inventario += "* \n".rjust(23),
+        
+        if d.dict_tipos["Sword"]["total"] == 0:
+            inventario += " Sword" + "0/0".rjust(13) + " * \n","* \n".rjust(23),
         else:
-            inventario += "* \n".rjust(23)," Sword" + "{0}".format("5/2").rjust(13) + " * \n",
 
-        if d.jugador["arma_actual"] == "Sword":
+            inventario +=" Sword" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Sword"]["minUsos"]]["usos"], d.dict_tipos["Sword"]["total"]).rjust(13) + " * \n",
+       
+            if d.jugador["arma_actual"] in d.inventarioArmas and d.inventarioArmas[d.jugador["arma_actual"]]["tipo"] == "Sword":
+                    
+                    inventario += "  (equiped)" + "*\n".rjust(11),
+            else:
+                    inventario += "* \n".rjust(23),
+        
+        if d.dict_tipos["Wood Shield"]["total"] == 0:
             
-            inventario += "  (equiped)" + "*\n".rjust(11)," Wood shield" + "{0}".format("5/2").rjust(7) + " * \n",
+            inventario += " Wood shield" + "0/0".rjust(7) + " * \n",  "* \n".rjust(23),            
+       
         else:
-            inventario += "* \n".rjust(23)," Wood shield" + "{0}".format("5/2").rjust(7) + " * \n",              
 
-        if d.jugador["escudo_actual"] == "Swood Shield":
+            inventario += " Wood shield" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Wood Shield"]["minUsos"]]["usos"], d.dict_tipos["Wood Shield"]["total"]).rjust(7) + " * \n",              
+        
+            if d.jugador["escudo_actual"] in d.inventarioArmas and d.inventarioArmas[d.jugador["escudo_actual"]]["tipo"] == "Swood Shield":
+                    
+                    inventario += "  (equiped)" + "*\n".rjust(11),
+            else:
+                    inventario += "* \n".rjust(23),
+        if d.dict_tipos["Shield"]["total"] == 0:
             
-            inventario += "  (equiped)" + "*\n".rjust(11)," Shield" + "{0}".format("5/2").rjust(12) + " * \n",
+            inventario += " Shield" + "0/0".rjust(12) + " * \n",  "* \n".rjust(23),         
+       
         else:
-            inventario += "* \n".rjust(23)," Shield" + "{0}".format("5/2").rjust(12) + " * \n",          
+
+            inventario += " Shield" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Shield"]["minUsos"]]["usos"], d.dict_tipos["Shield"]["total"]).rjust(12) + " * \n",          
+        
+                            
+            if d.jugador["escudo_actual"] in d.inventarioArmas and d.inventarioArmas[d.jugador["escudo_actual"]]["tipo"] == "Shield":
+                    
+                    inventario += "  (equiped)" + "*\n".rjust(11),"*".rjust(22)
+            else:
+                    inventario += "* \n".rjust(23),"*\n".rjust(8),"*".rjust(22)                          
                         
-        if d.jugador["escudo_actual"] == "Shield":
-            
-            inventario += "  (equiped)" + "*\n".rjust(11),"*".rjust(22)
-        else:
-            inventario += "* \n".rjust(23),"*\n".rjust(8),"*".rjust(22)                          
-                    
-        return inventario                
+    return inventario                
    
   
-
+#Esta funcion inserta un objeto en el inventario. Solo necesitaremos pasarle el nombre del objeto y el diccionario al cual queremos meterlo (InventarioComida o inventario Arma)
 def añadirInventario(objeto, diccionario):
 
     if objeto == "Wood Sword":
         
-        diccionario[objeto] = {"nombre": "Wood Sword", "Usos": 5 }
+        diccionario[objeto] = {"tipo": "Wood Sword", "Usos": 5 }
         
     elif objeto == "Wood Shield":
     
-        diccionario[objeto] = {"nombre": "Wood Shield", "Usos": 5 }
+        diccionario[objeto] = {"tipo": "Wood Shield", "Usos": 5 }
     
     elif objeto == "Shield":
         
-        diccionario[objeto] = {"nombre": "Shield", "Usos": 9 }
+        diccionario[objeto] = {"tipo": "Shield", "Usos": 9 }
         
     
     elif objeto == "Sword":
         
-        diccionario[objeto] = {"nombre": "Sword", "Usos": 9 }
+        diccionario[objeto] = {"tipo": "Sword", "Usos": 9 }
 
     elif objeto == "Vegetable":
         
@@ -114,8 +215,8 @@ def añadirInventario(objeto, diccionario):
 
 '''
 A esta función le pasamos los datos del mapa en cuestion y los copia en otra variable para poder editar este segundo mapa sin que el original se vea afectado.'''
-def obtenerMapa(playermap,posicionplayer):
-    mapa = ""
+def obtenerMapa(playermap):
+    
     mapaActual = []
     for element1 in playermap:
             '''Lo hacemos de este modo porque si aplicamos el copy sobre la lista general del mapa, al modificar las listas internas que corresponden
@@ -125,13 +226,21 @@ def obtenerMapa(playermap,posicionplayer):
     imprimirmapa(mapaActual)
     return mapaActual
 
+#Esta funcion simplemente introduce al personaje en la posicon del mapa que le pasemos.
+#El mapa que le hemos de pasar será el mapa que ya hayamos copiado y con el que estemos trabajando.
+#Hay que pasarle la posicion de inicio del nmapa al que vayamos ya que tambien cambia la posicion actual en el diccionario del Jugador.
+
 def introducirUserInicial(posicionUser, playermap):
 
     playermap[posicionUser[0]][posicionUser[1]] = "X"
+    d.jugador["posicion"][0] = posicionUser[0]
+    d.jugador["posicion"][1] = posicionUser[1]
     return playermap
 
-#inventario1 = mostrarInventario(d.select)
-            
+
+
+#Esta función imprime tanto el mapa como el inventario lateral.
+
 def imprimirmapa(mapaActual):
     mapa = ""
     contadorInventario = 0
@@ -139,32 +248,36 @@ def imprimirmapa(mapaActual):
 
         for element1 in element:
                 mapa += str(element1)
-                
-        
-
+               
         mapa += mostrarInventario(d.select)[contadorInventario]
+
         
         if contadorInventario < 10:
             contadorInventario += 1
     
     print(mapa)
        
+#Gestiona el movimiento del personaje por el mapa.
 
 def moverPersonaje(mapaActual, select, posicionplayer):
     
-    
+    select = select.lower()
+
     if select[0:7] == "go left":
-        print(posicionplayer[1], posicionplayer[1] - int(select[8:]) )
+       
+        #Comprobamos que la posicion a la que queremos mover al monigote este dentro de los limites del mapa.
         if posicionplayer[1] - int(select[8:]) < 0:
-            
+            #En caso de ser incorrecto, devolvemos una tupla con un mensaje de error y la posicion en la que se quedará en personaje.
             return["Invalid action1"], posicionplayer[0], posicionplayer[1]
         else:
+            #Cojemos la posicion actual del personaje en el eje que lo vamos a mover y después en otra variable guardamos la posición a la que irá
             int1 = posicionplayer[1]
             int2 = posicionplayer[1] - int(select[8:])
             diferent = True
            
+           #Este bucle recorre cada una de las posiciones entre ambos puntos para comprobar que todas son cesped.
             for i in range (int1, int2, -1):
-                
+                #Comprobamos que al verificar que el personaje no pase por encima de objetos al moverse, la funcion no cuente la posicion donde estaba el personaje porque sino saltaría error.
                 if int(select[8:]) == 1:
 
                     if mapaActual[posicionplayer[0]][i-1] != " ":
@@ -172,12 +285,14 @@ def moverPersonaje(mapaActual, select, posicionplayer):
                         return["Invalid action"], posicionplayer[0], posicionplayer[1]
                     
                     else:
-
+                        #Ponemos la posicion donde estaba el personaje como espacio vacio de nuevo.
                         mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
+                        #Colocamos la nueva X
                         mapaActual[posicionplayer[0]][posicionplayer[1] - int(select[8:])] = "X"
+                        #Devolvemos el mapa actualizado y las nuevas posiciones.
                         return mapaActual, posicionplayer[0], posicionplayer[1] - int(select[8:])
                 else:
-
+                    #Si no solo se ha de mover una posicion y la posicion anterior no es " " marcara un booleano como false, lo que hará que en el siguiente if no intente moverlo.
                     if mapaActual[posicionplayer[0]][i-1] != " ":
                         
                         diferent = False
@@ -458,7 +573,7 @@ def movimientoCercano(Select):
             d.jugador["posicion"][1] = element[1] 
             d.localitzacions[d.jugador["mapa"]][element[0]+1][element[1]] = "X"
 
-
+#Es lo mismo que la anterior pero limitando el moviemiento a izquierda y derecha.
 def moverPersonajeGanon(mapaActual, select, posicionplayer):
     
     
@@ -730,142 +845,48 @@ def imprimirmapa_menu(mapa):
         
 #--------------- Inventario ----------------------       
 
-def añadirInventario(objeto, diccionario):
-
-        numeroRandom = "" 
-
-        for i in range(3):
-
-            numeroRandom += str(random.randint(0,9))
-
-        if objeto == "Wood Sword":
-            
-            diccionario[objeto + numeroRandom] = {"tipo": "Wood Sword", "Usos": 5 }
-            
-        elif objeto == "Wood Shield":
-        
-            diccionario[objeto + numeroRandom] = {"tipo": "Wood Shield", "Usos": 5 }
-        
-        elif objeto == "Shield":
-            
-            diccionario[objeto + numeroRandom] = {"tipo": "Shield", "Usos": 9 }
-            
-        
-        elif objeto == "Sword":
-            
-            diccionario[objeto + numeroRandom] = {"tipo": "Sword", "Usos": 9 }
-
+#Equipa el arma que le pasemos en el Select.
 def equiparArma(Select):
-
+    conteoInventario()
+    Select = Select.lower()
+    #Comprueba si hay armas en el inventario
     if len(d.inventarioArmas )== 0:
 
-        print("No hay armas en el inventario")
+        return "No hay armas en el inventario" 
+    #Comprueba el arma que le hemos pedido equipar y guarda el tipo de arma en la misma variable select.
+    if Select.find("wood shield") != -1:
 
-    if Select.find("Wood Shield") != -1:
-
-        if Select[Select.find("Wood Shield"): ]:
-
-            Select = Select[Select.find("Wood Shield"): ]
+        d.jugador["escudo_actual"] = d.dict_tipos["Wood Shield"]["minUsos"]
     
-    elif Select.find("Shield") != -1 and Select.find("Wood") == -1:
+    elif Select.find("shield") != -1 and Select.find("wood") == -1:
 
-        if Select[Select.find("Shield"): ] :
+        d.jugador["escudo_actual"] = d.dict_tipos["Shield"]["minUsos"]
 
-             Select = Select[Select.find("Shield"): ]
+    elif Select.find("wood sword") != -1:
 
-    elif Select.find("Wood Sword") != -1:
-
-        if Select[Select.find("Wood Sword"): ]:
-
-            Select = Select[Select.find("Wood Shield"): ]
+       d.jugador["arma_actual"] = d.dict_tipos["Wood Sword"]["minUsos"]
 
      
-    elif Select.find("Sword") != -1 and Select.find("Wood") == -1:
+    elif Select.find("sword") != -1 and Select.find("wood") == -1:
 
-        if Select[Select.find("Sword"): ] :
-
-             Select = Select[Select.find("Sword"): ]
-    
-    lista_dict = list(d.inventarioArmas.keys())
-    
-
-    if len(lista_dict)== 0:
-
-        print ("No dispones de este arma en tu inventario.")
-
-    for i in range(len(lista_dict)):
-        for j in range(0, len(lista_dict)-i-1):
-            if lista_dict[j]["Usos"] > lista_dict[j+1]["Usos"]:
-                lista_dict[j]["Usos"], lista_dict[j+1]["Usos"] = lista_dict[j+1]["Usos"], lista_dict[j]["Usos"]
-
-    if "Shield" in lista_dict[0]:
-        if d.jugador["escudo_actual"] == lista_dict[0]:
-            return "You already have {lista_dict[0]} equiped"
-        else:
-            d.jugador["escudo_actual"] = lista_dict[0]
-    
-    elif "Sword" in lista_dict[0]:
-
-        if d.jugador["arma_actual"] == lista_dict[0]:
-            return "You already have {lista_dict[0]} equiped"
-        else:
-            d.jugador["escudo_actual"] = lista_dict[0]
-            return "You already have {lista_dict[0]} equiped"
+        d.jugador["arma_actual"] = d.dict_tipos["Sword"]["minUsos"]
+        
+  
         
             
 def desequiparArma(Select):
 
-    if "Sword" in Select and (d.jugador["arma_actual"] != "" or d.jugador["arma_actual"] != " "):
+    Select= Select.lower()
+    if "sword" in Select and (d.jugador["arma_actual"] != "" or d.jugador["arma_actual"] != " "):
         d.jugador["arma_actual"] = " "
         return "Espada desequipado."
-    elif "Shield" in Select and (d.jugador["escudo_actual"] != "" or d.jugador["escudo_actual"] != " "):
+    elif "shield" in Select and (d.jugador["escudo_actual"] != "" or d.jugador["escudo_actual"] != " "):
         d.jugador["escudo_actual"] = " "
         return "Escudo desequipado."
     else:
         return "Este elemento no estaba equipado."
     
 
-def conteoInventario():
-
-    for element in d.inventarioArmas:
-
-        if "Wood Shield" in element:
-              d.dict_tipos["Wood Shield"]["total"] += 1
-            
-        elif  "Shield" in element and not "Wood" in element:
-
-            d.dict_tipos["Shield"]["total"] += 1
-        elif "Wood Sword" in element:
-
-            d.dict_tipos["Wood Sword"]["total"] += 1        
-
-        elif  "Sword" in element and not "Wood" in element:
-
-            d.dict_tipos["Sword"]["total"] += 1
-
-    for element1 in d.inventarioComida:
-
-            if "vegetal" in d.inventarioComida[element1]["tipo"]:
-                d.dict_tipos["Vegetables"]["total"] += 1
-                
-            elif  "Fish" in d.inventarioComida[element1]["tipo"]:
-                d.dict_tipos["Fish"]["total"] += 1
-                
-            elif "Meat" in d.inventarioComida[element1]["tipo"]:
-
-                d.dict_tipos["Meat"]["total"] += 1        
-
-            elif  "Salads" in d.inventarioComida[element1]["tipo"]:
-
-                d.dict_tipos["Salads"]["total"] += 1
-
-            elif "Pescatarian" in d.inventarioComida[element1]["tipo"]:
-
-                d.dict_tipos["Pescatarian"]["total"] += 1        
-
-            elif  "Roasted" in d.inventarioComida[element1]["tipo"]:
-
-                d.dict_tipos["Roasted"]["total"] += 1
 
 #--------------- prompt ----------------------
 
@@ -1287,30 +1308,30 @@ def cocinar(receta, inventario): # Funcion para cocinar comida
     else: # Si lo que se quiere cocinar no existe, se muestra un mensaje de error
         d.texto_prompt.append("You can't cook", receta[5:])
 
-
-def menuInferior(mapa):
-    #Queda crear el diccionario donde ira el mapa actual
+#Crea el menu inferior en base a lo que haya en el entorno.
+def menuInferior():
+   
     posicion = d.jugador["posicion"]
     
     menuInferior = "* Exit, Show, Go, Eat"
 
-    if mapa[posicion[0]+1][posicion[1]] == "T" or mapa[posicion[0]-1][posicion[1]] == "T" or mapa[posicion[0]+1][posicion[1]+1]  == "T" or mapa[posicion[0]+1][posicion[1]-1]  == "T" or mapa[posicion[0]][posicion[1]+1]  == "T" or mapa[posicion[0]][posicion[1]-1]  == "T" or mapa[posicion[0]-1][posicion[1]+1] or mapa[posicion[0]-1][posicion[1]-1]  == "T":
+    if d.jugador["mapa"][posicion[0]+1][posicion[1]] == "T" or d.jugador["mapa"][posicion[0]-1][posicion[1]] == "T" or d.jugador["mapa"][posicion[0]+1][posicion[1]+1]  == "T" or d.jugador["mapa"][posicion[0]+1][posicion[1]-1]  == "T" or d.jugador["mapa"][posicion[0]][posicion[1]+1]  == "T" or d.jugador["mapa"][posicion[0]][posicion[1]-1]  == "T" or d.jugador["mapa"][posicion[0]-1][posicion[1]+1] or d.jugador["mapa"][posicion[0]-1][posicion[1]-1]  == "T":
 
         menuInferior += ", Attack"
 
-    '''
+   
     if menuInferior.find("Attack") == -1:
     
-        if d.jugador["mapaActual"][posicion[0]+1][posicion[1]][0] in  ("Z","E") or d.jugador["mapaActual"][posicion[0]-1][posicion[1]][0] in  ("Z","E") or d.jugador["mapaActual"][posicion[0]+1][posicion[1]+1][0]  in  ("Z","E") or d.jugador["mapaActual"][posicion[0]+1][posicion[1]-1][0]  in  ("Z","E") or d.jugador["mapaActual"][posicion[0]][posicion[1]+1][0]  in  ("Z","E") or d.jugador["mapaActual"][posicion[0]][posicion[1]-1][0]  in  ("Z","E") or d.jugador["mapaActual"][posicion[0]-1][posicion[1]+1][0]in  ("Z","E") or d.jugador["mapaActual"][posicion[0]-1][posicion[1]-1][0]  in  ("Z","E") and d.jugador["arma actual"] != " ":
+        if d.jugador["mapa"][posicion[0]+1][posicion[1]][0] in  ("Z","E") or d.jugador["mapa"][posicion[0]-1][posicion[1]][0] in  ("Z","E") or d.jugador["mapa"][posicion[0]+1][posicion[1]+1][0]  in  ("Z","E") or d.jugador["mapa"][posicion[0]+1][posicion[1]-1][0]  in  ("Z","E") or d.jugador["mapa"][posicion[0]][posicion[1]+1][0]  in  ("Z","E") or d.jugador["mapa"][posicion[0]][posicion[1]-1][0]  in  ("Z","E") or d.jugador["mapa"][posicion[0]-1][posicion[1]+1][0] in  ("Z","E") or d.jugador["mapa"][posicion[0]-1][posicion[1]-1][0]  in  ("Z","E") and d.jugador["arma_actual"] != " ":
             menuInferior += ", Attack"
 
-    if d.jugador["mapaActual"][posicion[0]+1][posicion[1]][0] == "~" or d.jugador["mapaActual"][posicion[0]-1][posicion[1]][0]  == "~" or d.jugador["mapaActual"][posicion[0]+1][posicion[1]+1][0]   == "~" or d.jugador["mapaActual"][posicion[0]+1][posicion[1]-1][0]   == "~" or d.jugador["mapaActual"][posicion[0]][posicion[1]+1][0]   == "~" or d.jugador["mapaActual"][posicion[0]][posicion[1]-1][0]   == "~" or d.jugador["mapaActual"][posicion[0]-1][posicion[1]+1][0] == "~" or d.jugador["mapaActual"][posicion[0]-1][posicion[1]-1][0] == "~":
+    if d.jugador["mapa"][posicion[0]+1][posicion[1]][0] == "~" or d.jugador["mapa"][posicion[0]-1][posicion[1]][0]  == "~" or d.jugador["mapa"][posicion[0]+1][posicion[1]+1][0]   == "~" or d.jugador["mapa"][posicion[0]+1][posicion[1]-1][0]   == "~" or d.jugador["mapa"][posicion[0]][posicion[1]+1][0]   == "~" or d.jugador["mapa"][posicion[0]][posicion[1]-1][0]   == "~" or d.jugador["mapa"][posicion[0]-1][posicion[1]+1][0] == "~" or d.jugador["mapa"][posicion[0]-1][posicion[1]-1][0] == "~":
          menuInferior += ", Fish"
     
-     if d.jugador["mapaActual"][posicion[0]+1][posicion[1]][0] == "S" or d.jugador["mapaActual"][posicion[0]-1][posicion[1]][0]  == "S" or d.jugador["mapaActual"][posicion[0]+1][posicion[1]+1][0]   == "S" or d.jugador["mapaActual"][posicion[0]+1][posicion[1]-1][0]   == "S" or d.jugador["mapaActual"][posicion[0]][posicion[1]+1][0]   == "S" or d.jugador["mapaActual"][posicion[0]][posicion[1]-1][0]   == "S" or d.jugador["mapaActual"][posicion[0]-1][posicion[1]+1][0] == "S" or d.jugador["mapaActual"][posicion[0]-1][posicion[1]-1][0] == "S":
+    if d.jugador["mapa"][posicion[0]+1][posicion[1]][0] in  ("S","M") or d.jugador["mapa"][posicion[0]-1][posicion[1]][0] in  ("S","M") or d.jugador["mapa"][posicion[0]+1][posicion[1]+1][0]  in  ("S","M") or d.jugador["mapa"][posicion[0]+1][posicion[1]-1][0] in  ("S","M") or d.jugador["mapa"][posicion[0]][posicion[1]+1][0] in  ("S","M") or d.jugador["mapa"][posicion[0]][posicion[1]-1][0] in ("S","M") or d.jugador["mapa"][posicion[0]-1][posicion[1]+1][0] in  ("S","M") or d.jugador["mapa"][posicion[0]-1][posicion[1]-1][0]  in ("S","M"):
      
         menuInferior += ", Open"
-'''
+
 
     while  len(menuInferior) < 79:
         if len(menuInferior) %2 == 0:

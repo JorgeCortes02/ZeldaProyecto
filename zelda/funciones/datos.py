@@ -6,16 +6,14 @@ import funciones.funciones as f
 #Atributos jugador
 
 
-jugador = {"nombre" : " ",
-           "posicion" : [8,11], 
-           "arma_actual": " ", 
-           "escudo_actual" : " ", 
-           "vidas_max": 3, 
-           "vidas" : 3 ,
-           "mapa" : "hyrule"}
+jugador = {"name" : " ","posicion" : [3,9], "arma_actual": "", "escudo_actual" : "Shield998", "vidas_max": 3, "vidas" : 3, "bloodMoonCoutdown": 25, "totalBloodMoon" : 0, "mapa" : "Hyrule", "id_game" : 16 }
 
 
-inventarioArmas = {}
+
+
+dict_tipos = {"Shield" : {"total": 0, "minUsos" : 0}, "Wood Shield" : {"total": 0, "minUsos" : 0}, "Sword" : {"total": 0, "minUsos" : 0}, "Wood Sword" : {"total": 0, "minUsos" : 0} }
+
+inventarioArmas = {"Shield998" :{"tipo" :"Shield", "usos": 4}, "Wood Shield98" :{"tipo" :"Wood Shield", "usos": 4},"Wood Shield798" :{"tipo" :"Wood Shield", "usos": 3}, "Wood Sword98" :{"tipo" :"Wood Sword", "usos": 4}, "Sword989" :{"tipo" :"Sword", "usos": 9}}
 
 inventarioComida = { "Vegetables" : 0, 
                     "Fish" : 0, 
@@ -24,32 +22,8 @@ inventarioComida = { "Vegetables" : 0,
                     "Pescatarian" : 0, 
                     "Roasted" : 0 }
 
-dict_tipos = {"Shield" : {"total": 0}, 
-              "Wood Shield" : {"total": 0}, 
-              "Sword" : {"total": 0}, 
-              "Wood Swort" : {"total": 0}, 
-              "Vegetables" :{"total": 0}, 
-              "Fish" :{"total": 0}, 
-              "Meat" :{"total": 0}, 
-              "Salads" :{"total": 0}, 
-              "Pescatarian" : {"total": 0}, 
-              "Roasted": {"total": 0} }
 
 
-
-dict_tipos = {"Shield" : {"total": 0}, 
-              "Wood Shield" : {"total": 0}, 
-              "Sword" : {"total": 0}, 
-              "Wood Swort" : {"total": 0}, 
-              "Vegetables" :{"total": 0}, 
-              "Fish" :{"total": 0}, 
-              "Meat" :{"total": 0}, 
-              "Salads" :{"total": 0}, 
-              "Pescatarian" : {"total": 0}, 
-              "Roasted": {"total": 0} }
-
-
-#inventario1 = f.mostrarInventario()
 
 select = "show inventory main"
 
@@ -187,7 +161,7 @@ dades = { "death" : {"position" : (9,2),
 }
 
 
-name = "link"
+
 
 frases_ganon = ["Ganon is powerful, are you sure you can defeat him?", "Ganon's strength is supernatural, Zelda fought with bravery.", "To Ganon, you are like a fly, find a weak spot and attack.", "Ganon will not surrender easily.", "Ganon has fought great battles, is an expert fighter.", "Link, transform your fears into strengths.", "Keep it up, Link, Ganon can't hold out much longer.", "Link, history repeats itself, Ganon can be defeated.", "Think of all the warriors who have tried before.", "You fight for the weaker ones, Link, persevere."]
 
