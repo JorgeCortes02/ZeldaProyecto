@@ -104,7 +104,7 @@ def saveGame():
 #Descarga los datos de jugador (tabla game) para mostrarlos en el menu de seleccion de partida.
 def descargarGuardadas():
     
-    query = "Select game_id, user_name, xpos, ypos, date_started, hearts_remaining, max_lives ,blood_moon_countdown, blood_moon_appearances, region from game limit 8;"
+    query = "Select game_id, user_name, xpos, ypos, date_started, hearts_remaining, max_live,blood_moon_countdown, blood_moon_appearances, region from game limit 8;"
     cursor.execute(query)
     resultados = cursor.fetchall()
 
@@ -254,6 +254,6 @@ db = mysql.connector.connect(
 # Crear un cursor
 cursor = db.cursor()
 
-selectAndChargePartida(16)
+#selectAndChargePartida(16)
 
 

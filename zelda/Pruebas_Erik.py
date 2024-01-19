@@ -59,4 +59,12 @@ funcion_normal(funcion_en_funcion())
 
 
 # Inventario de comida, salta error
-# 
+# Equipar y desequipar, (puede ser que lo este utilizando mal)
+# Cocinar, falta detectar si estas en una C para poder cocinar
+# Atacar, cuando no tienes espada salta error (al atacar arbol, zorro y enemigo, cesped va bien) (Y cuando tienes espada tambien falla)
+# Fish, lo mismo que cocinar falta detectar el agua
+# Cambiar de mapa, cuando abres un santuario y cambias de mapa salta un error
+# Movimiento cercano, la x no aparece en la nueva posicion y no se borra la posicion anterior
+# Abrir cofre, no cambia la M por una W
+# Atacar a Ganon, ya esta hecho que te tengas que poner en la posicion de al lado suyo para atacar, faltaria hacer que te haga daño y quitarle vida y tambien que se quiten los corazones que tiene despues del nombre en el mapa
+# Terminar conexión BBDD

@@ -24,7 +24,7 @@ inventarioComida = { "Vegetables" : 0,
 
 #inventario1 = f.mostrarInventario("show inventory weapons")
 
-select = "show inventory main"
+select = "show inventory weapons"
 
 #Localizaciones y datos
 localitzacions = {

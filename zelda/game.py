@@ -14,18 +14,13 @@ enemic = False
 def game(): # Hay que mirar como se pondria para cuando eliges una partida guardada.
     exit = False 
     while exit == False: # Bucle para que cuando le des a exit en el menu salga del juego
-        #exit = f.menu_principal() # Ejecutamos el menu principal, devuelve un booleano, si es falso es porque has pulsado exit
-        #if exit == False: # Salir de la función
-        #    exit = True
-        #    return True
+        exit = f.menu_principal() # Ejecutamos el menu principal, devuelve un booleano, si es falso es porque has pulsado exit
+        if exit == False: # Salir de la función
+            exit = True
+            return True
         
-        if d.jugador["mapa"] == "hyrule":
-            posicionplayer = d.jugador["posicion"] # guardamos posicion inicial
-            mapaActual = d.localitzacions["hyrule"] # guardamos mapa inicial
-        
-        else:
-            posicionplayer = d.jugador["posicion"]
-            mapaActual = d.localitzacions[d.jugador["mapa"]]
+        posicionplayer = d.jugador["posicion"]
+        mapaActual = d.localitzacions[d.jugador["mapa"]]
             
         f.zorro_visivilidad() # miramos visibilidad del zorro
         final = False 

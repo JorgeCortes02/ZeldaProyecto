@@ -1,4 +1,5 @@
 import funciones.datos as d
+import funciones.bbddpruebas as b
 import random
 mapaActual = []
 #Contea la cantidad de cada tipo de arma.
@@ -106,64 +107,64 @@ def mostrarInventario(Select):
     elif Select.lower() == "show inventory weapons":
         #Calculamos cuales son las armas de cada tipo que tienen menos usos para poder imprimir los usos de sa arma.
         conteoInventario()
-        inventario = [" * * * * * Weapons *\n",
-                        "*\n".rjust(21),
-                        "*\n".rjust(21),
+        inventario = [" * * * * *  Weapons * \n",
+                        "*\n".rjust(22),
+                        "*\n".rjust(22),
         ]
         
         #Cada if determina como será esa linea en función de si el arma esta equipada o no.   
          
         if d.dict_tipos["Wood Sword"]["total"] == 0:
-            inventario += " Wood Sword" + "0/0".rjust(7) + " * \n","* \n".rjust(22),
+            inventario += " Wood Sword" + "0/0".rjust(8) + " * \n","* \n".rjust(23),
         else:
 
-            inventario += " Wood Sword" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Wood Sword"]["minUsos"]]["usos"], d.dict_tipos["Wood Sword"]["total"]).rjust(7) + " * \n",
+            inventario += " Wood Sword" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Wood Sword"]["minUsos"]]["usos"], d.dict_tipos["Wood Sword"]["total"]).rjust(8) + " * \n",
         
             if d.jugador["arma_actual"] in d.inventarioArmas and d.inventarioArmas[d.jugador["arma_actual"]]["tipo"] == "Wood Sword":
                     
-                    inventario += "  (equiped)" + "*\n".rjust(10),
+                    inventario += "  (equiped)" + "*\n".rjust(11),
             else:
-                    inventario += "* \n".rjust(22),
+                    inventario += "* \n".rjust(23),
         
         if d.dict_tipos["Sword"]["total"] == 0:
             inventario += " Sword" + "0/0".rjust(13) + " * \n","* \n".rjust(23),
         else:
 
-            inventario +=" Sword" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Sword"]["minUsos"]]["usos"], d.dict_tipos["Sword"]["total"]).rjust(12) + " * \n",
+            inventario +=" Sword" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Sword"]["minUsos"]]["usos"], d.dict_tipos["Sword"]["total"]).rjust(13) + " * \n",
        
             if d.jugador["arma_actual"] in d.inventarioArmas and d.inventarioArmas[d.jugador["arma_actual"]]["tipo"] == "Sword":
                     
-                    inventario += "  (equiped)" + "*\n".rjust(10),
+                    inventario += "  (equiped)" + "*\n".rjust(11),
             else:
-                    inventario += "* \n".rjust(22),
+                    inventario += "* \n".rjust(23),
         
         if d.dict_tipos["Wood Shield"]["total"] == 0:
             
-            inventario += " Wood shield" + "0/0".rjust(7) + " * \n",  "* \n".rjust(22),            
+            inventario += " Wood shield" + "0/0".rjust(7) + " * \n",  "* \n".rjust(23),            
        
         else:
 
-            inventario += " Wood shield" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Wood Shield"]["minUsos"]]["usos"], d.dict_tipos["Wood Shield"]["total"]).rjust(6) + " * \n",              
+            inventario += " Wood shield" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Wood Shield"]["minUsos"]]["usos"], d.dict_tipos["Wood Shield"]["total"]).rjust(7) + " * \n",              
         
             if d.jugador["escudo_actual"] in d.inventarioArmas and d.inventarioArmas[d.jugador["escudo_actual"]]["tipo"] == "Swood Shield":
                     
-                    inventario += "  (equiped)" + "*\n".rjust(10),
+                    inventario += "  (equiped)" + "*\n".rjust(11),
             else:
-                    inventario += "* \n".rjust(22),
+                    inventario += "* \n".rjust(23),
         if d.dict_tipos["Shield"]["total"] == 0:
             
-            inventario += " Shield" + "0/0".rjust(11) + " * \n",  "* \n".rjust(22),         
+            inventario += " Shield" + "0/0".rjust(12) + " * \n",  "* \n".rjust(23),         
        
         else:
 
-            inventario += " Shield" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Shield"]["minUsos"]]["usos"], d.dict_tipos["Shield"]["total"]).rjust(11) + " * \n",          
+            inventario += " Shield" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Shield"]["minUsos"]]["usos"], d.dict_tipos["Shield"]["total"]).rjust(12) + " * \n",          
         
                             
             if d.jugador["escudo_actual"] in d.inventarioArmas and d.inventarioArmas[d.jugador["escudo_actual"]]["tipo"] == "Shield":
                     
-                    inventario += "  (equiped)" + "*".rjust(9),"*".rjust(22)
+                    inventario += "  (equiped)" + "*\n".rjust(11),"*".rjust(22)
             else:
-                    inventario += "* \n".rjust(22),"*".rjust(6),"*".rjust(22)                          
+                    inventario += "* \n".rjust(23),"*\n".rjust(8),"*".rjust(22)                          
                         
     return inventario                
 
@@ -681,6 +682,7 @@ def menu_principal():
                 back = False
                 while back == False:
                     limpiar_pantalla()
+                    b.descargarGuardadas()
                     imprimir_partidas_guardadas()
                     prompt()
                     opc = input("What to do now? ")
