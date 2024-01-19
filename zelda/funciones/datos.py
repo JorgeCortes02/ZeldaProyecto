@@ -23,7 +23,7 @@ inventarioComida = { "Vegetables" : 0,
 
 
 
-select = "show inventory main"
+select = "show inventory food"
 
 #Localizaciones y datos
 localitzacions = {

@@ -77,7 +77,7 @@ def mostrarInventario(Select):
         inventario = [" * * * * Inventory * \n",
                             "*\n".rjust(21),
                             " Link".ljust(12) + "  {0}/{1}".format(d.jugador["vidas"],d.jugador["vidas_max"]).rjust(6) + " * \n",
-                            " Blod Moon in ".ljust() + "  {0}".format(25 - d.jugador["bloodMoonCoutdown"]).rjust(4) + " * \n",
+                            " Blod Moon in ".ljust(4) + "  {0}".format(25 - d.jugador["bloodMoonCoutdown"]).rjust(4) + " * \n",
                             "* \n".rjust(22),
                             " Equipement ".ljust(19) + "* \n",
                             "{0}".format(d.inventarioArmas[d.jugador["escudo_actual"]]["tipo"]).rjust(18) + " * \n",
