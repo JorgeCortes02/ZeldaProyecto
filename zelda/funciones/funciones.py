@@ -1285,6 +1285,7 @@ def pelea_ganon(mapaActual): #Interacion con ganon
         mapaActual[2][46+d.ganon["vida"]] = " "
         if d.ganon["vida"] == 0: #Comprueba si al enemigo a un le queda vida
             d.texto_prompt.append("It has been an exhausting fight, but with persistence, you have achieved it.")
+            d.win = True
 
     return mapaActual
                 
