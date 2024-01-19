@@ -44,3 +44,14 @@ diccio = {"vegetable123456":{"nombre":"vegetable"}, "vegetable654321":{"nombre":
 #         print("Invalid action")
 
 
+def funcion_en_funcion():
+    a = "hola"
+    print(a)
+    
+    
+def funcion_normal(funcion):
+    print("a")
+    funcion
+
+
+funcion_normal(funcion_en_funcion())
