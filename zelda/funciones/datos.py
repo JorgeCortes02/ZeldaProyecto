@@ -2,7 +2,9 @@ import funciones.funciones as f
 
 #Atributos jugador
 
-jugador = {"nombre" : " ","posicion" : [8,11], "arma_actual": "Sword989", "escudo_actual" : "Shield998", "vidas_max": 3, "vidas" : 3, "bloodMoonCoutdown": 0, "totalBloodMoon" : 0, "mapa" : "gerudo", "id_game" : 16 }
+
+jugador = {"nombre" : " ","posicion" : [8,11], "arma_actual": "Sword989", "escudo_actual" : "Shield998", "vidas_max": 3, "vidas" : 3, "bloodMoonCoutdown": -1, "totalBloodMoon" : 0, "mapa" : "hyrule", "id_game" : 16 }
+
 
 dict_tipos = {"Shield" : {"total": 0, "minUsos" : 0}, "Wood Shield" : {"total": 0, "minUsos" : 0}, "Sword" : {"total": 0, "minUsos" : 0}, "Wood Sword" : {"total": 0, "minUsos" : 0} }
 
@@ -109,8 +111,10 @@ localitzacions = {
           ["*", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "|", " ", "|", "'", "'", "'", "'", "'", "'", "'", "'", "'", "'", "'", "|", " ", "|", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "*"],
           ["*", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "|", " ", "|", " ", "|", " ", "|", " ", "_", " ", "|", " ", "|", " ", "|", " ", "|", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "*"],
           ["*", "O", "T", "X", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "|", " ", "|", " ", " ", " ", " ", "|", "#", "|", " ", " ", " ", " ", "|", " ", "|", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "*"],
-          ["*", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "*"]]
+          ["*", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "*"],
+          ]
 }
+
 
 dades = { "death" : {"position" : (9,2),
                      "F":{"posicion":[2,30]}, 
@@ -352,7 +356,4 @@ datosPartidas = []
 
 win = False # Saber cuando has ganado, para que cuando entres a castle no salga Ganon
 
-ganon = {"vida":9} # Vida de ganon, para saber cuando muere
-
-
-# datosPartidas = [[0, "Erik", 7, 12, "17/1/2024", 3, 9, 1, 1, "hyrule"], [1, "Link", 7, 12, "16/1/2024", 5, 9, 1, 1, "gerudo"]]
+ganon = {"vida":8} # Vida de ganon, para saber cuando muere

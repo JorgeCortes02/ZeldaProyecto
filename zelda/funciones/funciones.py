@@ -77,7 +77,7 @@ def mostrarInventario(Select):
         inventario = [" * * * * Inventory * \n",
                             "*\n".rjust(21),
                             " Link".ljust(12) + "  {0}/{1}".format(d.jugador["vidas"],d.jugador["vidas_max"]).rjust(6) + " * \n",
-                            " Blod Moon in ".ljust(2) + "  {0}".format(25 - d.jugador["bloodMoonCoutdown"]).rjust(4) + " * \n",
+                            " Blod Moon in ".ljust(2) + "  {0}".format(d.jugador["bloodMoonCoutdown"]).rjust(4) + " * \n",
                             "* \n".rjust(22),
                             " Equipement ".ljust(19) + "* \n",
                             "{0}".format(d.inventarioArmas[d.jugador["escudo_actual"]]["tipo"]).rjust(18) + " * \n",
@@ -1002,7 +1002,7 @@ def contador_arbol(mapaActual): #Baja el contador de todos los arboles
                 mapaActual[d.dades[d.jugador["mapa"]]["T"]["lista"][cont][0]][d.dades[d.jugador["mapa"]]["T"]["lista"][cont][1]] = "T"
             cont = cont + 1
 
-def agua(mapaActual): #Interacion con el agua #-Falata que reinicie lo del pez
+def agua(mapaActual): #Interacion con el agua
     agua = False
     if mapaActual[d.jugador["posicion"][0]+1][d.jugador["posicion"][1]] == "~":
         agua = True
@@ -1028,7 +1028,6 @@ def agua(mapaActual): #Interacion con el agua #-Falata que reinicie lo del pez
                 d.inventarioComida["Fish"] += 1
             else: #No te da nada y te escribe en el promp
                 d.texto_prompt.append("You didn't get a fish")
-    
     else:
         d.texto_prompt.append("You can't fish here")
 
@@ -1259,7 +1258,34 @@ def enemigos(mapaActual): #Interacion con el enemigo
                                         d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0] -= 1
                                         mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = "E"
                                         salir = True
-                
+    return mapaActual
+
+def vida_ganon():
+    if d.jugador["mapa"] != "castle":
+        if d.win == False:
+            d.ganon["vida"] = 8
+            for i in range(8):
+                print(d.localitzacions["castle"][2][46+i+1])
+                d.localitzacions["castle"][2][46+i+1] = "♥"
+                print(d.localitzacions["castle"][2][46+i+1])
+
+def ganon_castillo():
+    if d.jugador["posicion"][1] > 19:
+        d.jugador["vidas"] -= 1 #Te resta 1 de vida
+
+
+def pelea_ganon(mapaActual): #Interacion con ganon
+    if d.jugador["arma_actual"] == " " or d.jugador["arma_actual"] == "": #compruba si tienes una espada
+        d.texto_prompt.append("I can't attack if you don't have a sword")
+    else:
+        d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1 #Le quita un uso a la espada
+        numero = random.randint(0,9)
+        d.texto_prompt.append(d.frases_ganon[numero])
+        d.ganon["vida"] -= 1 #Le resta 1 de vida al enemigo
+        mapaActual[2][46+d.ganon["vida"]] = " "
+        if d.ganon["vida"] == 0: #Comprueba si al enemigo a un le queda vida
+            d.texto_prompt.append("It has been an exhausting fight, but with persistence, you have achieved it.")
+
     return mapaActual
                 
 def comer(select): #Interaccion de comer #-mirar las direcciones
@@ -1769,6 +1795,14 @@ def atacar(posicionplayer, mapaActual, objeto):
 def blood_moonn():
     if d.jugador["bloodMoonCoutdown"] == 25:
         d.jugador["bloodMoonCoutdown"] = 0
-        d.dades["E"]["posicio"]
+        d.jugador["totalBloodMoon"] += 1
+        d.dades["hyrule"]["E"]["posicion"][0][3] = 1
+        d.dades["hyrule"]["E"]["posicion"][1][3] = 9
+        d.dades["gerudo"]["E"]["posicion"][0][3] = 1
+        d.dades["gerudo"]["E"]["posicion"][1][3] = 2
+        d.dades["death"]["E"]["posicion"][0][3] = 2
+        d.dades["death"]["E"]["posicion"][1][3] = 2
+        d.dades["necluda"]["E"]["posicion"][0][3] = 1
+        d.dades["necluda"]["E"]["posicion"][0][3] = 1
     else:
         d.jugador["bloodMoonCoutdown"] += 1

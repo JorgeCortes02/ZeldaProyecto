@@ -60,5 +60,4 @@ funcion_normal(funcion_en_funcion())
 
 # Enemigo, vida y movimiento
 # Atacar a Ganon, ya esta hecho que te tengas que poner en la posicion de al lado suyo para atacar, faltaria hacer que te haga daño y quitarle vida y tambien que se quiten los corazones que tiene despues del nombre en el mapa
-# Blood moon
 # Terminar opcion menu consultas BBDD
