@@ -1270,8 +1270,10 @@ def vida_ganon():
                 print(d.localitzacions["castle"][2][46+i+1])
 
 def ganon_castillo():
-    if d.jugador["posicion"][1] > 19:
-        d.jugador["vidas"] -= 1 #Te resta 1 de vida
+    if d.jugador["mapa"] == "castle":
+        if d.win == False:
+            if d.jugador["posicion"][1] > 19:
+                d.jugador["vidas"] -= 1 #Te resta 1 de vida
 
 
 def pelea_ganon(mapaActual): #Interacion con ganon
