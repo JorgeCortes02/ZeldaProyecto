@@ -14,10 +14,10 @@ enemic = False
 def game(): # Hay que mirar como se pondria para cuando eliges una partida guardada.
     exit = False 
     while exit == False: # Bucle para que cuando le des a exit en el menu salga del juego
-        exit = f.menu_principal() # Ejecutamos el menu principal, devuelve un booleano, si es falso es porque has pulsado exit
-        if exit == False: # Salir de la función
-            exit = True
-            return True
+        #exit = f.menu_principal() # Ejecutamos el menu principal, devuelve un booleano, si es falso es porque has pulsado exit
+        #if exit == False: # Salir de la función
+        #    exit = True
+        #    return True
         
         posicionplayer = d.jugador["posicion"]
         mapaActual = d.localitzacions[d.jugador["mapa"]]
@@ -124,7 +124,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     f.equiparArma(select)
                 
                 elif select[0:4].lower() == "cook":  # Cocinar comida, cuando estas al lado de una C
-                    f.cocinar(select, d.inventarioComida)
+                    f.cocinar(select, d.inventarioComida, mapaActual)
                     
                 elif select.lower() == "attack": # Atacar a un enemigo, cuando esta a tu lado
                     ejecutado = False
@@ -140,7 +140,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                         ejecutado = f.atacar(posicionplayer, mapaActual, " ")
                 
                 elif select.lower() == "fish": # Pescar cuando estas al lado de una ~
-                    f.agua() # Falta añadir al inventario el pez conseguido
+                    f.agua(mapaActual) # Falta añadir al inventario el pez conseguido
                 
                 elif select.lower() == "open sanctuary": # Abrir un santuario, cuando estas al lado de un santuario 
                     f.abrir_santuario(posicionplayer, mapaActual) # Hay que crear un diccionario o lista con los santuarios y que cuando abres uno se ponga en True en el diccionario.
@@ -153,10 +153,10 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     
                 
                 elif select[0:5].lower() == "go by": # moverte al objeto indicado más cercano a donde estas
-                    f.movimientoCercano(select)
+                    f.movimientoCercano(select, mapaActual)
                 
                 elif select.lower() == "open chest": # Abrir cofre, cuando estas al lado de una M o W
-                    f.cofre() 
+                    f.cofre(mapaActual) 
                     
                 elif select[0:5].lower() == "cheat": # Trucos
                     # Falta terminar la funcion de trucos

@@ -18,13 +18,13 @@ inventarioComida = { "Vegetables" : 0,
                     "Meat" : 0, 
                     "Salads" : 0, 
                     "Pescatarian" : 0, 
-                    "Roasted" : 0 }
+                    "Roasted" : 0}
 
 
 
 #inventario1 = f.mostrarInventario("show inventory weapons")
 
-select = "show inventory weapons"
+select = "show inventory main"
 
 #Localizaciones y datos
 localitzacions = {
@@ -181,7 +181,7 @@ diccionarioMenuPrincipal = {
               ["*                                                                =   ==       *"],
               ["*                                                             %%%%%%%%%%%%    *"],
               ["*                                                          %%%%%%%%%%%%%%%    *"],
-              ["* Continue, New Game, Help, About, Exit * * * * * * * * * * * * * * * * * * * *"]],
+              ["* Continue, New Game, Help, About, Consultes BBDD, Exit * * * * * * * * * * * *"]],
 
   "principal2" : [["* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"],
               ["*                                                                  &&         *"],
@@ -194,7 +194,7 @@ diccionarioMenuPrincipal = {
               ["*                                                             &   @@@@\\       *"],
               ["*                                                                 Q  Q        *"],
               ["*                                                                 Q  Q        *"],
-              ["* Continue, New Game, Help, About, Exit * * * * * * * * * * * * * * * * * * * *"]],
+              ["* Continue, New Game, Help, About, Consultes BBDD, Exit * * * * * * * * * * * *"]],
 
   "principal3" : [["* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"],
                 ["*                                                                  &&         *"],
@@ -207,7 +207,7 @@ diccionarioMenuPrincipal = {
                 ["*                                                               @@@||     @   *"],
                 ["*                                                            @@@@@@@@@@@@@    *"],
                 ["*                                                                  ||         *"],
-                ["* Continue, New Game, Help, About, Exit * * * * * * * * * * * * * * * * * * * *"]],
+                ["* Continue, New Game, Help, About, Consultes BBDD, Exit * * * * * * * * * * * *"]],
 
   "help_main" : [["* Help, main menu * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"],
              ["*                                                                             *"],

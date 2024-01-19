@@ -82,7 +82,6 @@ def mostrarInventario(Select):
                             " Equipement ".ljust(19) + "* \n",
                             "{0}".format(d.inventarioArmas[d.jugador["escudo_actual"]]["tipo"]).rjust(18) + " * \n",
                             "{0}".format(d.inventarioArmas[d.jugador["arma_actual"]]["tipo"]).rjust(18) + " * \n",
-                            
                             "* \n".rjust(22),
                             " Food".ljust(15) + "{0}".format(sumComida).rjust(3) +  " *\n",
                             " Weapons".ljust(15) + "{0}".format(sumArmas).rjust(3) +  " *"]
@@ -101,7 +100,8 @@ def mostrarInventario(Select):
                          "* \n".rjust(22),
                          " Salads".ljust(16) + "{0}".format(d.inventarioComida["Salads"]).rjust(2) + " * \n",
                          " Pescatarian".ljust(16) + "{0}".format(d.inventarioComida["Pescatarian"]).rjust(2) + " * \n",
-                         " Roasted".ljust(16) + "{0}".format(d.inventarioComida["Roasted"]).rjust(2) + " *"]
+                         " Roasted".ljust(16) + "{0}".format(d.inventarioComida["Roasted"]).rjust(2) + " *\n",
+                         "*".rjust(20)]
 
     #Muestra el inventario de armas.
     elif Select.lower() == "show inventory weapons":
@@ -254,7 +254,7 @@ def imprimirmapa(mapaActual):
 
         mapa += mostrarInventario(d.select)[contadorInventario]
 
-        #mapa += d.inventario1[contadorInventario]
+        #mapa += inventario1[contadorInventario]
         
         if contadorInventario < 10:
             contadorInventario += 1
@@ -418,7 +418,7 @@ def moverPersonaje(mapaActual, select, posicionplayer):
             else:
                 return["Invalid action"], posicionplayer[0], posicionplayer[1]
 
-def movimientoCercano(Select):
+def movimientoCercano(Select, mapaActual):
     
     if Select[len(Select)-1].upper() == "T":
 
@@ -444,27 +444,31 @@ def movimientoCercano(Select):
             
         if d.localitzacions[d.jugador["mapa"]][element[0]][element[1]-1] == " ": #Comprueba si esta libre izquierda
 
+            mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = " "
             d.jugador["posicion"][0] = element[0]
-            d.jugador["posicion"][1] = element[1]+1
-            d.localitzacions[d.jugador["mapa"]][element[0]][element[1]-1] = "X"
+            d.jugador["posicion"][1] = element[1]-1
+            mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = "X"
 
         elif d.localitzacions[d.jugador["mapa"]][element[0]][element[1]+1] == " ": #Comprueba si esta libre derecha
 
+            mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = " "
             d.jugador["posicion"][0] = element[0]
-            d.jugador["posicion"][1] = element[1]-1
-            d.localitzacions[d.jugador["mapa"]][element[0]][element[1]+1] = "X"
+            d.jugador["posicion"][1] = element[1]+1
+            mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = "X"
 
         elif d.localitzacions[d.jugador["mapa"]][element[0]-1][element[1]] == " ": #Comprueba si esta libre arriba
 
+            mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = " "
             d.jugador["posicion"][0] = element[0]-1
             d.jugador["posicion"][1] = element[1] 
-            d.localitzacions[d.jugador["mapa"]][element[0]-1][element[1]] = "X"
+            mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = "X"
 
         elif d.localitzacions[d.jugador["mapa"]][element[0]+1][element[1]] == " ": #Comprueba si esta libre abajo
 
+            mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = " "
             d.jugador["posicion"][0] = element[0]+1
             d.jugador["posicion"][1] = element[1] 
-            d.localitzacions[d.jugador["mapa"]][element[0]+1][element[1]] = "X"
+            mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = "X"
 
     if Select[len(Select)-1].upper() == "F":
 
@@ -476,59 +480,60 @@ def movimientoCercano(Select):
             element = d.dades[d.jugador["mapa"]]["F"]["posicion"]
                 
             if d.localitzacions[d.jugador["mapa"]][element[0]][element[1]-1] == " ": #Comprueba si esta libre izquierda
+                mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = " "
                 d.jugador["posicion"][0] = element[0]
-                d.jugador["posicion"][1] = element[1]+1
-                d.localitzacions[d.jugador["mapa"]][element[0]][element[1]-1] = "X"
+                d.jugador["posicion"][1] = element[1]-1
+                mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = "X"
 
             elif d.localitzacions[d.jugador["mapa"]][element[0]][element[1]+1] == " ": #Comprueba si esta libre derecha
-
+                mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = " "
                 d.jugador["posicion"][0] = element[0]
-                d.jugador["posicion"][1] = element[1]-1
-                d.localitzacions[d.jugador["mapa"]][element[0]][element[1]+1] = "X"
+                d.jugador["posicion"][1] = element[1]+1
+                mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = "X"
 
             elif d.localitzacions[d.jugador["mapa"]][element[0]-1][element[1]] == " ": #Comprueba si esta libre arriba
-
-                d.jugador["posicion"][0] = element[0]
-                d.jugador["posicion"][1] = element[1]-1
-                d.localitzacions[d.jugador["mapa"]][element[0]-1][element[1]] = "X"
+                mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = " "
+                d.jugador["posicion"][0] = element[0]-1
+                d.jugador["posicion"][1] = element[1]
+                mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = "X"
 
             elif d.localitzacions[d.jugador["mapa"]][element[0]+1][element[1]] == " ": #Comprueba si esta libre abajo
-
+                mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = " "
                 d.jugador["posicion"][0] = element[0]+1
                 d.jugador["posicion"][1] = element[1] 
-                d.localitzacions[d.jugador["mapa"]][element[0]+1][element[1]] = "X"
+                mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = "X"
     
     if Select[len(Select)-2].upper() == "S":
 
         for i in range(len(d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"])):
 
-            if d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][2] == Select[len(Select)-2:]:
+            if d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i][2] == Select[len(Select)-2:].upper():
                 
                 element = d.dades[d.jugador["mapa"]]["Santuarios"]["posicion"][i]
                     
                 if d.localitzacions[d.jugador["mapa"]][element[0]][element[1]-1] == " ": #Comprueba si esta libre izquierda
-
-                    d.jugador["posicion"][0] = element[0]
-                    d.jugador["posicion"][1] = element[1]+1
-                    d.localitzacions[d.jugador["mapa"]][element[0]][element[1]-1] = "X"
-
-                elif d.localitzacions[d.jugador["mapa"]][element[0]][element[1]+1] == " ": #Comprueba si esta libre derecha
-
-                    d.jugador["posicion"][0] = element[0]
-                    d.jugador["posicion"][1] = element[1] -1
-                    d.localitzacions[d.jugador["mapa"]][element[0]][element[1]+1] = "X"
-
-                elif d.localitzacions[d.jugador["mapa"]][element[0]-1][element[1]] == " ": #Comprueba si esta libre arriba
-
+                    mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = " "
                     d.jugador["posicion"][0] = element[0]
                     d.jugador["posicion"][1] = element[1]-1
-                    d.localitzacions[d.jugador["mapa"]][element[0]-1][element[1]] = "X"
+                    mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = "X"
+
+                elif d.localitzacions[d.jugador["mapa"]][element[0]][element[1]+1] == " ": #Comprueba si esta libre derecha
+                    mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = " "
+                    d.jugador["posicion"][0] = element[0]
+                    d.jugador["posicion"][1] = element[1]+1
+                    mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = "X"
+
+                elif d.localitzacions[d.jugador["mapa"]][element[0]-1][element[1]] == " ": #Comprueba si esta libre arriba
+                    mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = " "
+                    d.jugador["posicion"][0] = element[0]-1
+                    d.jugador["posicion"][1] = element[1]
+                    mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = "X"
 
                 elif d.localitzacions[d.jugador["mapa"]][element[0]+1][element[1]] == " ": #Comprueba si esta libre abajo
-
+                    mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = " "
                     d.jugador["posicion"][0] = element[0]+1
                     d.jugador["posicion"][1] = element[1] 
-                    d.localitzacions[d.jugador["mapa"]][element[0]+1][element[1]] = "X"
+                    mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = "X"
 
 
     if Select[len(Select)-5:].lower() == "water":
@@ -553,29 +558,29 @@ def movimientoCercano(Select):
         
         element = d.dades[d.jugador["mapa"]]["~"]["posicion"][0]
             
-        if d.localitzacions[d.jugador["mapa"]][element[0]][element[1]-1] == " ": #Comprueba si esta libre izquierda
-
-            d.jugador["posicion"][0] = element[0]
-            d.jugador["posicion"][1] = element[1]+1
-            d.localitzacions[d.jugador["mapa"]][element[0]][element[1]-1] = "X"
-
-        elif d.localitzacions[d.jugador["mapa"]][element[0]][element[1]+1] == " ": #Comprueba si esta libre derecha
-
-            d.jugador["posicion"][0] = element[0]
-            d.jugador["posicion"][1] = element[1] -1
-            d.localitzacions[d.jugador["mapa"]][element[0]][element[1]+1] = "X"
-
-        elif d.localitzacions[d.jugador["mapa"]][element[0]-1][element[1]] == " ": #Comprueba si esta libre arriba
-
+        if mapaActual[element[0]][element[1]-1] == " ": #Comprueba si esta libre izquierda
+            mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = " "
             d.jugador["posicion"][0] = element[0]
             d.jugador["posicion"][1] = element[1]-1
-            d.localitzacions[d.jugador["mapa"]][element[0]-1][element[1]] = "X"
+            mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = "X"
 
-        elif d.localitzacions[d.jugador["mapa"]][element[0]+1][element[1]] == " ": #Comprueba si esta libre abajo
+        elif mapaActual[element[0]][element[1]+1] == " ": #Comprueba si esta libre derecha
+            mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = " "
+            d.jugador["posicion"][0] = element[0]
+            d.jugador["posicion"][1] = element[1]+1
+            mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = "X"
 
+        elif mapaActual[element[0]-1][element[1]] == " ": #Comprueba si esta libre arriba
+            mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = " "
+            d.jugador["posicion"][0] = element[0]-1
+            d.jugador["posicion"][1] = element[1]
+            mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = "X"
+
+        elif mapaActual[element[0]+1][element[1]] == " ": #Comprueba si esta libre abajo
+            mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = " "
             d.jugador["posicion"][0] = element[0]+1
             d.jugador["posicion"][1] = element[1] 
-            d.localitzacions[d.jugador["mapa"]][element[0]+1][element[1]] = "X"
+            mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]] = "X"
 
 #Es lo mismo que la anterior pero limitando el moviemiento a izquierda y derecha.
 def moverPersonajeGanon(mapaActual, select, posicionplayer):
@@ -702,6 +707,7 @@ def menu_principal():
                                     # cargar los datos guardados
                                     #selectAndChargePartida(opc[5])
                                     # Funcion para guardar que tiene jorge en su rama
+                                    d.jugador["id_game"] = int(opc[5])
                                     guardado = True
                             
                             if guardado == False:
@@ -735,6 +741,13 @@ def menu_principal():
                 salir = funcion_new_game()
                 if salir == True:
                     return True
+
+            elif opc.lower() == "consultes":
+                limpiar_pantalla()
+                print("Elige la consulta que quieres hacer".center(60, "*"))
+                select = input("Que quieres consultar? ")
+                
+                #consultaBBDD(select)
 
             elif opc.lower() == "help": #Si se elige la opcion help se ira a la pantalla de help, main menu
                 help(d.diccionarioMenuPrincipal["help_main"])
@@ -951,21 +964,21 @@ def arbol(): #Interacion con el arbol
             if porcentaje in range(1,21): #Te da una espada de madera y tiene que salir un mensaje en el promp
                 d.texto_prompt.append("You got a Wood sword")
                 añadirInventario("Wood Sword",d.inventarioArmas)
-                d.inventarioArmas[d.jugador["arma_actual"]]["Usos"] -= 1 #cuando atacas con la espda restas 1 de vida a la espada
+                d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1 #cuando atacas con la espda restas 1 de vida a la espada
                 d.dades[d.jugador["mapa"]]["T"]["vida"][arbol_encontrado] -= 1 #Cuando atacas con la espda restas 1 de vida al arbol
             elif porcentaje in range(21,41): #Te da un escudo de madera y tiene que salir un mensaje en el promp
                 d.texto_prompt.append("You got a Wood shield")
                 añadirInventario("Wood Shield",d.inventarioArmas)
-                d.inventarioArmas[d.jugador["arma_actual"]]["Usos"] -= 1 
+                d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1 
                 d.dades[d.jugador["mapa"]]["T"]["vida"][arbol_encontrado] -= 1
             elif porcentaje in range(41,81): #Te da una manzana y tiene que salir un mensaje en el promp
                 d.texto_prompt.append("You got an apple")
-                d.inventarioArmas[d.jugador["arma_actual"]]["Usos"] -= 1 
+                d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1 
                 d.dades[d.jugador["mapa"]]["T"]["vida"][arbol_encontrado] -= 1
                 d.inventarioComida["Vegetables"] += 1
             else: #No te da nada y tiene que salir un mensaje en el promp
                 d.texto_prompt.append("The tree didn't give you anything")
-                d.inventarioArmas[d.jugador["arma_actual"]]["Usos"] -= 1 
+                d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1 
                 d.dades[d.jugador["mapa"]]["T"]["vida"][arbol_encontrado] -= 1
             if d.dades[d.jugador["mapa"]]["T"]["vida"][arbol_encontrado] == 0: #Cuando el arbol llega a 0 se cae y no aparece hasta dentro de 10 movimientos
                 d.texto_prompt.append("The tree has fallen") #Este prom lo he añadido yo
@@ -992,17 +1005,35 @@ def contador_arbol(mapaActual): #Baja el contador de todos los arboles
     
     return mapaActual
 
-def agua(): #Interacion con el agua #-Falata que reinicie lo del pez
-    if d.pesca == True: #Comprueba si ya has conseguido un pez
-        d.texto_prompt.append("There are no more fish") #-Este prom lo he añadido yo
+def agua(mapaActual): #Interacion con el agua #-Falata que reinicie lo del pez
+    agua = False
+    if mapaActual[d.jugador["posicion"][0]+1][d.jugador["posicion"][1]] == "~":
+        agua = True
+    
+    elif mapaActual[d.jugador["posicion"][0]-1][d.jugador["posicion"][1]] == "~":
+        agua = True
+    
+    elif mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]+1] == "~":
+        agua = True
+        
+    elif mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]-1] == "~":
+        agua = True
+    
+    
+    if agua == True:
+        if d.pesca == True: #Comprueba si ya has conseguido un pez
+            d.texto_prompt.append("There are no more fish") #-Este prom lo he añadido yo
+        else:
+            porcentaje = random.randint(1,100)
+            if porcentaje in range(1,21): #Te da un pez, confirma que ya has conseguido un pez y te da un mensaje en el promp
+                d.texto_prompt.append("You got a fish")
+                d.pesca = True 
+                d.inventarioComida["Fish"] += 1
+            else: #No te da nada y te escribe en el promp
+                d.texto_prompt.append("You didn't get a fish")
+    
     else:
-        porcentaje = random.randint(1,100)
-        if porcentaje in range(1,21): #Te da un pez, confirma que ya has conseguido un pez y te da un mensaje en el promp
-            d.texto_prompt.append("You got a fish")
-            d.dades 
-            d.inventarioComida["Fish"] += 1
-        else: #No te da nada y te escribe en el promp
-            d.texto_prompt.append("You didn't get a fish")
+        d.texto_prompt.append("You can't fish here")
 
 def reiniciar_pesca():
     d.pesca = False
@@ -1020,7 +1051,7 @@ def zorro(): #Interacion con el zorro
     if d.visibilidad_zorro == False:
         d.texto_prompt.append("You don't see any fox")
     else:
-        d.inventarioArmas[d.jugador["arma_actual"]]["Usos"] -= 1
+        d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1
         d.texto_prompt.append("You got meat")
         d.inventarioComida["Meat"] += 1
 
@@ -1104,7 +1135,7 @@ def abrir_santuario(posicionplayer, mapaActual): #Interacion con el santuario
         d.texto_prompt.append("Invalid Option")
     
 
-def cofre(): #Interacion con el cofre
+def cofre(mapaActual): #Interacion con el cofre
     for j in range(len(d.dades[d.jugador["mapa"]]["M"]["posicion"])):
         if d.jugador["posicion"][0] == d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0] and d.jugador["posicion"][1]+1 == d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]:
             if d.dades[d.jugador["mapa"]]["M"]["posicion"][j][2] == True: #comprueba si el cofre ya esta abierto
@@ -1113,12 +1144,12 @@ def cofre(): #Interacion con el cofre
                 if d.jugador["mapa"] == ("hyrule" or "gerudo"): #Dependiendo del mapa te dara una espada o un escudo
                     d.texto_prompt.append("You got a sword")
                     d.dades[d.jugador["mapa"]]["M"]["posicion"][j][2] = True
-                    d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]] = "W"
+                    mapaActual[d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]] = "W"
                     añadirInventario("Sword",d.inventarioArmas)
                 else:
                     d.texto_prompt.append("You got a shield")
                     d.dades[d.jugador["mapa"]]["M"]["posicion"][j][2] = True
-                    d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]] = "W"
+                    mapaActual[d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]] = "W"
                     añadirInventario("Shield",d.inventarioArmas)
         elif d.jugador["posicion"][0] == d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0] and d.jugador["posicion"][1]-1 == d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]:
             if d.dades[d.jugador["mapa"]]["M"]["posicion"][j][2] == True: #comprueba si el cofre ya esta abierto
@@ -1127,12 +1158,12 @@ def cofre(): #Interacion con el cofre
                 if d.jugador["mapa"] == ("hyrule" or "gerudo"): #Dependiendo del mapa te dara una espada o un escudo
                     d.texto_prompt.append("You got a sword")
                     d.dades[d.jugador["mapa"]]["M"]["posicion"][j][2] = True
-                    d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]] = "W"
+                    mapaActual[d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]] = "W"
                     añadirInventario("Sword",d.inventarioArmas)
                 else:
                     d.texto_prompt.append("You got a shield")
                     d.dades[d.jugador["mapa"]]["M"]["posicion"][j][2] = True
-                    d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]] = "W"
+                    mapaActual[d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]] = "W"
                     añadirInventario("Shield",d.inventarioArmas)
         elif d.jugador["posicion"][0]+1 == d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0] and d.jugador["posicion"][1] == d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]:
             if d.dades[d.jugador["mapa"]]["M"]["posicion"][j][2] == True: #comprueba si el cofre ya esta abierto
@@ -1141,12 +1172,12 @@ def cofre(): #Interacion con el cofre
                 if d.jugador["mapa"] == ("hyrule" or "gerudo"): #Dependiendo del mapa te dara una espada o un escudo
                     d.texto_prompt.append("You got a sword")
                     d.dades[d.jugador["mapa"]]["M"]["posicion"][j][2] = True
-                    d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]] = "W"
+                    mapaActual[d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]] = "W"
                     añadirInventario("Sword",d.inventarioArmas)
                 else:
                     d.texto_prompt.append("You got a shield")
                     d.dades[d.jugador["mapa"]]["M"]["posicion"][j][2] = True
-                    d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]] = "W"
+                    mapaActual[d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]] = "W"
                     añadirInventario("Shield",d.inventarioArmas)
         elif d.jugador["posicion"][0]-1 == d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0] and d.jugador["posicion"][1] == d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]:
             if d.dades[d.jugador["mapa"]]["M"]["posicion"][j][2] == True: #comprueba si el cofre ya esta abierto
@@ -1155,16 +1186,16 @@ def cofre(): #Interacion con el cofre
                 if d.jugador["mapa"] == ("hyrule" or "gerudo"): #Dependiendo del mapa te dara una espada o un escudo
                     d.texto_prompt.append("You got a sword")
                     d.dades[d.jugador["mapa"]]["M"]["posicion"][j][2] = True
-                    d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]] = "W"
+                    mapaActual[d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]] = "W"
                     añadirInventario("Sword",d.inventarioArmas)
                 else:
                     d.texto_prompt.append("You got a shield")
                     d.dades[d.jugador["mapa"]]["M"]["posicion"][j][2] = True
-                    d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]] = "W"
+                    mapaActual[d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]] = "W"
                     añadirInventario("Shield",d.inventarioArmas)
 
 def enemigos(): #Interacion con el enemigo
-    if not (d.jugador["arma_actual"] == " " or d.jugador["arma_actual"] == ""): #compruba si tienes una espada
+    if d.jugador["arma_actual"] == " " or d.jugador["arma_actual"] == "": #compruba si tienes una espada
         d.texto_prompt.append("I can't attack if you don't have a sword")
     else:
         name = d.jugador["nombre"] 
@@ -1173,10 +1204,10 @@ def enemigos(): #Interacion con el enemigo
         if d.jugador["vidas"] == 0:
             d.texto_prompt.append(f"{name} is dead")
         else:
-            d.inventarioArmas[d.jugador["arma_actual"]]["Usos"] -= 1 #Le quita un uso a la espada
+            d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1 #Le quita un uso a la espada
             d.texto_prompt.append(f"Brave, keep fighting {name}")
             d.texto_prompt.append(f"Be careful Link, you only have {vidas} hearts")
-            for i in range(d.dades[d.jugador["mapa"]]["E"]["posicion"]):
+            for i in range(len(d.dades[d.jugador["mapa"]]["E"]["posicion"])):
                 if d.jugador["posicion"][0] == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0] and d.jugador["posicion"][1]+1 == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]:
                     d.dades[d.jugador["mapa"]]["E"]["posicion"][i][3] -= 1 #Le resta 1 de vida al enemigo
                     if d.dades[d.jugador["mapa"]]["E"]["posicion"][i][3] == 0: #Comprueba si al enemigo a un le queda vida
@@ -1218,36 +1249,36 @@ def comer(select): #Interaccion de comer #-mirar las direcciones
     if d.jugador["vidas"] == d.jugador["vidas_max"]: #Comprueba si el personaje ya tiene lla vida maxima
         d.texto_prompt.append("You already have your whole life complete")
     else:
-        if select == "Eat vegetable": #Comprueba si como un vegetal
-            if d.dict_tipos["Vegetables"]["total"] < 0: #Comprueba si la comida que quieres esta en el inventario
+        if select.lower() == "eat vegetable": #Comprueba si como un vegetal
+            if d.inventarioComida["Vegetables"] < 0: #Comprueba si la comida que quieres esta en el inventario
                 d.texto_prompt.append("You have no vegetables left")
             else: #Si tienes entonces te elimina 1 de comida y te añade la vida que necesites
-                d.dict_tipos["Vegetables"]["total"] -= 1
+                d.inventarioComida["Vegetables"] -= 1
                 d.jugador["vidas"] += 1
                 d.texto_prompt.append("You have increased 1 health and spent 1 vegetable")
-        elif select == "Eat salad": #Comprueba si como un ensalada
-            if d.dict_tipos["Salads"]["total"] < 0: #Comprueba si la comida que quieres esta en el inventario
+        elif select.lower() == "eat salad": #Comprueba si como un ensalada
+            if d.inventarioComida["Salads"] < 0: #Comprueba si la comida que quieres esta en el inventario
                 d.texto_prompt.append("You don't have any salad left")
             else:#Si tienes entonces te elimina 1 de comida y te añade la vida que necesites
-                d.dict_tipos["Salads"]["total"] -= 1
+                d.inventarioComida["Salads"] -= 1
                 for i in range(2): #Para no pasarse de la vida maxima comprueba si ya esta en su maximo de vida o no
                     if not d.jugador["vidas"] == d.jugador["vidas_max"]:
                         d.jugador["vidas"] += 1
                 d.texto_prompt.append("You have increased 2 health and spent 1 salad")
-        elif select == "Eat pescatarian": #Comprueba si como un pescado
-            if d.dict_tipos["Pescatarian"]["total"] < 0: #Comprueba si la comida que quieres esta en el inventario
+        elif select.lower() == "eat pescatarian": #Comprueba si como un pescado
+            if d.inventarioComida["Pescatarian"] < 0: #Comprueba si la comida que quieres esta en el inventario
                 d.texto_prompt.append("You don't have any pescatarian left")
             else:#Si tienes entonces te elimina 1 de comida y te añade la vida que necesites
-                d.dict_tipos["Pescatarian"]["total"] -= 1
+                d.inventarioComida["Pescatarian"] -= 1
                 for i in range(3): #Para no pasarse de la vida maxima comprueba si ya esta en su maximo de vida o no
                     if not d.jugador["vidas"] == d.jugador["vidas_max"]:
                         d.jugador["vidas"] += 1
                 d.texto_prompt.append("You have increased 3 health and spent 1 Pescatarian")
-        elif select == "Eat roasted": #Comprueba si como una carne cocinada
-            if d.dict_tipos["Roasted"]["total"] < 0: #Comprueba si la comida que quieres esta en el inventario
+        elif select.lower() == "eat roasted": #Comprueba si como una carne cocinada
+            if d.inventarioComida["Roasted"] < 0: #Comprueba si la comida que quieres esta en el inventario
                 d.texto_prompt.append("You don't have anything toasted")
             else:#Si tienes entonces te elimina 1 de comida y te añade la vida que necesites
-                d.dict_tipos["Roasted"]["total"] -= 1
+                d.inventarioComida["Roasted"] -= 1
                 for i in range(4): #Para no pasarse de la vida maxima comprueba si ya esta en su maximo de vida o no
                     if not d.jugador["vidas"] == d.jugador["vidas_max"]:
                         d.jugador["vidas"] += 1
@@ -1257,66 +1288,84 @@ def comer(select): #Interaccion de comer #-mirar las direcciones
 
 #--------------- Cocinar ----------------------
      
-def cocinar(receta, inventario): # Funcion para cocinar comida 
-    if receta[5:].lower() == "salad": # Si se quiere cocinar una salad   
-
-        if d.inventarioComida["Vegetables"] >= 2: # Si hay 2 o mas vegetables se puede hacer la salad
-            aux = d.inventarioComida["Vegetables"]
-            aux = aux - 1
-            d.inventarioComida["Vegetables"] = aux # Eliminamos los dos vegetables del inventario
-                
-            d.texto_prompt.append("You cooked a salad successfully")
-            añadirInventario("salad", inventario) # Añadimos salad al inventario
+def cocinar(receta, inventario, mapaActual): # Funcion para cocinar comida 
+    cocinar = False
+    if mapaActual[d.jugador["posicion"][0]+1][d.jugador["posicion"][1]] == "C":
+        cocinar = True
+    
+    elif mapaActual[d.jugador["posicion"][0]-1][d.jugador["posicion"][1]] == "C":
+        cocinar = True
+    
+    elif mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]+1] == "C":
+        cocinar = True
         
-        else:
-            d.texto_prompt.append("Not enough vegetable") # Si no hay mas 1 vegetable se imprime que no se puede cocinar la salad
+    elif mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]-1] == "C":
+        cocinar = True
+    
+    
+    if cocinar == True:
+        if receta[5:].lower() == "salad": # Si se quiere cocinar una salad   
 
-    elif receta[5:].lower() == "pescatarian": # Si se elige cocinar el pescatarian
-                
-        if d.inventarioComida["Vegetables"] >= 1 and d.inventarioComida["Fish"] >= 1: # Si hay 1 fish y 1 vegetable se puede cocinar el pescatarian
-            aux = d.inventarioComida["Vegetables"]
-            aux = aux - 1
-            d.inventarioComida["Vegetables"] = aux # Eliminamos los dos objetos del inventario
-            aux2 = d.inventarioComida["Fish"]
-            aux2 = aux2 - 1
-            d.inventarioComida["Fish"] = aux2
+            if d.inventarioComida["Vegetables"] >= 2: # Si hay 2 o mas vegetables se puede hacer la salad
+                aux = d.inventarioComida["Vegetables"]
+                aux = aux - 1
+                d.inventarioComida["Vegetables"] = aux # Eliminamos los dos vegetables del inventario
+                    
+                d.texto_prompt.append("You cooked a salad successfully")
+                añadirInventario("salad", inventario) # Añadimos salad al inventario
             
-            d.texto_prompt.append("You cooked a pescatarian successfully")
-            añadirInventario("pescatarian", inventario) # Añadimos el pescatarian al inventario 
-        
-        elif d.inventarioComida["Vegetables"] < 1 and d.inventarioComida["Fish"] < 1: # Si no hay suficientes fish y vegetables se informa
-            d.texto_prompt.append("Not enough vegetable and fish")
-        
-        elif d.inventarioComida["Vegetables"] < 1: # Si no hay suficientes vegetables se informa
-            d.texto_prompt.append("Not enough vegetable")
-        
-        else: # Si no hay suficientes fish se informa
-            d.texto_prompt.append("Not enough fish")
+            else:
+                d.texto_prompt.append("Not enough vegetable") # Si no hay mas 1 vegetable se imprime que no se puede cocinar la salad
 
-    elif receta[5:].lower() == "roasted": # Si se elige cocinar el roasted
+        elif receta[5:].lower() == "pescatarian": # Si se elige cocinar el pescatarian
+                    
+            if d.inventarioComida["Vegetables"] >= 1 and d.inventarioComida["Fish"] >= 1: # Si hay 1 fish y 1 vegetable se puede cocinar el pescatarian
+                aux = d.inventarioComida["Vegetables"]
+                aux = aux - 1
+                d.inventarioComida["Vegetables"] = aux # Eliminamos los dos objetos del inventario
+                aux2 = d.inventarioComida["Fish"]
+                aux2 = aux2 - 1
+                d.inventarioComida["Fish"] = aux2
                 
-        if d.inventarioComida["Vegetables"] >= 1 and d.inventarioComida["Meat"] >= 1:
-            aux = d.inventarioComida["Vegetables"]
-            aux = aux - 1
-            d.inventarioComida["Vegetables"] = aux # Eliminamos los dos objetos del inventario
-            aux2 = d.inventarioComida["Meat"]
-            aux2 = aux2 - 1
-            d.inventarioComida["Meat"] = aux2
+                d.texto_prompt.append("You cooked a pescatarian successfully")
+                añadirInventario("pescatarian", inventario) # Añadimos el pescatarian al inventario 
             
-            d.texto_prompt.append("You cooked a roasted successfully")
-            añadirInventario("roasted", inventario) # Se añade el roasted al inventario
-        
-        elif d.inventarioComida["Vegetables"] < 1 and d.inventarioComida["Meat"] < 1: # Si no hay ni vegetable ni meat suficientes se informa
-            d.texto_prompt.append("Not enough vegetable and meat")
-        
-        elif d.inventarioComida["Meat"] < 1: # Si no hay suficientes vegetables se informa
-            d.texto_prompt.append("Not enough vegetable")
-        
-        else: # Si no hay suficientes meat se informa
-            d.texto_prompt.append("Not enough meat")
+            elif d.inventarioComida["Vegetables"] < 1 and d.inventarioComida["Fish"] < 1: # Si no hay suficientes fish y vegetables se informa
+                d.texto_prompt.append("Not enough vegetable and fish")
+            
+            elif d.inventarioComida["Vegetables"] < 1: # Si no hay suficientes vegetables se informa
+                d.texto_prompt.append("Not enough vegetable")
+            
+            else: # Si no hay suficientes fish se informa
+                d.texto_prompt.append("Not enough fish")
 
-    else: # Si lo que se quiere cocinar no existe, se muestra un mensaje de error
-        d.texto_prompt.append("You can't cook", receta[5:])
+        elif receta[5:].lower() == "roasted": # Si se elige cocinar el roasted
+                    
+            if d.inventarioComida["Vegetables"] >= 1 and d.inventarioComida["Meat"] >= 1:
+                aux = d.inventarioComida["Vegetables"]
+                aux = aux - 1
+                d.inventarioComida["Vegetables"] = aux # Eliminamos los dos objetos del inventario
+                aux2 = d.inventarioComida["Meat"]
+                aux2 = aux2 - 1
+                d.inventarioComida["Meat"] = aux2
+                
+                d.texto_prompt.append("You cooked a roasted successfully")
+                añadirInventario("roasted", inventario) # Se añade el roasted al inventario
+            
+            elif d.inventarioComida["Vegetables"] < 1 and d.inventarioComida["Meat"] < 1: # Si no hay ni vegetable ni meat suficientes se informa
+                d.texto_prompt.append("Not enough vegetable and meat")
+            
+            elif d.inventarioComida["Meat"] < 1: # Si no hay suficientes vegetables se informa
+                d.texto_prompt.append("Not enough vegetable")
+            
+            else: # Si no hay suficientes meat se informa
+                d.texto_prompt.append("Not enough meat")
+
+        else: # Si lo que se quiere cocinar no existe, se muestra un mensaje de error
+            d.texto_prompt.append("You can't cook", receta[5:])
+    
+    else:
+        d.texto_prompt.append("You can't cook here")
 
 #Crea el menu inferior en base a lo que haya en el entorno.
 def menuInferior():
