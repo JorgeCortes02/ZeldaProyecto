@@ -28,8 +28,8 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
             f.limpiar_pantalla()
             f.cofre_cerrar_sword()
             f.cofre_cerrar_shield()
-            mapaActual = f.contador_arbol_mapa(mapaActual)
-            mapaActual = f.contador_arbol(mapaActual)
+            f.contador_arbol_mapa(mapaActual)
+            f.contador_arbol(mapaActual)
             
             # Crear diccionario de ganon con sus vidas
             if d.ganon["vida"] == 0: # si la vida de ganon es 0, se muestra la pantalla de win

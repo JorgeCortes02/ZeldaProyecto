@@ -1,5 +1,5 @@
 import funciones.datos as d
-import funciones.bbddpruebas as b
+#import funciones.bbddpruebas as b
 import random
 mapaActual = []
 #Contea la cantidad de cada tipo de arma.
@@ -935,16 +935,15 @@ def arbol(): #Interacion con el arbol
         if d.jugador["posicion"][0] == d.dades[d.jugador["mapa"]]["T"]["lista"][j][0] and d.jugador["posicion"][1]-1 == d.dades[d.jugador["mapa"]]["T"]["lista"][j][1]:
             if not d.dades[d.jugador["mapa"]]["T"]["vida"][j] == 0:
                 arbol_encontrado = j
+        elif d.jugador["posicion"][0]-1 == d.dades[d.jugador["mapa"]]["T"]["lista"][j][0] and d.jugador["posicion"][1] == d.dades[d.jugador["mapa"]]["T"]["lista"][j][1]:
+            if not d.dades[d.jugador["mapa"]]["T"]["vida"][j] == 0:
+                arbol_encontrado = j
         elif d.jugador["posicion"][0] == d.dades[d.jugador["mapa"]]["T"]["lista"][j][0] and d.jugador["posicion"][1]+1 == d.dades[d.jugador["mapa"]]["T"]["lista"][j][1]:
             if not d.dades[d.jugador["mapa"]]["T"]["vida"][j] == 0:
                 arbol_encontrado = j
         elif d.jugador["posicion"][0]+1 == d.dades[d.jugador["mapa"]]["T"]["lista"][j][0] and d.jugador["posicion"][1] == d.dades[d.jugador["mapa"]]["T"]["lista"][j][1]:
             if not d.dades[d.jugador["mapa"]]["T"]["vida"][j] == 0:
                 arbol_encontrado = j
-        elif d.jugador["posicion"][0] != 10:
-            if d.jugador["posicion"][0]-1 == d.dades[d.jugador["mapa"]]["T"]["lista"][j][0] and d.jugador["posicion"][1] == d.dades[d.jugador["mapa"]]["T"]["lista"][j][1]:
-                if not d.dades[d.jugador["mapa"]]["T"]["vida"][j] == 0:
-                    arbol_encontrado = j
     if arbol_encontrado == 10: #si no encuentra nigun arbol con vida no te deja hacer nada
         d.texto_prompt.append("No trees available")
     else:
@@ -990,8 +989,6 @@ def contador_arbol_mapa(mapaActual): #Cambia los arboles por su numero del conta
         for i in range(len(d.dades[d.jugador["mapa"]]["T"]["lista"])): #Busca que arbol tiene la vida al 0 y lo cambia por el numero del contador que tenga en ese momento
             if not d.dades[d.jugador["mapa"]]["T"]["vida"][i] == 0:
                 mapaActual[d.dades[d.jugador["mapa"]]["T"]["lista"][i][0]][d.dades[d.jugador["mapa"]]["T"]["lista"][i][1]] = str(d.dades[d.jugador["mapa"]]["T"]["contador"][i])
-    
-    return mapaActual
 
 def contador_arbol(mapaActual): #Baja el contador de todos los arboles
     if d.jugador["mapa"] != "castle":
@@ -1747,3 +1744,12 @@ def atacar(posicionplayer, mapaActual, objeto):
 
     else:
         return False
+    
+#------------------------ Blood moon ----------------
+    
+def blood_moonn():
+    if d.jugador["bloodMoonCoutdown"] == 25:
+        d.jugador["bloodMoonCoutdown"] = 0
+        d.dades["E"]["posicio"]
+    else:
+        d.jugador["bloodMoonCoutdown"] += 1

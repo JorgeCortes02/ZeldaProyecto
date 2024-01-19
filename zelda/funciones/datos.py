@@ -2,7 +2,7 @@ import funciones.funciones as f
 
 #Atributos jugador
 
-jugador = {"nombre" : " ","posicion" : [8,11], "arma_actual": "Sword989", "escudo_actual" : "Shield998", "vidas_max": 3, "vidas" : 3, "bloodMoonCoutdown": 25, "totalBloodMoon" : 0, "mapa" : "hyrule", "id_game" : 16 }
+jugador = {"nombre" : " ","posicion" : [8,11], "arma_actual": "Sword989", "escudo_actual" : "Shield998", "vidas_max": 3, "vidas" : 3, "bloodMoonCoutdown": 0, "totalBloodMoon" : 0, "mapa" : "gerudo", "id_game" : 16 }
 
 dict_tipos = {"Shield" : {"total": 0, "minUsos" : 0}, "Wood Shield" : {"total": 0, "minUsos" : 0}, "Sword" : {"total": 0, "minUsos" : 0}, "Wood Sword" : {"total": 0, "minUsos" : 0} }
 
