@@ -346,6 +346,7 @@ diccionarioMenuPrincipal = {
 texto_prompt = []
 
 visibilidad_zorro = True
+vida_zorro = True
 
 pesca = False
 

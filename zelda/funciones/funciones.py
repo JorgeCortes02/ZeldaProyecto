@@ -982,15 +982,13 @@ def arbol(): #Interacion con el arbol
                 d.dades[d.jugador["mapa"]]["T"]["vida"][arbol_encontrado] -= 1
             if d.dades[d.jugador["mapa"]]["T"]["vida"][arbol_encontrado] == 0: #Cuando el arbol llega a 0 se cae y no aparece hasta dentro de 10 movimientos
                 d.texto_prompt.append("The tree has fallen") #Este prom lo he añadido yo
-                d.dades[d.jugador["mapa"]]["T"]["contador"][arbol_encontrado] == 10
+                d.dades[d.jugador["mapa"]]["T"]["contador"][arbol_encontrado] = 10
 
 def contador_arbol_mapa(mapaActual): #Cambia los arboles por su numero del contador 
     if d.jugador["mapa"] != "castle":
-        for i in range(len(d.dades[d.jugador["mapa"]]["T"]["lista"])): #Busca que arbol tiene la vida al 0 y lo cambia por el numero del contador que tenga en ese momento
-            if not d.dades[d.jugador["mapa"]]["T"]["vida"][i] == 0:
+        for i in range(len(d.dades[d.jugador["mapa"]]["T"]["contador"])): #Busca que arbol tiene la vida al 0 y lo cambia por el numero del contador que tenga en ese momento
+            if d.dades[d.jugador["mapa"]]["T"]["contador"][i] != 0:
                 mapaActual[d.dades[d.jugador["mapa"]]["T"]["lista"][i][0]][d.dades[d.jugador["mapa"]]["T"]["lista"][i][1]] = str(d.dades[d.jugador["mapa"]]["T"]["contador"][i])
-    
-    return mapaActual
 
 def contador_arbol(mapaActual): #Baja el contador de todos los arboles
     if d.jugador["mapa"] != "castle":
@@ -998,12 +996,11 @@ def contador_arbol(mapaActual): #Baja el contador de todos los arboles
         for i in d.dades[d.jugador["mapa"]]["T"]["contador"]: #Mira si x arbol tiene más de 0 de contador 
             if i != 0: #Si es superior a 0 pues le resta uno
                 d.dades[d.jugador["mapa"]]["T"]["contador"][cont] = i - 1
+                
             else: #Sino le pone la vida al 4 y cambia el mapa para que tenga el arbol
                 d.dades[d.jugador["mapa"]]["T"]["vida"][cont] == 4
                 mapaActual[d.dades[d.jugador["mapa"]]["T"]["lista"][cont][0]][d.dades[d.jugador["mapa"]]["T"]["lista"][cont][1]] = "T"
             cont = cont + 1
-    
-    return mapaActual
 
 def agua(mapaActual): #Interacion con el agua #-Falata que reinicie lo del pez
     agua = False
@@ -1051,9 +1048,18 @@ def zorro(): #Interacion con el zorro
     if d.visibilidad_zorro == False:
         d.texto_prompt.append("You don't see any fox")
     else:
-        d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1
-        d.texto_prompt.append("You got meat")
-        d.inventarioComida["Meat"] += 1
+        if d.jugador["arma_actual"] != " " and d.jugador["arma_actual"] != "":
+            if d.vida_zorro == True:
+                d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1
+                d.texto_prompt.append("You got meat")
+                d.inventarioComida["Meat"] += 1
+                d.vida_zorro = False
+            
+            else:
+                d.texto_prompt.append("He is dead 💀")
+        
+        else:
+            d.texto_prompt.append("You need a Sword to attack")
 
 
 def cofre_cerrar_sword(): #Comprueba si en tu inventario tienes alguna espada
@@ -1194,21 +1200,30 @@ def cofre(mapaActual): #Interacion con el cofre
                     mapaActual[d.dades[d.jugador["mapa"]]["M"]["posicion"][j][0]][d.dades[d.jugador["mapa"]]["M"]["posicion"][j][1]] = "W"
                     añadirInventario("Shield",d.inventarioArmas)
 
-def enemigos(): #Interacion con el enemigo
+def enemigos(mapaActual): #Interacion con el enemigo
     if d.jugador["arma_actual"] == " " or d.jugador["arma_actual"] == "": #compruba si tienes una espada
         d.texto_prompt.append("I can't attack if you don't have a sword")
     else:
-        name = d.jugador["nombre"] 
-        vidas = d.jugador["vidas"]
         d.jugador["vidas"]-= 1 #Te resta 1 de vida
-        if d.jugador["vidas"] == 0:
-            d.texto_prompt.append(f"{name} is dead")
-        else:
+        if d.jugador["vidas"] != 0:
             d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1 #Le quita un uso a la espada
-            d.texto_prompt.append(f"Brave, keep fighting {name}")
-            d.texto_prompt.append(f"Be careful Link, you only have {vidas} hearts")
+            d.texto_prompt.append(f"Brave, keep fighting {d.jugador['nombre']}")
+            d.texto_prompt.append(f"Be careful {d.jugador['nombre']}, you only have {d.jugador['vidas']} hearts")
             for i in range(len(d.dades[d.jugador["mapa"]]["E"]["posicion"])):
+                enemigo = False
                 if d.jugador["posicion"][0] == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0] and d.jugador["posicion"][1]+1 == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]:
+                    enemigo = True
+                
+                if d.jugador["posicion"][0] == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0] and d.jugador["posicion"][1]-1 == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]:
+                    enemigo = True
+                
+                if d.jugador["posicion"][0]-1 == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0] and d.jugador["posicion"][1] == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]:
+                    enemigo = True
+                
+                if d.jugador["posicion"][0]+1 == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0] and d.jugador["posicion"][1] == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]:
+                    enemigo = True
+                
+                if enemigo == True:  
                     d.dades[d.jugador["mapa"]]["E"]["posicion"][i][3] -= 1 #Le resta 1 de vida al enemigo
                     if d.dades[d.jugador["mapa"]]["E"]["posicion"][i][3] == 0: #Comprueba si al enemigo a un le queda vida
                         d.texto_prompt.append("You defeated an enemy, this is a dangerous zone")
@@ -1219,31 +1234,33 @@ def enemigos(): #Interacion con el enemigo
                             if direccion1 == 1: #Mira si modificara X o Y
                                 direccion2= random.randint(1,2)
                                 if direccion2 == 1: #Luego si es para izquierda o derecha o delante o atras
-                                    if d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]+1] == " ":
-                                        d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = " "
-                                        d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1] -= 1
-                                        d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = "E"
+                                    if mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]+1] == " ":
+                                        mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = " "
+                                        d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1] += 1
+                                        mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = "E"
                                         salir = True
                                 else:
-                                    if d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]-1] == " ":
-                                        d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = " "
-                                        d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1] += 1
-                                        d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = "E"
+                                    if mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]-1] == " ":
+                                        mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = " "
+                                        d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1] -= 1
+                                        mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = "E"
                                         salir = True
                             else:
                                 direccion2= random.randint(1,2)
                                 if direccion2 == 1:
-                                    if d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]+1][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] == " ":
-                                        d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = " "
-                                        d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0] -= 1
-                                        d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = "E"
+                                    if mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]+1][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] == " ":
+                                        mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = " "
+                                        d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0] += 1
+                                        mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = "E"
                                         salir = True
                                 else:
-                                    if d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]-1][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] == " ":
-                                        d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = " "
-                                        d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0] += 1
-                                        d.localitzacions[d.jugador["mapa"]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = "E"
+                                    if mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]-1][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] == " ":
+                                        mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = " "
+                                        d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0] -= 1
+                                        mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = "E"
                                         salir = True
+                
+    return mapaActual
                 
 def comer(select): #Interaccion de comer #-mirar las direcciones
     if d.jugador["vidas"] == d.jugador["vidas_max"]: #Comprueba si el personaje ya tiene lla vida maxima
@@ -1486,7 +1503,7 @@ def limpiar_pantalla():
 
 def cambiar_mapa(select, mapaActual, posicionfallo): # Funcion para cambiar de mapa
     if select[6:].lower() == "hyrule":
-        if mapaActual == d.localitzacions["death"] or mapaActual == d.localitzacions["gerudo"]:
+        if d.jugador["mapa"] == "death" or d.jugador["mapa"] == "gerudo":
             mapaActual = d.localitzacions["hyrule"]
             d.texto_prompt.append("You are now in" + select[6:])
             d.jugador["mapa"] = "hyrule"
@@ -1495,17 +1512,17 @@ def cambiar_mapa(select, mapaActual, posicionfallo): # Funcion para cambiar de m
             posicion_player = d.dades["hyrule"]["position"]
             return mapaActual, posicion_player
         
-        elif mapaActual == d.localitzacions["hyrule"]:
+        elif d.jugador["mapa"] == "hyrule":
             d.texto_prompt.append("You already are in " + select[6:])
-            return mapaActual
+            return mapaActual, posicionfallo
         
         else:
             d.texto_prompt.append("You can't go to" + select[6:] + " from here")
-            return mapaActual
+            return mapaActual, posicionfallo
 
         
     elif select[6:].lower() == "gerudo":
-        if mapaActual == d.localitzacions["hyrule"] or mapaActual == d.localitzacions["necluda"]:
+        if d.jugador["mapa"] == "hyrule" or d.jugador["mapa"] == "necluda":
             mapaActual = d.localitzacions["gerudo"]
             d.texto_prompt.append("You are now in " + select[6:])
             d.jugador["mapa"] = "gerudo"
@@ -1514,16 +1531,16 @@ def cambiar_mapa(select, mapaActual, posicionfallo): # Funcion para cambiar de m
             posicion_player = d.dades["gerudo"]["position"]
             return mapaActual, posicion_player
 
-        elif mapaActual == d.localitzacions["gerudo"]:
+        elif d.jugador["mapa"] == "gerudo":
             d.texto_prompt.append("You already are in " + select[6:])
-            return mapaActual
+            return mapaActual, posicionfallo
         
         else:
             d.texto_prompt.append("You can't go to " + select[6:] + " from here")
-            return mapaActual
+            return mapaActual, posicionfallo
             
     elif select[6:].lower() == "death mountain":
-        if mapaActual == d.localitzacions["hyrule"] or mapaActual == d.localitzacions["necluda"]:
+        if d.jugador["mapa"] == "hyrule" or d.jugador["mapa"] == "necluda":
             mapaActual = d.localitzacions["death"]
             d.texto_prompt.append("You are now in " + select[6:])
             d.jugador["mapa"] = "death"
@@ -1532,16 +1549,16 @@ def cambiar_mapa(select, mapaActual, posicionfallo): # Funcion para cambiar de m
             posicion_player = d.dades["death"]["position"]
             return mapaActual, posicion_player
         
-        elif mapaActual == d.localitzacions["death"]:
+        elif d.jugador["mapa"] == "death":
             d.texto_prompt.append("You already are in " + select[6:])
-            return mapaActual
+            return mapaActual, posicionfallo
         
         else:
             d.texto_prompt.append("You can't go to " + select[6:] + " from here")
-            return mapaActual
+            return mapaActual, posicionfallo
         
     elif select[6:].lower() == "necluda":
-        if mapaActual == d.localitzacions["death"] or mapaActual == d.localitzacions["gerudo"]:
+        if d.jugador["mapa"] == "death" or d.jugador["mapa"] == "gerudo":
             mapaActual = d.localitzacions["necluda"]
             d.texto_prompt.append("You are now in " + select[6:])
             d.jugador["mapa"] = "necluda"
@@ -1550,25 +1567,25 @@ def cambiar_mapa(select, mapaActual, posicionfallo): # Funcion para cambiar de m
             posicion_player = d.dades["necluda"]["position"]
             return mapaActual, posicion_player
         
-        elif mapaActual == d.localitzacions["necluda"]:
+        elif d.jugador["mapa"] == "necluda":
             d.texto_prompt.append("You already are in " + select[6:])
-            return mapaActual
+            return mapaActual, posicionfallo
         
         else:
             d.texto_prompt.append("You can't go to " + select[6:] + " from here")
-            return mapaActual
+            return mapaActual, posicionfallo
         
     elif select[6:].lower() == "castle":
-        if mapaActual == d.localitzacions["hyrule"]:
+        if d.jugador["mapa"] == "hyrule":
             d.mapa_anterior = "hyrule"
 
-        elif mapaActual == d.localitzacions["gerudo"]:
+        elif d.jugador["mapa"] == "gerudo":
             d.mapa_anterior = "gerudo"
 
-        elif mapaActual == d.localitzacions["death"]:
+        elif d.jugador["mapa"] == "death":
             d.mapa_anterior = "death"
         
-        elif mapaActual == d.localitzacions["necluda"]:
+        elif d.jugador["mapa"] == "necluda":
             d.mapa_anterior = "necluda"
 
         if d.win == False:
@@ -1677,7 +1694,7 @@ def imprimir_partidas_guardadas():
 def atacar(posicionplayer, mapaActual, objeto):
     if mapaActual[posicionplayer[0]+1][posicionplayer[1]] == objeto:
         if objeto == "E":
-            enemigos()
+            mapaActual = enemigos(mapaActual)
             return True
         
         elif objeto == "F":
@@ -1695,7 +1712,7 @@ def atacar(posicionplayer, mapaActual, objeto):
             
     elif mapaActual[posicionplayer[0]-1][posicionplayer[1]] == objeto:
         if objeto == "E":
-            enemigos()
+            mapaActual = enemigos(mapaActual)
             return True
         
         elif objeto == "F":
@@ -1712,7 +1729,7 @@ def atacar(posicionplayer, mapaActual, objeto):
         
     elif mapaActual[posicionplayer[0]][posicionplayer[1]+1] == objeto:
         if objeto == "E":
-            enemigos()
+            mapaActual = enemigos(mapaActual)
             return True
         
         elif objeto == "F":
@@ -1729,7 +1746,7 @@ def atacar(posicionplayer, mapaActual, objeto):
         
     elif mapaActual[posicionplayer[0]][posicionplayer[1]-1] == objeto:
         if objeto == "E":
-            enemigos()
+            mapaActual = enemigos(mapaActual)
             return True
         
         elif objeto == "F":

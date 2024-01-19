@@ -28,8 +28,11 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
             f.limpiar_pantalla()
             f.cofre_cerrar_sword()
             f.cofre_cerrar_shield()
-            mapaActual = f.contador_arbol_mapa(mapaActual)
-            mapaActual = f.contador_arbol(mapaActual)
+            f.contador_arbol(mapaActual)
+            f.contador_arbol_mapa(mapaActual)
+            
+            
+            
             
             # Crear diccionario de ganon con sus vidas
             if d.ganon["vida"] == 0: # si la vida de ganon es 0, se muestra la pantalla de win
@@ -173,6 +176,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                 elif select.lower() == "back": # Volver a la ultima región, desde donde has viajado hasta el castillo
                     d.texto_prompt.append("You are now in " + d.mapa_anterior) # Se añade al prompt
                     mapaActual = d.localitzacions[d.mapa_anterior] # Se cambia el mapa
+                    d.jugador["mapa"] = d.mapa_anterior
                     posicionplayer = d.dades[d.mapa_anterior]["position"] # Se cambia la posicion
                 
                 elif select.lower() == "attack" and posicionplayer == [9,21]: # Atacar a Ganon, cuando estas a su lado
