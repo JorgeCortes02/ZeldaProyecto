@@ -1,12 +1,5 @@
 import mysql.connector
 
-
-partidasxJugador = "Select user_name, count(*) from game group by user_name;"
-
-ArmasUsuarios = "SELECT g.user_name AS Usuario, w.weapon_name AS Arma, COUNT(*) AS CantidadObtenida, MAX(g.date_started) AS FechaPartidaMasUsos FROM game g JOIN game_weapons w ON g.game_id = w.game_id GROUP BY g.user_name, w.weapon_name ORDER BY Usuario, CantidadObtenida DESC;"
-
-
-# Conectar a la base de datos
 db = mysql.connector.connect(
     host="172.187.226.29",  # Cambia a tu dirección IP
     user="root2",
@@ -16,11 +9,18 @@ db = mysql.connector.connect(
 
 
 
+mitjanaBloodMoon = "Select avg(blood_moon_appearances) from game;"
+
+partidaBloodMoon = "Select g.date_started, g.user_name, g.blood_moon_appearances from game g where g.blood_moon_appearances = (select max(g1.blood_moon_appearances)from game g1) "
+
+# Conectar a la base de datos
+
+
+
+
 def consultasBBDD():
-
-    jugadores = "Select distinct  user_name, date_started from game;"
-
-    cursor.execute(ArmasUsuarios)
+    cursor = db.cursor()
+    cursor.execute(partidaBloodMoon)
     resultados = cursor.fetchall()
 
     for element in resultados:
@@ -33,6 +33,3 @@ def consultasBBDD():
 
 
 
-# Crear un cursor
-cursor = db.cursor()
-consultasBBDD()

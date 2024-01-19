@@ -1,5 +1,6 @@
 import funciones.funciones as f
 import funciones.datos as d
+import mysql.connector
 
 
 cook = True
