@@ -74,7 +74,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                 d.jugador["vidas"] = 3 # Se reinician las vidas
                 return False # Devolvemos falso para no terminar el bulce y que vuelva a aparecer el menu principal
             
-            mapaActual = f.obtenerMapa(mapaActual, posicionplayer) # Se imprime el mapa, y se deja al jugador en su posicion
+            mapaActual = f.obtenerMapa(posicionplayer) # Se imprime el mapa, y se deja al jugador en su posicion
             f.menuInferior(mapaActual) # se imprime el menu inferior
             f.prompt() # se imprime el prompt
             select = input("What to do now? ") # select de la accion a realizar
