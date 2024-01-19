@@ -74,8 +74,8 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                 d.jugador["vidas"] = 3 # Se reinician las vidas
                 return False # Devolvemos falso para no terminar el bulce y que vuelva a aparecer el menu principal
             
-            mapaActual = f.obtenerMapa(mapaActual, posicionplayer) # Se imprime el mapa, y se deja al jugador en su posicion
-            f.menuInferior(mapaActual) # se imprime el menu inferior
+            mapaActual = f.obtenerMapa(mapaActual) # Se imprime el mapa, y se deja al jugador en su posicion
+            f.menuInferior() # se imprime el menu inferior
             f.prompt() # se imprime el prompt
             select = input("What to do now? ") # select de la accion a realizar
             d.texto_prompt.append(select) # se añade el la accion al prompt
@@ -118,7 +118,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     f.mostrar_mapa()
                 
                 elif select[0:3].lower() == "eat": # Consumir comida
-                    f.comer()
+                    f.comer(select)
                 
                 elif select[0:11].lower() == "unequip the": # Desequipar arma
                     # Sigue saliendo en el inventario, y si no tienes espada o escudo equipado te tiene que dar un texto de error.

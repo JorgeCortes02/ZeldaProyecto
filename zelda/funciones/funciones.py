@@ -76,7 +76,7 @@ def mostrarInventario(Select):
         inventario = [" * * * * Inventory * \n",
                             "*\n".rjust(21),
                             " Link".ljust(12) + "  {0}/{1}".format(d.jugador["vidas"],d.jugador["vidas_max"]).rjust(6) + " * \n",
-                            " Blod Moon in ".ljust() + "  {0}".format(25 - d.jugador["bloodMoonCoutdown"]).rjust(4) + " * \n",
+                            " Blod Moon in ".ljust(2) + "  {0}".format(25 - d.jugador["bloodMoonCoutdown"]).rjust(4) + " * \n",
                             "* \n".rjust(22),
                             " Equipement ".ljust(19) + "* \n",
                             "{0}".format(d.inventarioArmas[d.jugador["escudo_actual"]]["tipo"]).rjust(18) + " * \n",
@@ -84,8 +84,7 @@ def mostrarInventario(Select):
                             
                             "* \n".rjust(22),
                             " Food".ljust(15) + "{0}".format(sumComida).rjust(3) +  " *\n",
-                            " Weapons".ljust(15) + "{0}".format(sumArmas).rjust(3) +  " *"
-                            ]
+                            " Weapons".ljust(15) + "{0}".format(sumArmas).rjust(3) +  " *"]
                             
         return inventario
     
@@ -107,64 +106,64 @@ def mostrarInventario(Select):
     elif Select.lower() == "show inventory weapons":
         #Calculamos cuales son las armas de cada tipo que tienen menos usos para poder imprimir los usos de sa arma.
         conteoInventario()
-        inventario = [" * * * * *  Weapons * \n",
-                        "*\n".rjust(22),
-                        "*\n".rjust(22),
+        inventario = [" * * * * * Weapons *\n",
+                        "*\n".rjust(21),
+                        "*\n".rjust(21),
         ]
         
         #Cada if determina como será esa linea en función de si el arma esta equipada o no.   
          
         if d.dict_tipos["Wood Sword"]["total"] == 0:
-            inventario += " Wood Sword" + "0/0".rjust(8) + " * \n","* \n".rjust(23),
+            inventario += " Wood Sword" + "0/0".rjust(7) + " * \n","* \n".rjust(22),
         else:
 
-            inventario += " Wood Sword" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Wood Sword"]["minUsos"]]["usos"], d.dict_tipos["Wood Sword"]["total"]).rjust(8) + " * \n",
+            inventario += " Wood Sword" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Wood Sword"]["minUsos"]]["usos"], d.dict_tipos["Wood Sword"]["total"]).rjust(7) + " * \n",
         
             if d.jugador["arma_actual"] in d.inventarioArmas and d.inventarioArmas[d.jugador["arma_actual"]]["tipo"] == "Wood Sword":
                     
-                    inventario += "  (equiped)" + "*\n".rjust(11),
+                    inventario += "  (equiped)" + "*\n".rjust(10),
             else:
-                    inventario += "* \n".rjust(23),
+                    inventario += "* \n".rjust(22),
         
         if d.dict_tipos["Sword"]["total"] == 0:
             inventario += " Sword" + "0/0".rjust(13) + " * \n","* \n".rjust(23),
         else:
 
-            inventario +=" Sword" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Sword"]["minUsos"]]["usos"], d.dict_tipos["Sword"]["total"]).rjust(13) + " * \n",
+            inventario +=" Sword" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Sword"]["minUsos"]]["usos"], d.dict_tipos["Sword"]["total"]).rjust(12) + " * \n",
        
             if d.jugador["arma_actual"] in d.inventarioArmas and d.inventarioArmas[d.jugador["arma_actual"]]["tipo"] == "Sword":
                     
-                    inventario += "  (equiped)" + "*\n".rjust(11),
+                    inventario += "  (equiped)" + "*\n".rjust(10),
             else:
-                    inventario += "* \n".rjust(23),
+                    inventario += "* \n".rjust(22),
         
         if d.dict_tipos["Wood Shield"]["total"] == 0:
             
-            inventario += " Wood shield" + "0/0".rjust(7) + " * \n",  "* \n".rjust(23),            
+            inventario += " Wood shield" + "0/0".rjust(7) + " * \n",  "* \n".rjust(22),            
        
         else:
 
-            inventario += " Wood shield" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Wood Shield"]["minUsos"]]["usos"], d.dict_tipos["Wood Shield"]["total"]).rjust(7) + " * \n",              
+            inventario += " Wood shield" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Wood Shield"]["minUsos"]]["usos"], d.dict_tipos["Wood Shield"]["total"]).rjust(6) + " * \n",              
         
             if d.jugador["escudo_actual"] in d.inventarioArmas and d.inventarioArmas[d.jugador["escudo_actual"]]["tipo"] == "Swood Shield":
                     
-                    inventario += "  (equiped)" + "*\n".rjust(11),
+                    inventario += "  (equiped)" + "*\n".rjust(10),
             else:
-                    inventario += "* \n".rjust(23),
+                    inventario += "* \n".rjust(22),
         if d.dict_tipos["Shield"]["total"] == 0:
             
-            inventario += " Shield" + "0/0".rjust(12) + " * \n",  "* \n".rjust(23),         
+            inventario += " Shield" + "0/0".rjust(11) + " * \n",  "* \n".rjust(22),         
        
         else:
 
-            inventario += " Shield" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Shield"]["minUsos"]]["usos"], d.dict_tipos["Shield"]["total"]).rjust(12) + " * \n",          
+            inventario += " Shield" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Shield"]["minUsos"]]["usos"], d.dict_tipos["Shield"]["total"]).rjust(11) + " * \n",          
         
                             
             if d.jugador["escudo_actual"] in d.inventarioArmas and d.inventarioArmas[d.jugador["escudo_actual"]]["tipo"] == "Shield":
                     
-                    inventario += "  (equiped)" + "*\n".rjust(11),"*".rjust(22)
+                    inventario += "  (equiped)" + "*".rjust(9),"*".rjust(22)
             else:
-                    inventario += "* \n".rjust(23),"*\n".rjust(8),"*".rjust(22)                          
+                    inventario += "* \n".rjust(22),"*".rjust(6),"*".rjust(22)                          
                         
     return inventario                
 
@@ -252,9 +251,9 @@ def imprimirmapa(mapaActual):
                 
         
 
-        #mapa += mostrarInventario(d.select)[contadorInventario]
+        mapa += mostrarInventario(d.select)[contadorInventario]
 
-        mapa += d.inventario1[contadorInventario]
+        #mapa += d.inventario1[contadorInventario]
         
         if contadorInventario < 10:
             contadorInventario += 1
@@ -312,7 +311,7 @@ def moverPersonaje(mapaActual, select, posicionplayer):
 
     elif select[0:8] == "go right":
        
-        if posicionplayer[1] + int(select[8:]) > 57:
+        if posicionplayer[1] + int(select[9:]) > 57:
             
 
             return["Invalid action1"], posicionplayer[0], posicionplayer[1]
@@ -320,7 +319,7 @@ def moverPersonaje(mapaActual, select, posicionplayer):
             int1 = posicionplayer[1]
             int2 = posicionplayer[1] + int(select[9:])
             diferent = True
-            for i in range (int2, int1, -1):
+            for i in range (int1, int2):
                 
                 if int(select[9:]) == 1:
 
@@ -1324,28 +1323,41 @@ def menuInferior():
     
     menuInferior = "* Exit, Show, Go, Eat"
 
-
-    if d.jugador["mapa"][posicion[0]+1][posicion[1]] == "T" or d.jugador["mapa"][posicion[0]-1][posicion[1]] == "T" or d.jugador["mapa"][posicion[0]+1][posicion[1]+1]  == "T" or d.jugador["mapa"][posicion[0]+1][posicion[1]-1]  == "T" or d.jugador["mapa"][posicion[0]][posicion[1]+1]  == "T" or d.jugador["mapa"][posicion[0]][posicion[1]-1]  == "T" or d.jugador["mapa"][posicion[0]-1][posicion[1]+1] or d.jugador["mapa"][posicion[0]-1][posicion[1]-1]  == "T":
+    if posicion[0] == 10:
+        if d.localitzacions[d.jugador["mapa"]][posicion[0]-1][posicion[1]] == "T" or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]+1]  == "T" or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]-1]  == "T":
 
             menuInferior += ", Attack"
+
+    
+        if menuInferior.find("Attack") == -1:
+        
+            if d.localitzacions[d.jugador["mapa"]][posicion[0]-1][posicion[1]][0] in  ("Z","E") or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]+1][0]  in  ("Z","E") or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]-1][0]  in  ("Z","E") and d.jugador["arma_actual"] != " ":
+                menuInferior += ", Attack"
+
+        if d.localitzacions[d.jugador["mapa"]][posicion[0]-1][posicion[1]][0]  == "~" or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]+1][0]   == "~" or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]-1][0]   == "~":
+            menuInferior += ", Fish"
+        
+        if d.localitzacions[d.jugador["mapa"]][posicion[0]-1][posicion[1]][0] in  ("S","M") or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]+1][0] in  ("S","M") or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]-1][0] in ("S","M"):
+        
+            menuInferior += ", Open"
     
     else:
-        if mapa[posicion[0]+1][posicion[1]] == "T" or mapa[posicion[0]-1][posicion[1]] == "T" or mapa[posicion[0]+1][posicion[1]+1]  == "T" or mapa[posicion[0]+1][posicion[1]-1]  == "T" or mapa[posicion[0]][posicion[1]+1]  == "T" or mapa[posicion[0]][posicion[1]-1]  == "T" or mapa[posicion[0]-1][posicion[1]+1] or mapa[posicion[0]-1][posicion[1]-1]  == "T":
+        if d.localitzacions[d.jugador["mapa"]][posicion[0]+1][posicion[1]] == "T" or d.localitzacions[d.jugador["mapa"]][posicion[0]-1][posicion[1]] == "T" or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]+1]  == "T" or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]-1]  == "T":
 
             menuInferior += ", Attack"
 
-   
-    if menuInferior.find("Attack") == -1:
     
-        if d.jugador["mapa"][posicion[0]+1][posicion[1]][0] in  ("Z","E") or d.jugador["mapa"][posicion[0]-1][posicion[1]][0] in  ("Z","E") or d.jugador["mapa"][posicion[0]+1][posicion[1]+1][0]  in  ("Z","E") or d.jugador["mapa"][posicion[0]+1][posicion[1]-1][0]  in  ("Z","E") or d.jugador["mapa"][posicion[0]][posicion[1]+1][0]  in  ("Z","E") or d.jugador["mapa"][posicion[0]][posicion[1]-1][0]  in  ("Z","E") or d.jugador["mapa"][posicion[0]-1][posicion[1]+1][0] in  ("Z","E") or d.jugador["mapa"][posicion[0]-1][posicion[1]-1][0]  in  ("Z","E") and d.jugador["arma_actual"] != " ":
-            menuInferior += ", Attack"
+        if menuInferior.find("Attack") == -1:
+        
+            if d.localitzacions[d.jugador["mapa"]][posicion[0]+1][posicion[1]][0] in  ("Z","E") or d.localitzacions[d.jugador["mapa"]][posicion[0]-1][posicion[1]][0] in  ("Z","E") or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]+1][0]  in  ("Z","E") or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]-1][0]  in  ("Z","E") and d.jugador["arma_actual"] != " ":
+                menuInferior += ", Attack"
 
-    if d.jugador["mapa"][posicion[0]+1][posicion[1]][0] == "~" or d.jugador["mapa"][posicion[0]-1][posicion[1]][0]  == "~" or d.jugador["mapa"][posicion[0]+1][posicion[1]+1][0]   == "~" or d.jugador["mapa"][posicion[0]+1][posicion[1]-1][0]   == "~" or d.jugador["mapa"][posicion[0]][posicion[1]+1][0]   == "~" or d.jugador["mapa"][posicion[0]][posicion[1]-1][0]   == "~" or d.jugador["mapa"][posicion[0]-1][posicion[1]+1][0] == "~" or d.jugador["mapa"][posicion[0]-1][posicion[1]-1][0] == "~":
-         menuInferior += ", Fish"
-    
-    if d.jugador["mapa"][posicion[0]+1][posicion[1]][0] in  ("S","M") or d.jugador["mapa"][posicion[0]-1][posicion[1]][0] in  ("S","M") or d.jugador["mapa"][posicion[0]+1][posicion[1]+1][0]  in  ("S","M") or d.jugador["mapa"][posicion[0]+1][posicion[1]-1][0] in  ("S","M") or d.jugador["mapa"][posicion[0]][posicion[1]+1][0] in  ("S","M") or d.jugador["mapa"][posicion[0]][posicion[1]-1][0] in ("S","M") or d.jugador["mapa"][posicion[0]-1][posicion[1]+1][0] in  ("S","M") or d.jugador["mapa"][posicion[0]-1][posicion[1]-1][0]  in ("S","M"):
-     
-        menuInferior += ", Open"
+        if d.localitzacions[d.jugador["mapa"]][posicion[0]+1][posicion[1]][0] == "~" or d.localitzacions[d.jugador["mapa"]][posicion[0]-1][posicion[1]][0]  == "~" or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]+1][0]   == "~" or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]-1][0]   == "~":
+            menuInferior += ", Fish"
+        
+        if d.localitzacions[d.jugador["mapa"]][posicion[0]+1][posicion[1]][0] in  ("S","M") or d.localitzacions[d.jugador["mapa"]][posicion[0]-1][posicion[1]][0] in  ("S","M") or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]+1][0] in  ("S","M") or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]-1][0] in ("S","M"):
+        
+            menuInferior += ", Open"
 
 
     while  len(menuInferior) < 79:
