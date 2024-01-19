@@ -58,10 +58,7 @@ funcion_normal(funcion_en_funcion())
 
 
 
-# Zorro, vida (no farmear)
-# Abrir cofre, no cambia la M por una W
+# Enemigo, vida y movimiento
 # Atacar a Ganon, ya esta hecho que te tengas que poner en la posicion de al lado suyo para atacar, faltaria hacer que te haga daño y quitarle vida y tambien que se quiten los corazones que tiene despues del nombre en el mapa
-# Arbol, no se muestra el contador
-# Contador arbol, si haces un movimiento y cambias de mapa, salta error
 # Blood moon
 # Terminar opcion menu consultas BBDD

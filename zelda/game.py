@@ -173,6 +173,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                 elif select.lower() == "back": # Volver a la ultima región, desde donde has viajado hasta el castillo
                     d.texto_prompt.append("You are now in " + d.mapa_anterior) # Se añade al prompt
                     mapaActual = d.localitzacions[d.mapa_anterior] # Se cambia el mapa
+                    d.jugador["mapa"] = d.mapa_anterior
                     posicionplayer = d.dades[d.mapa_anterior]["position"] # Se cambia la posicion
                 
                 elif select.lower() == "attack" and posicionplayer == [9,21]: # Atacar a Ganon, cuando estas a su lado
