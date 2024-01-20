@@ -1,4 +1,6 @@
 import funciones.datos as d
+#import funciones.bbddpruebas as b
+
 import random
 mapaActual = []
 
@@ -7,19 +9,17 @@ def mostrarInventario(select):
     if select.lower() == "show inventory main":
     
         inventario = [" * * * * Inventory * \n",
-                        "*\n".rjust(21),
-                        " Link".ljust(12) + "  {0}/{1}".format(d.jugador["vidas"],d.jugador["vidas_max"]).rjust(6) + " * \n",
-                        " Blod Moon in ".ljust(10) + "  {0}".format(25).rjust(4) + " * \n",
-                        "* \n".rjust(22),
-                        " Equipement ".ljust(19) + "* \n",
-                         "{0}".format(d.jugador["escudo_actual"]).rjust(18) + " * \n",
-                         "{0}".format(d.jugador["arma_actual"]).rjust(18) + " * \n",
-                         
-                         "* \n".rjust(22),
-                         " Food".ljust(15) + "{0}".format(5).rjust(3) +  " *\n",
-                         " Weapons".ljust(15) + "{0}".format(5).rjust(3) +  " *"
-                         ]
-                        
+                            "*\n".rjust(21),
+                            " Link".ljust(12) + "  {0}/{1}".format(d.jugador["vidas"],d.jugador["vidas_max"]).rjust(6) + " * \n",
+                            " Blod Moon in ".ljust(2) + "  {0}".format(d.jugador["bloodMoonCoutdown"]).rjust(4) + " * \n",
+                            "* \n".rjust(22),
+                            " Equipement ".ljust(19) + "* \n",
+                            "{0}".format(d.inventarioArmas[d.jugador["escudo_actual"]]["tipo"]).rjust(18) + " * \n",
+                            "{0}".format(d.inventarioArmas[d.jugador["arma_actual"]]["tipo"]).rjust(18) + " * \n",
+                            "* \n".rjust(22),
+                            " Food".ljust(15) + "{0}".format(sumComida).rjust(3) +  " *\n",
+                            " Weapons".ljust(15) + "{0}".format(sumArmas).rjust(3) +  " *"]
+                            
         return inventario
     
     elif select.lower() == "show inventory food":
@@ -765,10 +765,50 @@ def arbol(espada): #Interacion con el arbol
             if d.vida_arbol == 0: #Cuando el arbol llega a 0 se cae y no aparece hasta dentro de 10 movimientos
                 d.texto_prompt.append("The tree has fallen") #Este prom lo he añadido yo
 
-def agua(): #Interacion con el agua
-    porcentaje = random.randint(1,100)
-    if d.pesca == True: #Comprueba si ya has conseguido un pez
-        d.texto_prompt.append("There are no more fish") #-Este prom lo he añadido yo
+def contador_arbol_mapa(mapaActual): #Cambia los arboles por su numero del contador 
+    if d.jugador["mapa"] != "castle":
+        for i in range(len(d.dades[d.jugador["mapa"]]["T"]["contador"])): #Busca que arbol tiene la vida al 0 y lo cambia por el numero del contador que tenga en ese momento
+            if d.dades[d.jugador["mapa"]]["T"]["contador"][i] != 0:
+                mapaActual[d.dades[d.jugador["mapa"]]["T"]["lista"][i][0]][d.dades[d.jugador["mapa"]]["T"]["lista"][i][1]] = str(d.dades[d.jugador["mapa"]]["T"]["contador"][i])
+
+def contador_arbol(mapaActual): #Baja el contador de todos los arboles
+    if d.jugador["mapa"] != "castle":
+        cont = 0
+        for i in d.dades[d.jugador["mapa"]]["T"]["contador"]: #Mira si x arbol tiene más de 0 de contador 
+            if i != 0: #Si es superior a 0 pues le resta uno
+                d.dades[d.jugador["mapa"]]["T"]["contador"][cont] = i - 1
+                
+            else: #Sino le pone la vida al 4 y cambia el mapa para que tenga el arbol
+                d.dades[d.jugador["mapa"]]["T"]["vida"][cont] == 4
+                mapaActual[d.dades[d.jugador["mapa"]]["T"]["lista"][cont][0]][d.dades[d.jugador["mapa"]]["T"]["lista"][cont][1]] = "T"
+            cont = cont + 1
+
+def agua(mapaActual): #Interacion con el agua
+    agua = False
+    if mapaActual[d.jugador["posicion"][0]+1][d.jugador["posicion"][1]] == "~":
+        agua = True
+    
+    elif mapaActual[d.jugador["posicion"][0]-1][d.jugador["posicion"][1]] == "~":
+        agua = True
+    
+    elif mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]+1] == "~":
+        agua = True
+        
+    elif mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]-1] == "~":
+        agua = True
+    
+    
+    if agua == True:
+        if d.pesca == True: #Comprueba si ya has conseguido un pez
+            d.texto_prompt.append("There are no more fish") #-Este prom lo he añadido yo
+        else:
+            porcentaje = random.randint(1,100)
+            if porcentaje in range(1,21): #Te da un pez, confirma que ya has conseguido un pez y te da un mensaje en el promp
+                d.texto_prompt.append("You got a fish")
+                d.pesca = True 
+                d.inventarioComida["Fish"] += 1
+            else: #No te da nada y te escribe en el promp
+                d.texto_prompt.append("You didn't get a fish")
     else:
         if porcentaje in range(1,21): #Te da un pez, confirma que ya has conseguido un pez y te da un mensaje en el promp
             d.texto_prompt.append("You got a fish")
@@ -833,7 +873,7 @@ def cofre(): #Interacion con el cofre
     if d.cofre_abierto == True: #comprueba si el cofre ya esta abierto
         d.texto_prompt.append("The chest is now open") #Este prompt lo he puesto yo
     else:
-        if d.mapa == (d.hyrule or d.gerudo): #Dependiendo del mapa te dara una espada o un escudo
+        if d.jugador["mapa"] == (d.hyrule or d.gerudo): #Dependiendo del mapa te dara una espada o un escudo
             d.texto_prompt.append(f"You got a sword")
             d.cofre_abierto = True
             #-Falta hacer que se añada una espada al inventario 
@@ -842,36 +882,97 @@ def cofre(): #Interacion con el cofre
             d.cofre_abierto = True
             #-Falta hacer que se añada un escudo al inventario
 
-def enemigos(): #Interacion con el enemigo
-    #-Queda que el enemigo se mueva bien y que no se ponga en un sitio donde no se puede
-    d.vida_espada_madera -= 1 #Le quita un uso a la espada
-    d.texto_prompt.append(f"Brave, keep fighting {d.name}")
-    d.vidas -= 1 #Te resta 1 de vida
-    d.texto_prompt.append(f"Be careful Link, you only have {d.vidas} hearts")
-    d.vida_enemigo -= 1 #Le resta 1 de vida al enemigo
-    if d.vidas == 0: #Comprueba si a un te queda vida
-        d.texto_prompt.append(f"{d.name} is dead")
-    else:
-        if d.vida_enemigo == 0: #Comprueba si al enemigo a un le queda vida
-            d.texto_prompt.append("You defeated an enemy, this is a dangerous zone")
-        else:
-            direccion1 = random.randint(1,2)
-            if direccion1 == 1: #Mira si modificara X o Y
-                direccion2= random.randint(1,2)
-                if direccion2 == 1: #Luego si es para delante o atras o izquierda o derecha
-                    d.posicion_enemigo[0] += 1
-                else:
-                    d.posicion_enemigo[0] -= 1
-            else:
-                direccion2= random.randint(1,2)
-                if direccion2 == 1:
-                    d.posicion_enemigo[1] += 1
-                else:
-                    d.posicion_enemigo[1] -= 1
+def enemigos(mapaActual): #Interacion con el enemigo
+    d.jugador["vidas"]-= 1 #Te resta 1 de vida
+    if d.jugador["vidas"] != 0:
+        d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1 #Le quita un uso a la espada
+        d.texto_prompt.append(f"Brave, keep fighting {d.jugador['nombre']}")
+        d.texto_prompt.append(f"Be careful {d.jugador['nombre']}, you only have {d.jugador['vidas']} hearts")
+        for i in range(len(d.dades[d.jugador["mapa"]]["E"]["posicion"])):
+            enemigo = False
+            if d.jugador["posicion"][0] == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0] and d.jugador["posicion"][1]+1 == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]:
+                enemigo = True
             
-def comer(select): #Interaccion de comer
-    #-Habra que modificar el como se dirije a la comida
-    if d.vidas == d.vidas_max: #Comprueba si el personaje ya tiene lla vida maxima
+            if d.jugador["posicion"][0] == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0] and d.jugador["posicion"][1]-1 == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]:
+                enemigo = True
+            
+            if d.jugador["posicion"][0]-1 == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0] and d.jugador["posicion"][1] == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]:
+                enemigo = True
+            
+            if d.jugador["posicion"][0]+1 == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0] and d.jugador["posicion"][1] == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]:
+                enemigo = True
+            
+            if enemigo == True:  
+                d.dades[d.jugador["mapa"]]["E"]["posicion"][i][3] -= 1 #Le resta 1 de vida al enemigo
+                if d.dades[d.jugador["mapa"]]["E"]["posicion"][i][3] == 0: #Comprueba si al enemigo a un le queda vida
+                    d.texto_prompt.append("You defeated an enemy, this is a dangerous zone")
+                else:
+                    salir = False
+                    while not salir:
+                        direccion1 = random.randint(1,2)
+                        if direccion1 == 1: #Mira si modificara X o Y
+                            direccion2= random.randint(1,2)
+                            if direccion2 == 1: #Luego si es para izquierda o derecha o delante o atras
+                                if mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]+1] == " ":
+                                    mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = " "
+                                    d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1] += 1
+                                    mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = "E"
+                                    salir = True
+                            else:
+                                if mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]-1] == " ":
+                                    mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = " "
+                                    d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1] -= 1
+                                    mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = "E"
+                                    salir = True
+                        else:
+                            direccion2= random.randint(1,2)
+                            if direccion2 == 1:
+                                if mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]+1][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] == " ":
+                                    mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = " "
+                                    d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0] += 1
+                                    mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = "E"
+                                    salir = True
+                            else:
+                                if mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]-1][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] == " ":
+                                    mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = " "
+                                    d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0] -= 1
+                                    mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = "E"
+                                    salir = True
+    return mapaActual
+
+def vida_ganon():
+    if d.jugador["mapa"] != "castle":
+        if d.win == False:
+            d.ganon["vida"] = 8
+            for i in range(8):
+                print(d.localitzacions["castle"][2][46+i+1])
+                d.localitzacions["castle"][2][46+i+1] = "♥"
+                print(d.localitzacions["castle"][2][46+i+1])
+
+def ganon_castillo():
+    if d.jugador["mapa"] == "castle":
+        if d.win == False:
+            if d.jugador["posicion"][1] > 19:
+                d.jugador["vidas"] -= 1 #Te resta 1 de vida
+
+
+def pelea_ganon(mapaActual): #Interacion con ganon
+    if d.jugador["arma_actual"] == " " or d.jugador["arma_actual"] == "": #compruba si tienes una espada
+        d.texto_prompt.append("I can't attack if you don't have a sword")
+    else:
+        d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1 #Le quita un uso a la espada
+        numero = random.randint(0,9)
+        d.texto_prompt.append(d.frases_ganon[numero])
+        d.ganon["vida"] -= 1 #Le resta 1 de vida al enemigo
+        mapaActual[2][46+d.ganon["vida"]] = " "
+        if d.ganon["vida"] == 0: #Comprueba si al enemigo a un le queda vida
+            d.texto_prompt.append("It has been an exhausting fight, but with persistence, you have achieved it.")
+            d.win = True
+
+    return mapaActual
+                
+def comer(select): #Interaccion de comer #-mirar las direcciones
+    if d.jugador["vidas"] == d.jugador["vidas_max"]: #Comprueba si el personaje ya tiene lla vida maxima
         d.texto_prompt.append("You already have your whole life complete")
     else:
         if select == "Eat vegetable": #Comprueba si como un vegetal
@@ -1229,3 +1330,125 @@ def trucos(select):
     
     else:
         d.texto_prompt.append("Invalid option")
+        
+        
+
+def imprimir_partidas_guardadas():
+    saved_games = [["* Saved games * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"]]
+    
+    if len(d.datosPartidas) > 1:
+        for i in d.datosPartidas:
+            saved_games.append(["* {}: {} {} - {}, {}".format(i[0], i[4], "18:37:15", i[1], i[9]).ljust(72) + "♥ {}/{} *".format(i[5], i[6])])
+        
+        while len(saved_games) != 11:
+            saved_games.append(["* ".ljust(78) + "*"]) 
+    
+    elif len(d.datosPartidas) == 1 and type(d.datosPartidas[0]) == list:
+        for i in d.datosPartidas:
+            saved_games.append(["* {}: {} {} - {}, {}".format(i[0], i[4], "18:37:15", i[1], i[9]).ljust(72) + "♥ {}/{} *".format(i[5], i[6])])
+        
+        while len(saved_games) != 11:
+            saved_games.append(["* ".ljust(78) + "*"])
+    
+    else:
+        saved_games.append(["* {}".format(d.datosPartidas[0]).ljust(78) + "*"])
+        
+        while len(saved_games) != 11:
+            saved_games.append(["* ".ljust(78) + "*"]) 
+        
+    saved_games.append(["* Play X, Erase X, Help, Back * * * * * * * * * * * * * * * * * * * * * * * * *"])
+    
+    imprimirmapa_menu(saved_games)
+
+
+
+
+def atacar(posicionplayer, mapaActual, objeto):
+    if mapaActual[posicionplayer[0]+1][posicionplayer[1]] == objeto:
+        if objeto == "E":
+            mapaActual = enemigos(mapaActual)
+            return True
+        
+        elif objeto == "F":
+            zorro()
+            return True
+        
+        elif objeto == "T":
+            arbol()
+            return True
+        
+        elif objeto == " ":
+            cesped()
+            return True
+        
+            
+    elif mapaActual[posicionplayer[0]-1][posicionplayer[1]] == objeto:
+        if objeto == "E":
+            mapaActual = enemigos(mapaActual)
+            return True
+        
+        elif objeto == "F":
+            zorro()
+            return True
+        
+        elif objeto == "T":
+            arbol()
+            return True
+        
+        elif objeto == " ":
+            cesped()
+            return True
+        
+    elif mapaActual[posicionplayer[0]][posicionplayer[1]+1] == objeto:
+        if objeto == "E":
+            mapaActual = enemigos(mapaActual)
+            return True
+        
+        elif objeto == "F":
+            zorro()
+            return True
+        
+        elif objeto == "T":
+            arbol()
+            return True
+        
+        elif objeto == " ":
+            cesped()
+            return True
+        
+    elif mapaActual[posicionplayer[0]][posicionplayer[1]-1] == objeto:
+        if objeto == "E":
+            mapaActual = enemigos(mapaActual)
+            return True
+        
+        elif objeto == "F":
+            zorro()
+            return True
+        
+        elif objeto == "T":
+            arbol()
+            return True
+        
+        elif objeto == " ":
+            cesped()
+            return True
+
+    else:
+        return False
+    
+#------------------------ Blood moon ----------------
+    
+def blood_moonn():
+    if d.jugador["bloodMoonCoutdown"] == 25:
+        d.jugador["bloodMoonCoutdown"] = 0
+        d.jugador["totalBloodMoon"] += 1
+        d.dades["hyrule"]["E"]["posicion"][0][3] = 1
+        d.dades["hyrule"]["E"]["posicion"][1][3] = 9
+        d.dades["gerudo"]["E"]["posicion"][0][3] = 1
+        d.dades["gerudo"]["E"]["posicion"][1][3] = 2
+        d.dades["death"]["E"]["posicion"][0][3] = 2
+        d.dades["death"]["E"]["posicion"][1][3] = 2
+        d.dades["necluda"]["E"]["posicion"][0][3] = 1
+        d.dades["necluda"]["E"]["posicion"][0][3] = 1
+    else:
+        d.jugador["bloodMoonCoutdown"] += 1

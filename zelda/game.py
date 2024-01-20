@@ -2,14 +2,6 @@ import funciones.funciones as f
 import funciones.datos as d
 
 
-cook = True
-cesped = True
-tree = False
-fish = True
-chest = False
-enemic = False
-
-# Habrá que cambiar esto por que se activen los objetos que tiene al lado
 
 def game(): # Hay que mirar como se pondria para cuando eliges una partida guardada.
     exit = False 
@@ -26,6 +18,12 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
         final = False 
         while final == False: # Bucle para la partida
             f.limpiar_pantalla()
+            f.cofre_cerrar_sword()
+            f.cofre_cerrar_shield()
+            f.contador_arbol_mapa(mapaActual)
+            f.contador_arbol(mapaActual)
+            f.blood_moonn()
+            
             # Crear diccionario de ganon con sus vidas
             if d.ganon["vida"] == 0: # si la vida de ganon es 0, se muestra la pantalla de win
                 d.win = True
@@ -118,23 +116,23 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     # Me da error la funcion cuando busca las armas disponibles
                     f.equiparArma(select)
                 
-                elif select[0:4].lower() == "cook" and cook == True:  # Cocinar comida, cuando estas al lado de una C
+                elif select[0:4].lower() == "cook":  # Cocinar comida, cuando estas al lado de una C
                     f.cocinar(select, d.inventarioComida)
                     
-                elif select.lower() == "attack" and enemic == True: # Atacar a un enemigo, cuando esta a tu lado
+                elif select.lower() == "attack": # Atacar a un enemigo, cuando esta a tu lado
                     # Falta funcion de enemigo
                     print("a")
                 
-                elif select.lower() == "attack" and d.visibilidad_zorro == True: # Atacar a un zorro, cuando estas al lado de una F
+                elif select.lower() == "attack": # Atacar a un zorro, cuando estas al lado de una F
                     f.zorro() # Falta quitarle vida al arma y añadir carne al inventario
                 
-                elif select.lower() == "attack" and tree == True: # Atacar a un arbol, cuando estas al lado de una T
+                elif select.lower() == "attack": # Atacar a un arbol, cuando estas al lado de una T
                     f.arbol(d.jugador["arma_actual"]) # Falta acabar la funcion de arboles, da error con la vida
                     
-                elif select.lower() == "attack" and cesped == True: # Atacat al cesped, cuando estas en un " "
+                elif select.lower() == "attack": # Atacat al cesped, cuando estas en un " "
                     f.cesped()
                 
-                elif select.lower() == "fish" and fish == True: # Pescar cuando estas al lado de una ~
+                elif select.lower() == "fish": # Pescar cuando estas al lado de una ~
                     f.agua() # Falta añadir al inventario el pez conseguido
                 
                 elif select.lower() == "open sanctuary": # Abrir un santuario, cuando estas al lado de un santuario 
@@ -151,7 +149,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     # Falta terminar la funcion para del movimiento cercano
                     print("a")
                 
-                elif select.lower() == "open chest" and chest == True: # Abrir cofre, cuando estas al lado de una M o W
+                elif select.lower() == "open chest": # Abrir cofre, cuando estas al lado de una M o W
                     # Falta ver como hacemos lo de los cofres abiertos, que se reinicien y tal.
                     f.cofre() 
                     

@@ -49,3 +49,8 @@ while True:
     f.frase_ganon()
     input("")
 
+
+
+
+# Enemigo, vida y movimiento
+# Terminar opcion menu consultas BBDD
