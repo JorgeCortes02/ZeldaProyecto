@@ -77,7 +77,7 @@ def mostrarInventario(Select):
         inventario = [" * * * * Inventory * \n",
                             "*\n".rjust(21),
                             " Link".ljust(12) + "  {0}/{1}".format(d.jugador["vidas"],d.jugador["vidas_max"]).rjust(6) + " * \n",
-                            " Blod Moon in ".ljust() + "  {0}".format(25 - d.jugador["bloodMoonCoutdown"]).rjust(4) + " * \n",
+                            " Blood Moon in ".ljust(14) + "  {0}".format(25 - d.jugador["bloodMoonCoutdown"]).rjust(3) + " * \n",
                             "* \n".rjust(22),
                             " Equipement ".ljust(19) + "* \n",
                             "{0}".format(d.inventarioArmas[d.jugador["escudo_actual"]]["tipo"]).rjust(18) + " * \n",
@@ -169,7 +169,7 @@ def mostrarInventario(Select):
             else:
                     inventario += "* \n".rjust(23),"*\n".rjust(8),"*".rjust(22)                          
                         
-    return inventario                
+    return inventario                 
    
   
 #Esta funcion inserta un objeto en el inventario. Solo necesitaremos pasarle el nombre del objeto y el diccionario al cual queremos meterlo (InventarioComida o inventario Arma)
@@ -1001,6 +1001,7 @@ def zorro_visivilidad(): #Dice si el zorro sera visible o no
     porcentaje = random.randint(1,100)
     if porcentaje in range(1,51):
         d.visibilidad_zorro = True
+        d.vida_zorro = True
         d.texto_prompt.append("You see a Fox")
     else:
         d.visibilidad_zorro = False
@@ -1010,10 +1011,14 @@ def zorro(): #Interacion con el zorro
     if d.visibilidad_zorro == False:
         d.texto_prompt.append("You don't see any fox")
     else:
-        d.inventarioArmas[d.jugador["arma_actual"]]["Usos"] -= 1
-        d.texto_prompt.append("You got meat")
-        d.inventarioComida["Meat"] += 1
-
+        if d.vida_zorro == True:
+            d.inventarioArmas[d.jugador["arma_actual"]]["Usos"] -= 1
+            d.texto_prompt.append("You got meat")
+            d.vida_zorro = False
+            d.inventarioComida["Meat"] += 1
+        
+        else:
+            d.texto_prompt.append("He is dead 💀")
 
 def cofre_cerrar_sword(): #Comprueba si en tu inventario tienes alguna espada
     if d.dades["hyrule"]["M"]["posicion"][0][2] == True and d.dades["gerudo"]["M"]["posicion"][0][2] == True and d.dades["gerudo"]["M"]["posicion"][1][2] == True:
@@ -1309,26 +1314,26 @@ def cocinar(receta, inventario): # Funcion para cocinar comida
         d.texto_prompt.append("You can't cook", receta[5:])
 
 #Crea el menu inferior en base a lo que haya en el entorno.
-def menuInferior():
+def menuInferior(mapaActual):
    
     posicion = d.jugador["posicion"]
     
     menuInferior = "* Exit, Show, Go, Eat"
 
-    if d.jugador["mapa"][posicion[0]+1][posicion[1]] == "T" or d.jugador["mapa"][posicion[0]-1][posicion[1]] == "T" or d.jugador["mapa"][posicion[0]+1][posicion[1]+1]  == "T" or d.jugador["mapa"][posicion[0]+1][posicion[1]-1]  == "T" or d.jugador["mapa"][posicion[0]][posicion[1]+1]  == "T" or d.jugador["mapa"][posicion[0]][posicion[1]-1]  == "T" or d.jugador["mapa"][posicion[0]-1][posicion[1]+1] or d.jugador["mapa"][posicion[0]-1][posicion[1]-1]  == "T":
+    if mapaActual[posicion[0]+1][posicion[1]] == "T" or mapaActual[posicion[0]-1][posicion[1]] == "T" or mapaActual[posicion[0]][posicion[1]+1]  == "T" or mapaActual[posicion[0]][posicion[1]-1]  == "T":
 
         menuInferior += ", Attack"
 
    
     if menuInferior.find("Attack") == -1:
     
-        if d.jugador["mapa"][posicion[0]+1][posicion[1]][0] in  ("Z","E") or d.jugador["mapa"][posicion[0]-1][posicion[1]][0] in  ("Z","E") or d.jugador["mapa"][posicion[0]+1][posicion[1]+1][0]  in  ("Z","E") or d.jugador["mapa"][posicion[0]+1][posicion[1]-1][0]  in  ("Z","E") or d.jugador["mapa"][posicion[0]][posicion[1]+1][0]  in  ("Z","E") or d.jugador["mapa"][posicion[0]][posicion[1]-1][0]  in  ("Z","E") or d.jugador["mapa"][posicion[0]-1][posicion[1]+1][0] in  ("Z","E") or d.jugador["mapa"][posicion[0]-1][posicion[1]-1][0]  in  ("Z","E") and d.jugador["arma_actual"] != " ":
+        if mapaActual[posicion[0]+1][posicion[1]][0] in  ("Z","E") or mapaActual[posicion[0]-1][posicion[1]][0] in  ("Z","E") or mapaActual[posicion[0]][posicion[1]+1][0]  in  ("Z","E") or mapaActual[posicion[0]][posicion[1]-1][0]  in  ("Z","E") and d.jugador["arma_actual"] != " ":
             menuInferior += ", Attack"
 
-    if d.jugador["mapa"][posicion[0]+1][posicion[1]][0] == "~" or d.jugador["mapa"][posicion[0]-1][posicion[1]][0]  == "~" or d.jugador["mapa"][posicion[0]+1][posicion[1]+1][0]   == "~" or d.jugador["mapa"][posicion[0]+1][posicion[1]-1][0]   == "~" or d.jugador["mapa"][posicion[0]][posicion[1]+1][0]   == "~" or d.jugador["mapa"][posicion[0]][posicion[1]-1][0]   == "~" or d.jugador["mapa"][posicion[0]-1][posicion[1]+1][0] == "~" or d.jugador["mapa"][posicion[0]-1][posicion[1]-1][0] == "~":
+    if mapaActual[posicion[0]+1][posicion[1]][0] == "~" or mapaActual[posicion[0]-1][posicion[1]][0]  == "~" or mapaActual[posicion[0]][posicion[1]+1][0]   == "~" or mapaActual[posicion[0]][posicion[1]-1][0]   == "~":
          menuInferior += ", Fish"
     
-    if d.jugador["mapa"][posicion[0]+1][posicion[1]][0] in  ("S","M") or d.jugador["mapa"][posicion[0]-1][posicion[1]][0] in  ("S","M") or d.jugador["mapa"][posicion[0]+1][posicion[1]+1][0]  in  ("S","M") or d.jugador["mapa"][posicion[0]+1][posicion[1]-1][0] in  ("S","M") or d.jugador["mapa"][posicion[0]][posicion[1]+1][0] in  ("S","M") or d.jugador["mapa"][posicion[0]][posicion[1]-1][0] in ("S","M") or d.jugador["mapa"][posicion[0]-1][posicion[1]+1][0] in  ("S","M") or d.jugador["mapa"][posicion[0]-1][posicion[1]-1][0]  in ("S","M"):
+    if mapaActual[posicion[0]+1][posicion[1]][0] in  ("S","M") or mapaActual[posicion[0]-1][posicion[1]][0] in  ("S","M") or mapaActual[posicion[0]][posicion[1]+1][0] in  ("S","M") or mapaActual[posicion[0]][posicion[1]-1][0] in ("S","M"):
      
         menuInferior += ", Open"
 
