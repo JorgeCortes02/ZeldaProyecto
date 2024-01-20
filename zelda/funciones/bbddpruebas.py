@@ -232,7 +232,7 @@ def selectAndChargePartida(numero):
 
                     d.dades[resultados[index][0]]["M"]["posicion"][index2][2] = True
    
-#Funciones Estadisticas menu principal.
+
                     
 
 
