@@ -55,3 +55,8 @@ def funcion_normal(funcion):
 
 
 funcion_normal(funcion_en_funcion())
+
+
+
+# Enemigo, vida y movimiento
+# Terminar opcion menu consultas BBDD

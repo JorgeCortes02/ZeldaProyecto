@@ -15,6 +15,7 @@ print(f.menuInferior())
 
 
 mapaActual = f.obtenerMapa(d.localitzacions["hyrule"], posicionplayer)
+
 print(f.menuInferior(mapaActual))
 
 
