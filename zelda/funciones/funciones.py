@@ -1,7 +1,7 @@
 import funciones.datos as d
 
 import random
-#import mysql.connector
+import mysql.connector
 mapaActual = []
 db = mysql.connector.connect(
     host="172.187.226.29",  # Cambia a tu dirección IP
@@ -198,20 +198,20 @@ def añadirInventario(objeto, diccionario):
 
     if objeto == "Wood Sword":
         
-        diccionario[objeto] = {"tipo": "Wood Sword", "Usos": 5 }
+        diccionario[objeto] = {"tipo": "Wood Sword", "usos": 5 }
         
     elif objeto == "Wood Shield":
     
-        diccionario[objeto] = {"tipo": "Wood Shield", "Usos": 5 }
+        diccionario[objeto] = {"tipo": "Wood Shield", "usos": 5 }
     
     elif objeto == "Shield":
         
-        diccionario[objeto] = {"tipo": "Shield", "Usos": 9 }
+        diccionario[objeto] = {"tipo": "Shield", "usos": 9 }
         
     
     elif objeto == "Sword":
         
-        diccionario[objeto] = {"tipo": "Sword", "Usos": 9 }
+        diccionario[objeto] = {"tipo": "Sword", "usos": 9 }
 
     elif objeto == "Vegetable":
         
@@ -696,21 +696,23 @@ def menu_principal():
     menu_inicial = menu_random()
     menu = True
     salir = False
+    
     while salir == False:
         while menu == True:
             limpiar_pantalla()
             imprimirmapa_menu(menu_inicial)
             prompt()
             opc = input("What to do now? ") #Guardar la opcion
+            descargarGuardadas()
             if opc.lower() == "continue": #Si se elige continuar partida
                 back = False
                 while back == False:
                     limpiar_pantalla()
-                    descargarGuardadas()
+                    
                     imprimir_partidas_guardadas()
                     prompt()
                     opc = input("What to do now? ")
-                    
+                   
                     if opc.lower() == "help":
                         limpiar_pantalla()
                         help(d.diccionarioMenuPrincipal["help_saved_games"])
@@ -1744,9 +1746,12 @@ def trucos(select):
 
         for element in lista_mapas:
 
-           for santuario in d.localitzacions[element]["Santuarios"]["posicion"]:
+            for santuario in d.localitzacions[element]["Santuarios"]["posicion"]:
                
                santuario[3] = True
+
+            d.jugador["vidas_max"] = 10
+
         d.texto_prompt.append("Cheating: open sanctuaries")
     
     elif select.lower() == "cheat game over":
