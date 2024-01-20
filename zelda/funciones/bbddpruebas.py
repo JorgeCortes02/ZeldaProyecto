@@ -260,8 +260,6 @@ db = mysql.connector.connect(
 
 # Crear un cursor
 cursor = db.cursor()
-
-
-saveGame()
+saveInicialGame()
 
 

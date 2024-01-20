@@ -4,7 +4,7 @@ import funciones.funciones as f
 
 
 
-jugador = {"name" : " ","posicion" : [8,11], "arma_actual": "", "escudo_actual" : " ", "vidas_max": 3, "vidas" : 3, "bloodMoonCoutdown": 25, "totalBloodMoon" : 0, "mapa" : "hyrule", "id_game" : 3 }
+jugador = {"name" : " ","posicion" : [8,11], "arma_actual": "", "escudo_actual" : " ", "vidas_max": 3, "vidas" : 3, "bloodMoonCoutdown": 25, "totalBloodMoon" : 0, "mapa" : "hyrule", "id_game" : 0 }
 
 
 
@@ -157,8 +157,8 @@ dades = { "death" : {"position" : (9,2),
                       "Santuarios":{"posicion":[[6,50,"S5",False,5],[9,33,"S6",False,6]]},
                       "M":{"posicion":[[1,22,False,5],[9,23,False,6],[2,51,False,7]]},
                       "E":{"posicion":[[2,10,7,1],[6,38,8,2]]}},
-         "castle" : {"position" : (9,3)},
-}
+        }
+
 
 
 

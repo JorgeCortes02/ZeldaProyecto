@@ -1,5 +1,5 @@
 import funciones.datos as d
-#import mysql.connector
+
 import random
 import mysql.connector
 mapaActual = []
@@ -11,8 +11,6 @@ db = mysql.connector.connect(
 )
 cursor = db.cursor()
 
-import funciones.datos as d
-import random
 mapaActual = []
 #Contea la cantidad de cada tipo de arma.
 def conteoInventario():
@@ -234,6 +232,7 @@ def añadirInventario(objeto, diccionario):
         
         diccionario[objeto] += 1 
 
+    saveGame()
 '''
 A esta función le pasamos los datos del mapa en cuestion y los copia en otra variable para poder editar este segundo mapa sin que el original se vea afectado.'''
 def obtenerMapa(playermap):
@@ -703,7 +702,7 @@ def menu_principal():
                 back = False
                 while back == False:
                     limpiar_pantalla()
-                    #b.descargarGuardadas()
+                    descargarGuardadas()
                     imprimir_partidas_guardadas()
                     prompt()
                     opc = input("What to do now? ")
@@ -725,7 +724,7 @@ def menu_principal():
                                     # Funcion para guardar que tiene jorge en su rama
                                     d.jugador["id_game"] = int(opc[5])
                                     guardado = True
-                            
+                                    selectAndChargePartida(int(opc[5]))
                             if guardado == False:
                                 d.texto_prompt.append("Invalid option")  
                         
@@ -818,12 +817,14 @@ def funcion_new_game():
             elif opc.lower() == "":  # Si no se escribe nada se asigna el nombre Link
                 d.jugador["nombre"] = "Link" # Modificar variable name
                 d.texto_prompt.append("Welcome to the game Link")
+                saveInicialGame()
                 salir = before_game()
                 return True
 
             elif opc.lower().replace(" ", "").isalnum() and len(opc) >= 3 and len(opc) <= 10:  # Cuando el nombre sea correcto se guarda
                 d.jugador["nombre"] = opc # Modificar variable name
                 d.texto_prompt.append("Welcome to the game " + d.jugador['nombre'])
+                saveInicialGame()
                 salir = before_game()
                 return True
 
@@ -1175,7 +1176,7 @@ def abrir_santuario(posicionplayer, mapaActual): #Interacion con el santuario
     
     if posicion_igual == False:
         d.texto_prompt.append("Invalid Option")
-    
+    saveGame()
 
 def cofre(mapaActual): #Interacion con el cofre
     for j in range(len(d.dades[d.jugador["mapa"]]["M"]["posicion"])):
@@ -1945,8 +1946,6 @@ def maxBloodMoon():
             print(element)
 
 
-import mysql.connector
-import funciones.datos as d
 
 
 def saveInicialGame():
@@ -2181,5 +2180,6 @@ def selectAndChargePartida(numero):
    
 
                     
+
 
 
