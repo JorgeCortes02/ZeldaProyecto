@@ -1767,20 +1767,20 @@ def imprimir_partidas_guardadas():
         for i in d.datosPartidas:
             saved_games.append(["* {}: {} - {}, {}".format(i[0], i[4], i[1], i[9]).ljust(72) + "♥ {}/{} *".format(i[5], i[6])])
         
-        while len(saved_games) != 11:
+        while len(saved_games) != 12:
             saved_games.append(["* ".ljust(78) + "*"]) 
     
     elif len(d.datosPartidas) == 1 and type(d.datosPartidas[0]) == list:
         for i in d.datosPartidas:
             saved_games.append(["* {}: {} - {}, {}".format(i[0], i[4], i[1], i[9]).ljust(72) + "♥ {}/{} *".format(i[5], i[6])])
         
-        while len(saved_games) != 11:
+        while len(saved_games) != 12:
             saved_games.append(["* ".ljust(78) + "*"])
     
     else:
         saved_games.append(["* {}".format(d.datosPartidas[0]).ljust(78) + "*"])
         
-        while len(saved_games) != 11:
+        while len(saved_games) != 12:
             saved_games.append(["* ".ljust(78) + "*"]) 
         
     saved_games.append(["* Play X, Erase X, Help, Back * * * * * * * * * * * * * * * * * * * * * * * * *"])
