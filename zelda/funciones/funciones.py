@@ -1,5 +1,5 @@
 import funciones.datos as d
-
+import math
 import random
 import mysql.connector
 mapaActual = []
@@ -88,7 +88,7 @@ def mostrarInventario(Select):
       #Muestra el main del inventario
         inventario = [" * * * * Inventory * \n",
                             "*\n".rjust(21),
-                            " Link".ljust(12) + "  {0}/{1}".format(d.jugador["vidas"],d.jugador["vidas_max"]).rjust(6) + " * \n",
+                            " Link".ljust(12) +"  {0}/{1}".format(d.jugador["vidas"],d.jugador["vidas_max"]).rjust(6) + " * \n",
                             " Blod Moon in ".ljust(2) + "  {0}".format(d.jugador["bloodMoonCoutdown"]).rjust(4) + " * \n",
                             "* \n".rjust(22),
                             " Equipement ".ljust(19) + "* \n",]
@@ -445,8 +445,8 @@ def movimientoCercano(Select, mapaActual):
 
             suma1 =  d.jugador["posicion"][0] - element[0]
             suma2= d.jugador["posicion"][1] - element[1]
-            suma3 = abs(suma1 + suma2)
-            lista_arboles.append(suma3)
+            hipo = math.sqrt(suma1**2 + suma2**2)
+            lista_arboles.append(hipo)
 
         for i in range(len(lista_arboles)-1):
 
@@ -561,8 +561,8 @@ def movimientoCercano(Select, mapaActual):
 
             suma1 =  d.jugador["posicion"][0] - element[0]
             suma2= d.jugador["posicion"][1] - element[1]
-            suma3 = abs(suma1 + suma2)
-            lista_agua.append(suma3)
+            hipo = math.sqrt(suma1**2 + suma2**2)
+            lista_agua.append(hipo)
 
         for i in range(len(lista_agua)-1):
 
@@ -703,6 +703,7 @@ def menu_principal():
             imprimirmapa_menu(menu_inicial)
             prompt()
             opc = input("What to do now? ") #Guardar la opcion
+            d.datosPartidas.clear()
             descargarGuardadas()
             if opc.lower() == "continue": #Si se elige continuar partida
                 back = False
@@ -724,14 +725,12 @@ def menu_principal():
                         if opc[5].isdigit():
                             guardado = False
                             for i in d.datosPartidas:
-                                if i[0] == int(opc[5]):
-                                    # cargar los datos guardados
-                                    #selectAndChargePartida(opc[5])
-                                    # Funcion para guardar que tiene jorge en su rama
-                                    d.jugador["id_game"] = int(opc[5])
+                                if i[0] == int(opc[5:]):
+                                   
+                                    d.jugador["id_game"] = int(opc[5:])
                                     guardado = True
 
-                                    selectAndChargePartida(int(opc[5]))
+                                    selectAndChargePartida(int(opc[5:]))
 
                                     salir = True
                                     return True
@@ -743,17 +742,19 @@ def menu_principal():
                         else:
                             d.texto_prompt.append("Invalid option")
                     
-                    elif opc[:5].lower() == "erase": 
-                        if opc[6].isdigit():
+                    elif opc[:5].lower() == "erase":
+                        
+                        if opc[6:].isdigit():
                             eliminado = False
                             for i in d.datosPartidas:
-                                if i[0] == int(opc[6]):
+                                if i[0] == int(opc[6:]):
                                     # eliminar los datos guardados
-                                    d.datosPartidas.remove(i) 
+                                    erase(int(opc[6:]))
+                                   
                                     eliminado = True
                                     if len(d.datosPartidas) == 0:
                                         d.datosPartidas.append("No hay partidas guardadas, inicia una nueva.")
-                            
+                                    
                             if eliminado == False:
                                 d.texto_prompt.append("Invalid option")  
                         
@@ -827,15 +828,15 @@ def funcion_new_game():
                 return False
 
             elif opc.lower() == "":  # Si no se escribe nada se asigna el nombre Link
-                d.jugador["nombre"] = "Link" # Modificar variable name
+                d.jugador["name"] = "Link" # Modificar variable name
                 d.texto_prompt.append("Welcome to the game Link")
                 saveInicialGame()
                 salir = before_game()
                 return True
 
             elif opc.lower().replace(" ", "").isalnum() and len(opc) >= 3 and len(opc) <= 10:  # Cuando el nombre sea correcto se guarda
-                d.jugador["nombre"] = opc # Modificar variable name
-                d.texto_prompt.append("Welcome to the game " + d.jugador['nombre'])
+                d.jugador["name"] = opc # Modificar variable name
+                d.texto_prompt.append("Welcome to the game " + d.jugador['name'])
                 saveInicialGame()
                 salir = before_game()
                 return True
@@ -898,7 +899,7 @@ def imprimirmapa_menu(mapa):
         ["*  Ganon. He has taken over the Guardians and filled Hyrule with monsters.    *"],
         ["*                                                                             *"],
         ["*                                                                             *"],
-        ["*  But a young man named {} has just awakened and".format(d.jugador["nombre"]).ljust(78)+"*"],
+        ["*  But a young man named {} has just awakened and".format(d.jugador["name"]).ljust(78)+"*"],
         ["*  must reclaim the Guardians to defeat Ganon and save Hyrule.                *"],
         ["*                                                                             *"],
         ["*                                                                             *"],
@@ -1279,8 +1280,8 @@ def enemigos(mapaActual): #Interacion con el enemigo
                         d.jugador["vidas"]-= 1 #Te resta 1 de vida
                     if d.jugador["vidas"] != 0:
                         d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1 #Le quita un uso a la espada
-                        d.texto_prompt.append(f"Brave, keep fighting {d.jugador['nombre']}")
-                        d.texto_prompt.append(f"Be careful {d.jugador['nombre']}, you only have {d.jugador['vidas']} hearts")
+                        d.texto_prompt.append(f"Brave, keep fighting {d.jugador['name']}")
+                        d.texto_prompt.append(f"Be careful {d.jugador['name']}, you only have {d.jugador['vidas']} hearts")
 
                     d.dades[d.jugador["mapa"]]["E"]["posicion"][i][3] -= 1 #Le resta 1 de vida al enemigo
                     if d.dades[d.jugador["mapa"]]["E"]["posicion"][i][3] == 0: #Comprueba si al enemigo a un le queda vida
@@ -1482,55 +1483,80 @@ def menuInferior():
    
     posicion = d.jugador["posicion"]
     
-    menuInferior = "* Exit, Show, Go, Eat"
-
-    if posicion[0] == 10:
-        if d.localitzacions[d.jugador["mapa"]][posicion[0]-1][posicion[1]] == "T" or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]+1]  == "T" or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]-1]  == "T":
-
-            menuInferior += ", Attack"
-
-    
-        if menuInferior.find("Attack") == -1:
+    if d.jugador["mapa"] == "castle":
         
-            if d.localitzacions[d.jugador["mapa"]][posicion[0]-1][posicion[1]][0] in  ("Z","E") or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]+1][0]  in  ("Z","E") or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]-1][0]  in  ("Z","E") and d.jugador["arma_actual"] != " ":
+        
+        menuInferior = "* Exit, Back, Show, Go, Eat"
+        
+
+        if d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]-1] == "T" or  posicion == [9,21] :
+
                 menuInferior += ", Attack"
+        while  len(menuInferior) < 79:
+                if len(menuInferior) %2 == 0:
 
-        if d.localitzacions[d.jugador["mapa"]][posicion[0]-1][posicion[1]][0]  == "~" or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]+1][0]   == "~" or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]-1][0]   == "~":
-            menuInferior += ", Fish"
-        
-        if d.localitzacions[d.jugador["mapa"]][posicion[0]-1][posicion[1]][0] in  ("S","M") or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]+1][0] in  ("S","M") or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]-1][0] in ("S","M"):
-        
-            menuInferior += ", Open"
-    
+                    menuInferior += "*"
+                    menuInferior += " "
+                else:
+                    menuInferior += " "
+                    menuInferior += "*"
+        print (menuInferior)
+
+
+
     else:
-        if d.localitzacions[d.jugador["mapa"]][posicion[0]+1][posicion[1]] == "T" or d.localitzacions[d.jugador["mapa"]][posicion[0]-1][posicion[1]] == "T" or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]+1]  == "T" or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]-1]  == "T":
+            menuInferior = "* Exit, Show, Go, Eat"
 
-            menuInferior += ", Attack"
+            if posicion[0] == 10:
+                if d.localitzacions[d.jugador["mapa"]][posicion[0]-1][posicion[1]] == "T" or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]+1]  == "T" or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]-1]  == "T":
+
+                    menuInferior += ", Attack"
+
+            
+                if menuInferior.find("Attack") == -1:
+                
+                    if d.localitzacions[d.jugador["mapa"]][posicion[0]-1][posicion[1]][0] in  ("Z","E") or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]+1][0]  in  ("Z","E") or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]-1][0]  in  ("Z","E") and d.jugador["arma_actual"] != " ":
+                        menuInferior += ", Attack"
+
+                if d.localitzacions[d.jugador["mapa"]][posicion[0]-1][posicion[1]][0]  == "~" or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]+1][0]   == "~" or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]-1][0]   == "~":
+                    menuInferior += ", Fish"
+                
+                if d.localitzacions[d.jugador["mapa"]][posicion[0]-1][posicion[1]][0] in  ("S","M") or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]+1][0] in  ("S","M") or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]-1][0] in ("S","M"):
+                
+                    menuInferior += ", Open"
+            
+            else:
+                if d.localitzacions[d.jugador["mapa"]][posicion[0]+1][posicion[1]] == "T" or d.localitzacions[d.jugador["mapa"]][posicion[0]-1][posicion[1]] == "T" or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]+1]  == "T" or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]-1]  == "T":
+
+                    menuInferior += ", Attack"
+
+            
+                if menuInferior.find("Attack") == -1:
+                
+                    if d.localitzacions[d.jugador["mapa"]][posicion[0]+1][posicion[1]][0] in  ("Z","E") or d.localitzacions[d.jugador["mapa"]][posicion[0]-1][posicion[1]][0] in  ("Z","E") or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]+1][0]  in  ("Z","E") or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]-1][0]  in  ("Z","E") and d.jugador["arma_actual"] != " ":
+                        menuInferior += ", Attack"
+
+                if d.localitzacions[d.jugador["mapa"]][posicion[0]+1][posicion[1]][0] == "~" or d.localitzacions[d.jugador["mapa"]][posicion[0]-1][posicion[1]][0]  == "~" or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]+1][0]   == "~" or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]-1][0]   == "~":
+                    menuInferior += ", Fish"
+                
+                if d.localitzacions[d.jugador["mapa"]][posicion[0]+1][posicion[1]][0] in  ("S","M") or d.localitzacions[d.jugador["mapa"]][posicion[0]-1][posicion[1]][0] in  ("S","M") or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]+1][0] in  ("S","M") or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]-1][0] in ("S","M"):
+                
+                    menuInferior += ", Open"
+
+
+            while  len(menuInferior) < 79:
+                if len(menuInferior) %2 == 0:
+
+                    menuInferior += "*"
+                    menuInferior += " "
+                else:
+                    menuInferior += " "
+                    menuInferior += "*"
+            print (menuInferior)
+
+
 
     
-        if menuInferior.find("Attack") == -1:
-        
-            if d.localitzacions[d.jugador["mapa"]][posicion[0]+1][posicion[1]][0] in  ("Z","E") or d.localitzacions[d.jugador["mapa"]][posicion[0]-1][posicion[1]][0] in  ("Z","E") or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]+1][0]  in  ("Z","E") or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]-1][0]  in  ("Z","E") and d.jugador["arma_actual"] != " ":
-                menuInferior += ", Attack"
-
-        if d.localitzacions[d.jugador["mapa"]][posicion[0]+1][posicion[1]][0] == "~" or d.localitzacions[d.jugador["mapa"]][posicion[0]-1][posicion[1]][0]  == "~" or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]+1][0]   == "~" or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]-1][0]   == "~":
-            menuInferior += ", Fish"
-        
-        if d.localitzacions[d.jugador["mapa"]][posicion[0]+1][posicion[1]][0] in  ("S","M") or d.localitzacions[d.jugador["mapa"]][posicion[0]-1][posicion[1]][0] in  ("S","M") or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]+1][0] in  ("S","M") or d.localitzacions[d.jugador["mapa"]][posicion[0]][posicion[1]-1][0] in ("S","M"):
-        
-            menuInferior += ", Open"
-
-
-    while  len(menuInferior) < 79:
-        if len(menuInferior) %2 == 0:
-
-            menuInferior += "*"
-            menuInferior += " "
-        else:
-            menuInferior += " "
-            menuInferior += "*"
-    print (menuInferior)
-
 #----------------- Mapa -------------------
 
 def mostrar_mapa(): # Faltaria ver como implementar los santuarios, si es un diccionario o una lista
@@ -1685,7 +1711,8 @@ def cambiar_mapa(select, mapaActual, posicionfallo): # Funcion para cambiar de m
             d.jugador["mapa"] = "castle"
             mapaActual = d.localitzacions["castle"]
             d.texto_prompt.append("You are now in " + select[6:])
-            posicion_player = d.dades["castle"]["position"]
+            d.jugador["posicion"] = d.positionCastle
+            posicion_player = d.positionCastle
             return mapaActual, posicion_player
 
         else:
@@ -1704,8 +1731,8 @@ def cambiar_mapa(select, mapaActual, posicionfallo): # Funcion para cambiar de m
 def trucos(select):
     if select[0:22].lower() == "cheat rename player to":
         if select[23:].lower().replace(" ", "").isalnum() and len(select[23:]) >= 3 and len(select[23:]) <= 10:
-            d.jugador["nombre"] = select[23:]
-            d.texto_prompt.append("Cheating:rename player to. Name changed to " + d.jugador["nombre"])
+            d.jugador["name"] = select[23:]
+            d.texto_prompt.append("Cheating:rename player to. Name changed to " + d.jugador["name"])
 
         
         else:
@@ -1768,7 +1795,7 @@ def trucos(select):
 def imprimir_partidas_guardadas():
     saved_games = [["* Saved games * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"]]
     
-    if len(d.datosPartidas) > 1:
+    if len(d.datosPartidas) >= 1:
         for i in d.datosPartidas:
             saved_games.append(["* {}: {} - {}, {}".format(i[0], i[4], i[1], i[9]).ljust(72) + "♥ {}/{} *".format(i[5], i[6])])
         
@@ -2063,7 +2090,7 @@ def saveGame():
 #Descarga los datos de jugador (tabla game) para mostrarlos en el menu de seleccion de partida.
 def descargarGuardadas():
     
-    query = "Select game_id, user_name, xpos, ypos, date_started, hearts_remaining, max_live,blood_moon_countdown, blood_moon_appearances, region from game limit 8;"
+    query = "SELECT game_id, user_name, xpos, ypos, date_started, hearts_remaining, max_live, blood_moon_countdown, blood_moon_appearances, region FROM game ORDER BY date_started DESC LIMIT 10;"
     cursor.execute(query)
     resultados = cursor.fetchall()
 
@@ -2191,8 +2218,12 @@ def selectAndChargePartida(numero):
 
                     d.dades[resultados[index][0]]["M"]["posicion"][index2][2] = True
    
+def erase(num_id):
 
-                    
+    query = "Delete from game where game_id = %s;"
+    val=(num_id,)
+    cursor.execute(query,val)
+    db.commit()              
 
 
 

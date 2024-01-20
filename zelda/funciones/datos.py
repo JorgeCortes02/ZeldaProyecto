@@ -15,11 +15,10 @@ inventarioArmas = {}
 
 inventarioComida = { "Vegetables" : 0, 
                     "Fish" : 0, 
-                    "Meat" : 2, 
+                    "Meat" : 0, 
                     "Salads" : 0, 
                     "Pescatarian" : 0, 
                     "Roasted" : 0}
-
 
 
 
@@ -119,8 +118,9 @@ localitzacions = {
           ]
 }
 
+positionCastle = [9,3]
 
-dades = { "death" : {"position" : (9,2),
+dades = { "death" : {"position" : [9,2],
                      "F":{"posicion":[2,30]}, 
                      "C":{"posicion":[9,6]},
                      "T":{"lista":[[7,19],[8,18],[9,18]],"vida":[4,4,4],"contador":[0,0,0]},
@@ -129,7 +129,7 @@ dades = { "death" : {"position" : (9,2),
                      "Santuarios":{"posicion":[[3,6,"S2",False,2],[9,49,"S3",False,3]]}, #X/Y/Nombre/False/ID
                      "M":{"posicion":[[8,36,False,2]]}, #X/Y/Comprueba si esta abierto/ID
                      "E":{"posicion":[[4,13,3,2],[3,51,4,2]]}}, #X/Y/ID/Vida
-         "hyrule" : {"position" : (8,11),
+         "hyrule" : {"position" : [8,11],
                      "F":{"posicion":[9,52]}, 
                      "C":{"posicion":[3,17]},
                      "T":{"lista":[[4,6],[8,48],[9,46]],"vida":[4,4,4],"contador":[0,0,0]},
@@ -138,7 +138,7 @@ dades = { "death" : {"position" : (9,2),
                      "Santuarios":{"posicion":[[6,44,"S0",False,0],[9,31,"S1",False,1]]},
                      "M":{"posicion":[[9,48,False,1]]},
                      "E":{"posicion":[[9,21,1,1],[5,36,2,9]]}},
-         "gerudo" : {"position" : (9,2),
+         "gerudo" : {"position" : [9,2],
                      "F":{"posicion":[8,47]},
                      "C":{"posicion":[4,15]},
                      "T":{"lista":[[8,5],[2,29],[2,30],[2,31],[3,31],[3,32]],"vida":[4,4,4,4,4,4],"contador":[0,0,0,0,0,0]},
@@ -146,7 +146,7 @@ dades = { "death" : {"position" : (9,2),
                      "Santuarios":{"posicion":[[3,45,"S4",False,4]]},
                      "M":{"posicion":[[9,7,False,3],[1,52,False,4]]},
                      "E":{"posicion":[[4,3,5,1],[6,38,6,2]]}},
-         "necluda" : {"position" : (2,2),
+         "necluda" : {"position" : [2,2],
                       "F":{"posicion":[7,6]}, 
                       "C":{"posicion":[3,19]},
                       "T":{"lista":[[6,15],[7,14],[8,15],[2,37],[2,38],[3,36],[3,35]],"vida":[4,4,4,4,4,4,4],"contador":[0,0,0,0,0,0,0]},

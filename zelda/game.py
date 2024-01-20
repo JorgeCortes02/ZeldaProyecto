@@ -181,8 +181,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                         f.pelea_ganon(mapaActual)
                     
                     elif select[0:5].lower() == "cheat": # Trucos
-                        # Falta terminar funcion trucos
-                        print("a")
+                         f.trucos(select)
                     
                     else: # Opción invalida, se añade al prompt
                         d.texto_prompt.append("Invalid action")
@@ -199,7 +198,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                         posicionplayer = d.dades[d.mapa_anterior]["position"] # Se cambia la posicion
                     
                     elif select[0:5].lower() == "cheat": # Trucos
-                        # Falta terminar funcion trucos
+                        
                         f.trucos(select)
                     
                     else: # Opción invalida, se añade al prompt
@@ -213,4 +212,6 @@ while juego == True: # Mientras no se eliga la opción exit del menu principal
     terminar = game() # Se ejecuta el juego
     
     if terminar == True: # Si la opcion elegida ha sido exit en el menu principal
+        f.db.close()
         juego = False # Termina el bucle
+        
