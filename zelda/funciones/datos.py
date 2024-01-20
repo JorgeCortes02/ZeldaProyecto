@@ -13,9 +13,9 @@ dict_tipos = {"Shield" : {"total": 0, "minUsos" : 0}, "Wood Shield" : {"total": 
 
 inventarioArmas = {}
 
-inventarioComida = { "Vegetables" : 0, 
-                    "Fish" : 20, 
-                    "Meat" : 2, 
+inventarioComida = {"Vegetables" : 0, 
+                    "Fish" : 0, 
+                    "Meat" : 0, 
                     "Salads" : 0, 
                     "Pescatarian" : 0, 
                     "Roasted" : 0}
@@ -157,8 +157,9 @@ dades = { "death" : {"position" : (9,2),
                       "Santuarios":{"posicion":[[6,50,"S5",False,5],[9,33,"S6",False,6]]},
                       "M":{"posicion":[[1,22,False,5],[9,23,False,6],[2,51,False,7]]},
                       "E":{"posicion":[[2,10,7,1],[6,38,8,2]]}},
-         "castle" : {"position" : (9,3)},
 }
+
+position_castle = (9,3)
 
 
 

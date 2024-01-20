@@ -1,14 +1,14 @@
 import funciones.datos as d
 #import mysql.connector
 import random
-#import mysql.connector
+import mysql.connector
 mapaActual = []
-'''db = mysql.connector.connect(
+db = mysql.connector.connect(
     host="172.187.226.29",  # Cambia a tu dirección IP
     user="root2",
     passwd="EsteveTerradas2023.", 
     database="ZeldaBBDD"
-)'''
+)
 
 
 import funciones.datos as d
@@ -213,7 +213,7 @@ def añadirInventario(objeto, diccionario):
         
         diccionario[objeto] = {"tipo": "Sword", "Usos": 9 }
 
-    elif objeto == "Vegetable":
+    elif objeto == "Vegetables":
         
         diccionario[objeto] += 1 
     elif objeto == "Fish":
@@ -1703,7 +1703,7 @@ def trucos(select):
             d.texto_prompt.append("Incorrect name")
     
     elif select.lower() == "cheat add vegetable":
-        añadirInventario("Vegetable", d.inventarioComida)
+        añadirInventario("Vegetables", d.inventarioComida)
         d.texto_prompt.append("Cheating: add vegetable")
     elif select.lower() == "cheat add fish":
         añadirInventario("Fish", d.inventarioComida)
@@ -1712,14 +1712,22 @@ def trucos(select):
         añadirInventario("Meat", d.inventarioComida)
         d.texto_prompt.append("Cheating: add meat")
     elif select.lower() == "cheat cook salad":
-        cocinar("cook salad", d.inventarioComida)
-        d.texto_prompt.append("Cheating: cook salad")
+        if d.inventarioComida["Vegetables"] > 1:
+            d.inventarioComida["Vegetables"] -= 2
+            d.inventarioComida["Salads"] += 1
+            d.texto_prompt.append("Cheating: cook salad")
     elif select.lower() == "cheat cook pescatarian":
-        cocinar("cook pescatarian", d.inventarioComida)
-        d.texto_prompt.append("Cheating: cook pescatarian")
+        if d.inventarioComida["Vegetables"] > 0 and d.inventarioComida["Fish"] > 0:
+            d.inventarioComida["Vegetables"] -= 1
+            d.inventarioComida["Fish"] -= 1
+            d.inventarioComida["Pescatarian"] += 1
+            d.texto_prompt.append("Cheating: cook pescatarian")
     elif select.lower() == "cheat cook roasted":
-        cocinar("cook roasted", d.inventarioComida)
-        d.texto_prompt.append("Cheating: cook roasted")
+        if d.inventarioComida["Vegetables"] > 0 and d.inventarioComida["Meat"] > 0:
+            d.inventarioComida["Vegetables"] -= 1
+            d.inventarioComida["Meat"] -= 1
+            d.inventarioComida["Roasted"] += 1
+            d.texto_prompt.append("Cheating: cook roasted")
     elif select.lower() == "cheat add wood sword":
         añadirInventario("Wood Sword", d.inventarioArmas)
         d.texto_prompt.append("Cheating: add wood sword")
@@ -1733,12 +1741,10 @@ def trucos(select):
         añadirInventario("Shield", d.inventarioArmas)
         d.texto_prompt.append("Cheating: add shield")
     elif select.lower() == "cheat open sanctuaries":
-        lista_mapas = list(d.localitzacions.keys())
-
+        lista_mapas = list(d.dades.keys())
         for element in lista_mapas:
-
-           for santuario in d.localitzacions[element]["Santuarios"]["posicion"]:
-               
+           for santuario in d.dades[element]["Santuarios"]["posicion"]:
+               d.jugador["vidas_max"] += 1
                santuario[3] = True
         d.texto_prompt.append("Cheating: open sanctuaries")
     
