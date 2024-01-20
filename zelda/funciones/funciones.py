@@ -1746,9 +1746,12 @@ def trucos(select):
 
         for element in lista_mapas:
 
-           for santuario in d.localitzacions[element]["Santuarios"]["posicion"]:
+            for santuario in d.localitzacions[element]["Santuarios"]["posicion"]:
                
                santuario[3] = True
+
+            d.jugador["vidas_max"] = 10
+
         d.texto_prompt.append("Cheating: open sanctuaries")
     
     elif select.lower() == "cheat game over":
