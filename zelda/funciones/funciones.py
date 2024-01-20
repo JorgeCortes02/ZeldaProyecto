@@ -1742,11 +1742,11 @@ def trucos(select):
         añadirInventario("Shield", d.inventarioArmas)
         d.texto_prompt.append("Cheating: add shield")
     elif select.lower() == "cheat open sanctuaries":
-        lista_mapas = list(d.localitzacions.keys())
+        lista_mapas = list(d.dades.keys())
 
         for element in lista_mapas:
 
-            for santuario in d.localitzacions[element]["Santuarios"]["posicion"]:
+            for santuario in d.dades[element]["Santuarios"]["posicion"]:
                
                santuario[3] = True
 
