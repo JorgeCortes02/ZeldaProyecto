@@ -353,7 +353,7 @@ vida_zorro = True
 
 pesca = False
 
-
+herido = False
 
 #Nuevas variables BBDD.
 

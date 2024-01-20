@@ -835,15 +835,15 @@ def funcion_new_game():
                 return False
 
             elif opc.lower() == "":  # Si no se escribe nada se asigna el nombre Link
-                d.jugador["nombre"] = "Link" # Modificar variable name
+                d.jugador["name"] = "Link" # Modificar variable name
                 d.texto_prompt.append("Welcome to the game Link")
                 saveInicialGame()
                 salir = before_game()
                 return True
 
             elif opc.lower().replace(" ", "").isalnum() and len(opc) >= 3 and len(opc) <= 10:  # Cuando el nombre sea correcto se guarda
-                d.jugador["nombre"] = opc # Modificar variable name
-                d.texto_prompt.append("Welcome to the game " + d.jugador['nombre'])
+                d.jugador["name"] = opc # Modificar variable name
+                d.texto_prompt.append("Welcome to the game " + d.jugador['name'])
                 saveInicialGame()
                 salir = before_game()
                 return True
@@ -906,7 +906,7 @@ def imprimirmapa_menu(mapa):
         ["*  Ganon. He has taken over the Guardians and filled Hyrule with monsters.    *"],
         ["*                                                                             *"],
         ["*                                                                             *"],
-        ["*  But a young man named {} has just awakened and".format(d.jugador["nombre"]).ljust(78)+"*"],
+        ["*  But a young man named {} has just awakened and".format(d.jugador["name"]).ljust(78)+"*"],
         ["*  must reclaim the Guardians to defeat Ganon and save Hyrule.                *"],
         ["*                                                                             *"],
         ["*                                                                             *"],
@@ -1287,8 +1287,8 @@ def enemigos(mapaActual): #Interacion con el enemigo
                         d.jugador["vidas"]-= 1 #Te resta 1 de vida
                     if d.jugador["vidas"] != 0:
                         d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1 #Le quita un uso a la espada
-                        d.texto_prompt.append(f"Brave, keep fighting {d.jugador['nombre']}")
-                        d.texto_prompt.append(f"Be careful {d.jugador['nombre']}, you only have {d.jugador['vidas']} hearts")
+                        d.texto_prompt.append(f"Brave, keep fighting {d.jugador['name']}")
+                        d.texto_prompt.append(f"Be careful {d.jugador['name']}, you only have {d.jugador['vidas']} hearts")
 
                     d.dades[d.jugador["mapa"]]["E"]["posicion"][i][3] -= 1 #Le resta 1 de vida al enemigo
                     if d.dades[d.jugador["mapa"]]["E"]["posicion"][i][3] == 0: #Comprueba si al enemigo a un le queda vida
@@ -1339,9 +1339,8 @@ def vida_ganon():
                 d.localitzacions["castle"][2][46+i+1] = "♥"
 
 def ganon_castillo():
-    if d.jugador["posicion"][1] > 18:
-        d.jugador["vidas"] -= 1 #Te resta 1 de vida
-        d.texto_prompt.append("Gannon attacked you, you lost 1 life")
+    d.jugador["vidas"] -= 1 #Te resta 1 de vida
+    d.texto_prompt.append("Gannon attacked you, you lost 1 life")
 
 
 def pelea_ganon(mapaActual): #Interacion con ganon
@@ -1712,8 +1711,8 @@ def cambiar_mapa(select, mapaActual, posicionfallo): # Funcion para cambiar de m
 def trucos(select):
     if select[0:22].lower() == "cheat rename player to":
         if select[23:].lower().replace(" ", "").isalnum() and len(select[23:]) >= 3 and len(select[23:]) <= 10:
-            d.jugador["nombre"] = select[23:]
-            d.texto_prompt.append("Cheating:rename player to. Name changed to " + d.jugador["nombre"])
+            d.jugador["name"] = select[23:]
+            d.texto_prompt.append("Cheating:rename player to. Name changed to " + d.jugador["name"])
 
         
         else:
