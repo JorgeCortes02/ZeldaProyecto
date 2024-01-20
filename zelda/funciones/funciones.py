@@ -1,14 +1,14 @@
 import funciones.datos as d
 #import mysql.connector
 import random
-import mysql.connector
+#import mysql.connector
 mapaActual = []
-db = mysql.connector.connect(
+'''db = mysql.connector.connect(
     host="172.187.226.29",  # Cambia a tu dirección IP
     user="root2",
     passwd="EsteveTerradas2023.", 
     database="ZeldaBBDD"
-)
+)'''
 
 
 import funciones.datos as d
@@ -603,28 +603,28 @@ def moverPersonajeGanon(mapaActual, select, posicionplayer):
     
     
     if select[0:7] == "go left":
-        print(posicionplayer[1], posicionplayer[1] - int(select[8:]) )
-        if posicionplayer[1] - int(select[8:]) < 0:
+        print(posicionplayer[1], posicionplayer[1] - int(select[7:]) )
+        if posicionplayer[1] - int(select[7:]) < 0:
             
             return["Invalid action1"], posicionplayer[0], posicionplayer[1]
         else:
             int1 = posicionplayer[1]
-            int2 = posicionplayer[1] - int(select[8:])
+            int2 = posicionplayer[1] - int(select[7:])
             diferent = True
            
             for i in range (int1, int2, -1):
                 
-                if int(select[8:]) == 1:
+                if int(select[7:]) == 1:
 
                     if mapaActual[posicionplayer[0]][i-1] != " ":
-                        
+                        d.texto_prompt.append("Invalid action")
                         return["Invalid action"], posicionplayer[0], posicionplayer[1]
                     
                     else:
 
                         mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
-                        mapaActual[posicionplayer[0]][posicionplayer[1] - int(select[8:])] = "X"
-                        return mapaActual, posicionplayer[0], posicionplayer[1] - int(select[8:])
+                        mapaActual[posicionplayer[0]][posicionplayer[1] - int(select[7:])] = "X"
+                        return mapaActual, posicionplayer[0], posicionplayer[1] - int(select[7:])
                 else:
 
                     if mapaActual[posicionplayer[0]][i-1] != " ":
@@ -633,9 +633,10 @@ def moverPersonajeGanon(mapaActual, select, posicionplayer):
             if diferent == True:
 
                 mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
-                mapaActual[posicionplayer[0]][posicionplayer[1] - int(select[8:])] = "X"
-                return mapaActual, posicionplayer[0], posicionplayer[1] - int(select[8:])        
+                mapaActual[posicionplayer[0]][posicionplayer[1] - int(select[7:])] = "X"
+                return mapaActual, posicionplayer[0], posicionplayer[1] - int(select[7:])        
             else:
+                d.texto_prompt.append("Invalid action")
                 return["Invalid action"], posicionplayer[0], posicionplayer[1]
                        
 
@@ -647,14 +648,14 @@ def moverPersonajeGanon(mapaActual, select, posicionplayer):
             return["Invalid action1"], posicionplayer[0], posicionplayer[1]
         else:
             int1 = posicionplayer[1]
-            int2 = posicionplayer[1] + int(select[9:])
+            int2 = posicionplayer[1] + int(select[8:])
             diferent = True
             for i in range (int2, int1, -1):
                 
-                if int(select[9:]) == 1:
+                if int(select[8:]) == 1:
 
                     if mapaActual[posicionplayer[0]][i+1] != " ":
-                        
+                        d.texto_prompt.append("Invalid action")
                         return["Invalid action2"], posicionplayer[0], posicionplayer[1]
                     
                     
@@ -666,9 +667,10 @@ def moverPersonajeGanon(mapaActual, select, posicionplayer):
             if diferent == True:
        
                 mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
-                mapaActual[posicionplayer[0]][posicionplayer[1] + int(select[9:])] = "X"
-                return mapaActual, posicionplayer[0], posicionplayer[1] + int(select[9:])
+                mapaActual[posicionplayer[0]][posicionplayer[1] + int(select[8:])] = "X"
+                return mapaActual, posicionplayer[0], posicionplayer[1] + int(select[8:])
             else:
+                d.texto_prompt.append("Invalid action")
                 return["Invalid action"], posicionplayer[0], posicionplayer[1]
 
 
@@ -1320,11 +1322,9 @@ def vida_ganon():
                 d.localitzacions["castle"][2][46+i+1] = "♥"
 
 def ganon_castillo():
-    if d.jugador["mapa"] == "castle":
-        if d.win == False:
-            if d.jugador["posicion"][1] > 19:
-                d.jugador["vidas"] -= 1 #Te resta 1 de vida
-                d.texto_prompt.append("Gannon attacked you, you lost 1 life")
+    if d.jugador["posicion"][1] > 18:
+        d.jugador["vidas"] -= 1 #Te resta 1 de vida
+        d.texto_prompt.append("Gannon attacked you, you lost 1 life")
 
 
 def pelea_ganon(mapaActual): #Interacion con ganon
