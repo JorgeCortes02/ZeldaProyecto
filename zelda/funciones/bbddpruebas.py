@@ -5,7 +5,7 @@ import funciones.datos as d
 def saveInicialGame():
 
         #Al iniciar la partida guarda la tabla game.
-        query = "Insert into game(user_name,date_started,hearts_remaining, blood_moon_countdown,blood_moon_appearances, region, max_live, xpos, ypos ) Values(%s, CURRENT_TIMESTAMP, %s, %s, %s,%s, %s,%s, %s)"
+        query = "Insert into game(user_name,date_started,hearts_remaining, blood_moon_countdown,blood_moon_appearances, region, max_live, xpos, ypos ) Values(%s,  NOW(), %s, %s, %s,%s, %s,%s, %s)"
         val = (d.jugador["name"], d.jugador["vidas"], 25,0, "Hyrule", d.jugador["vidas_max"], d.jugador["posicion"][0], d.jugador["posicion"][1])
         cursor.execute(query, val)
         d.jugador["id_game"] = cursor.lastrowid
@@ -28,8 +28,8 @@ def saveGame():
     lista_inventario = []
 
     #Actualizar tabla game.
-    query = "UPDATE game SET hearts_remaining = %s, blood_moon_countdown = %s, blood_moon_appearances = %s, region = %s, max_live = %s WHERE game_id = %s, xpos = %s, ypos = %s;"
-    val = (d.jugador["vidas"], d.jugador["bloodMoonCoutdown"], d.jugador["totalBloodMoon"], d.jugador["mActual"], d.jugador["vidas_max"], d.jugador["id_game"], d.jugador["posicion"][0], d.jugador["posicion"][1])
+    query = "UPDATE game SET hearts_remaining = %s, blood_moon_countdown = %s, blood_moon_appearances = %s, region = %s, max_live = %s, xpos = %s, ypos = %s, date_started = NOW() WHERE game_id = %s;"
+    val = (d.jugador["vidas"], d.jugador["bloodMoonCoutdown"], d.jugador["totalBloodMoon"], d.jugador["mapa"], d.jugador["vidas_max"], d.jugador["id_game"], d.jugador["posicion"][0], d.jugador["posicion"][1])
     print(d.jugador["id_game"])
     cursor.execute(query, val)
     db.commit()
@@ -80,7 +80,7 @@ def saveGame():
         else:
              equiped = False
 
-        val = (d.jugador["id_game"], element , d.inventarioArmas[element]["usos"], equiped, d.inventarioArmas[element]["usos"], equiped,d.inventarioArmas[element]["tipo"]  )
+        val = (d.jugador["id_game"], element , d.inventarioArmas[element]["usos"], equiped, d.inventarioArmas[element]["tipo"] , d.inventarioArmas[element]["usos"], equiped  )
         cursor.execute(query, val)
     db.commit()
 
@@ -232,6 +232,13 @@ def selectAndChargePartida(numero):
 
                     d.dades[resultados[index][0]]["M"]["posicion"][index2][2] = True
    
+#Funciones Estadisticas menu principal.
+                    
+
+
+
+
+
 # Conectar a la base de datos
 db = mysql.connector.connect(
     host="172.187.226.29",  # Cambia a tu dirección IP
@@ -254,6 +261,7 @@ db = mysql.connector.connect(
 # Crear un cursor
 cursor = db.cursor()
 
-#selectAndChargePartida(16)
+
+saveGame()
 
 

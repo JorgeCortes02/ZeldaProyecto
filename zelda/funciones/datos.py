@@ -3,17 +3,19 @@ import funciones.funciones as f
 #Atributos jugador
 
 
-jugador = {"nombre" : " ","posicion" : [8,11], "arma_actual": "Sword989", "escudo_actual" : "Shield998", "vidas_max": 3, "vidas" : 3, "bloodMoonCoutdown": -1, "totalBloodMoon" : 0, "mapa" : "hyrule", "id_game" : 16 }
+
+jugador = {"name" : " ","posicion" : [3,9], "arma_actual": " ", "escudo_actual" : "Shield998", "vidas_max": 3, "vidas" : 3, "bloodMoonCoutdown": 25, "totalBloodMoon" : 0, "mapa" : "hyrule", "id_game" : 3 }
+
 
 
 
 dict_tipos = {"Shield" : {"total": 0, "minUsos" : 0}, "Wood Shield" : {"total": 0, "minUsos" : 0}, "Sword" : {"total": 0, "minUsos" : 0}, "Wood Sword" : {"total": 0, "minUsos" : 0} }
 
-inventarioArmas = {"Shield998" :{"tipo" :"Shield", "usos": 4}, "Wood Shield98" :{"tipo" :"Wood Shield", "usos": 4},"Wood Shield798" :{"tipo" :"Wood Shield", "usos": 3}, "Wood Sword98" :{"tipo" :"Wood Sword", "usos": 4}, "Sword989" :{"tipo" :"Sword", "usos": 9}}
+inventarioArmas = {}
 
 inventarioComida = { "Vegetables" : 0, 
-                    "Fish" : 0, 
-                    "Meat" : 0, 
+                    "Fish" : 20, 
+                    "Meat" : 2, 
                     "Salads" : 0, 
                     "Pescatarian" : 0, 
                     "Roasted" : 0}
@@ -21,7 +23,9 @@ inventarioComida = { "Vegetables" : 0,
 
 
 
-select = "show inventory main"
+
+
+select = "show inventory food"
 
 #Localizaciones y datos
 localitzacions = {

@@ -1,6 +1,18 @@
 import funciones.datos as d
 #import mysql.connector
 import random
+import mysql.connector
+mapaActual = []
+db = mysql.connector.connect(
+    host="172.187.226.29",  # Cambia a tu dirección IP
+    user="root2",
+    passwd="EsteveTerradas2023.", 
+    database="ZeldaBBDD"
+)
+
+
+import funciones.datos as d
+import random
 mapaActual = []
 #Contea la cantidad de cada tipo de arma.
 def conteoInventario():
@@ -1823,6 +1835,7 @@ def atacar(posicionplayer, mapaActual, objeto):
 
     else:
         return False
+
     
 #------------------------ Blood moon ----------------
     
@@ -1850,12 +1863,6 @@ def vida_enemigo(mapaActual):
             mapaActual[i[0]][i[1]+1] = str(i[3])
             
 
-'''db = mysql.connector.connect(
-    host="172.187.226.29",  # Cambia a tu dirección IP
-    user="root2",
-    passwd="EsteveTerradas2023.", 
-    database="ZeldaBBDD"
-)
 
 #--Consultas menu principal BBDD:
 
@@ -1871,7 +1878,9 @@ def consultaJugadores():
 def partidasXJugador():
         cursor = db.cursor()
 
-        cursor.execute("Select user_name, count() from game group by user_name;")
+
+        cursor.execute("Select user_name, count(*) from game group by user_name;")
+
         resultados = cursor.fetchall()
 
         for element in resultados:
@@ -1881,6 +1890,7 @@ def ArmasConseguidas():
         cursor = db.cursor()
 
         cursor.execute("SELECT g.user_name AS Usuario, w.weapon_name AS Arma, COUNT() AS CantidadObtenida, MAX(g.date_started) AS FechaPartidaMasUsos FROM game g JOIN game_weapons w ON g.game_id = w.game_id GROUP BY g.user_name, w.weapon_name ORDER BY Usuario, CantidadObtenida DESC;")
+
         resultados = cursor.fetchall()
 
         for element in resultados:
@@ -1913,5 +1923,7 @@ def maxBloodMoon():
         resultados = cursor.fetchall()
 
         for element in resultados:
+
             print(element)
-'''
+
+
