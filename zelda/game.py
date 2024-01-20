@@ -31,6 +31,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
             f.contador_arbol_mapa(mapaActual)
             f.contador_arbol(mapaActual)
             f.blood_moonn()
+            f.vida_enemigo(mapaActual)
             
             # Crear diccionario de ganon con sus vidas
             if d.ganon["vida"] == 0: # si la vida de ganon es 0, se muestra la pantalla de win

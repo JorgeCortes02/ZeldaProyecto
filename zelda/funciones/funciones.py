@@ -687,7 +687,7 @@ def menu_principal():
                 back = False
                 while back == False:
                     limpiar_pantalla()
-                    b.descargarGuardadas()
+                    #b.descargarGuardadas()
                     imprimir_partidas_guardadas()
                     prompt()
                     opc = input("What to do now? ")
@@ -1038,6 +1038,7 @@ def zorro_visivilidad(): #Dice si el zorro sera visible o no
     porcentaje = random.randint(1,100)
     if porcentaje in range(1,51):
         d.visibilidad_zorro = True
+        d.vida_zorro = True
         d.texto_prompt.append("You see a Fox")
     else:
         d.visibilidad_zorro = False
@@ -1203,26 +1204,31 @@ def enemigos(mapaActual): #Interacion con el enemigo
     if d.jugador["arma_actual"] == " " or d.jugador["arma_actual"] == "": #compruba si tienes una espada
         d.texto_prompt.append("I can't attack if you don't have a sword")
     else:
-        d.jugador["vidas"]-= 1 #Te resta 1 de vida
-        if d.jugador["vidas"] != 0:
-            d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1 #Le quita un uso a la espada
-            d.texto_prompt.append(f"Brave, keep fighting {d.jugador['nombre']}")
-            d.texto_prompt.append(f"Be careful {d.jugador['nombre']}, you only have {d.jugador['vidas']} hearts")
-            for i in range(len(d.dades[d.jugador["mapa"]]["E"]["posicion"])):
-                enemigo = False
-                if d.jugador["posicion"][0] == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0] and d.jugador["posicion"][1]+1 == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]:
-                    enemigo = True
+        for i in range(len(d.dades[d.jugador["mapa"]]["E"]["posicion"])):
+            enemigo = False
+            if d.jugador["posicion"][0] == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0] and d.jugador["posicion"][1]+1 == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]:
+                enemigo = True
+            
+            if d.jugador["posicion"][0] == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0] and d.jugador["posicion"][1]-1 == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]:
+                enemigo = True
+            
+            if d.jugador["posicion"][0]-1 == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0] and d.jugador["posicion"][1] == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]:
+                enemigo = True
+            
+            if d.jugador["posicion"][0]+1 == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0] and d.jugador["posicion"][1] == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]:
+                enemigo = True
+            
+            if enemigo == True:  
+                if d.dades[d.jugador["mapa"]]["E"]["posicion"][i][3] == 0:
+                    d.texto_prompt.append("he is dead 💀")
                 
-                if d.jugador["posicion"][0] == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0] and d.jugador["posicion"][1]-1 == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]:
-                    enemigo = True
-                
-                if d.jugador["posicion"][0]-1 == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0] and d.jugador["posicion"][1] == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]:
-                    enemigo = True
-                
-                if d.jugador["posicion"][0]+1 == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0] and d.jugador["posicion"][1] == d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]:
-                    enemigo = True
-                
-                if enemigo == True:  
+                else:
+                    d.jugador["vidas"]-= 1 #Te resta 1 de vida
+                    if d.jugador["vidas"] != 0:
+                        d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1 #Le quita un uso a la espada
+                        d.texto_prompt.append(f"Brave, keep fighting {d.jugador['nombre']}")
+                        d.texto_prompt.append(f"Be careful {d.jugador['nombre']}, you only have {d.jugador['vidas']} hearts")
+
                     d.dades[d.jugador["mapa"]]["E"]["posicion"][i][3] -= 1 #Le resta 1 de vida al enemigo
                     if d.dades[d.jugador["mapa"]]["E"]["posicion"][i][3] == 0: #Comprueba si al enemigo a un le queda vida
                         d.texto_prompt.append("You defeated an enemy, this is a dangerous zone")
@@ -1235,12 +1241,14 @@ def enemigos(mapaActual): #Interacion con el enemigo
                                 if direccion2 == 1: #Luego si es para izquierda o derecha o delante o atras
                                     if mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]+1] == " ":
                                         mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = " "
+                                        mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]+1] = " "
                                         d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1] += 1
                                         mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = "E"
                                         salir = True
                                 else:
                                     if mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]-1] == " ":
                                         mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = " "
+                                        mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]+1] = " "
                                         d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1] -= 1
                                         mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = "E"
                                         salir = True
@@ -1249,12 +1257,14 @@ def enemigos(mapaActual): #Interacion con el enemigo
                                 if direccion2 == 1:
                                     if mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]+1][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] == " ":
                                         mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = " "
+                                        mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]+1] = " "
                                         d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0] += 1
                                         mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = "E"
                                         salir = True
                                 else:
                                     if mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]-1][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] == " ":
                                         mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = " "
+                                        mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]+1] = " "
                                         d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0] -= 1
                                         mapaActual[d.dades[d.jugador["mapa"]]["E"]["posicion"][i][0]][d.dades[d.jugador["mapa"]]["E"]["posicion"][i][1]] = "E"
                                         salir = True
@@ -1721,7 +1731,7 @@ def imprimir_partidas_guardadas():
 
 
 def atacar(posicionplayer, mapaActual, objeto):
-    if mapaActual[posicionplayer[0]+1][posicionplayer[1]] == objeto:
+    if posicionplayer[0] != 10 and mapaActual[posicionplayer[0]+1][posicionplayer[1]] == objeto:
         if objeto == "E":
             mapaActual = enemigos(mapaActual)
             return True
@@ -1809,3 +1819,11 @@ def blood_moonn():
         d.dades["necluda"]["E"]["posicion"][0][3] = 1
     else:
         d.jugador["bloodMoonCoutdown"] += 1
+
+
+
+
+def vida_enemigo(mapaActual):
+    if d.jugador["mapa"] != "castle":
+        for i in d.dades[d.jugador["mapa"]]["E"]["posicion"]: #Busca que arbol tiene la vida al 0 y lo cambia por el numero del contador que tenga en ese momento
+            mapaActual[i[0]][i[1]+1] = str(i[3])
