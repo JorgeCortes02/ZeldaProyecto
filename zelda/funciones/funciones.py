@@ -771,27 +771,35 @@ def menu_principal():
 
             elif opc.lower() == "consultes":
                 limpiar_pantalla()
-                print("Elige la consulta que quieres hacer".center(60, "*"))
-                print("Jugadores, Partidas, Armas, Alimentos, Blood Moon Media, Blood Moon Max")
-                select = input("Que quieres consultar? ")
-                
-                if select.lower() == "jugadores":
-                    consultaJugadores()
+                back = False
+                while back == False:
+                    print("Elige la consulta que quieres hacer".center(60, "*"))
+                    print("Jugadores, Partidas, Armas, Alimentos, Blood Moon Media, Blood Moon Max, Back")
+                    select = input("Que quieres consultar? ")
                     
-                elif select.lower() == "partidas":
-                    partidasXJugador()
+                    if select.lower() == "jugadores":
+                        consultaJugadores()
+                        
+                    elif select.lower() == "partidas":
+                        partidasXJugador()
+                        
+                    elif select.lower() == "armas":
+                        ArmasConseguidas()
+                        
+                    elif select.lower() == "alimentos":
+                        AlimentosConseguidos()
+                        
+                    elif select.lower() == "blood moon media":
+                        MediaBloodMoon()
+                        
+                    elif select.lower() == "blood moon max":
+                        maxBloodMoon()
                     
-                elif select.lower() == "armas":
-                    ArmasConseguidas()
+                    elif select.lower() == "back":
+                        back = True
                     
-                elif select.lower() == "alimentos":
-                    AlimentosConseguidos()
-                    
-                elif select.lower() == "blood moon media":
-                    MediaBloodMoon()
-                    
-                elif select.lower() == "blood moon max":
-                    maxBloodMoon()
+                    else:
+                        print("Invalid Option")
                     
                     
 
