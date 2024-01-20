@@ -1,15 +1,17 @@
 import funciones.datos as d
 
 import random
-import mysql.connector
+#import mysql.connector
 mapaActual = []
 db = mysql.connector.connect(
     host="172.187.226.29",  # Cambia a tu dirección IP
     user="root2",
     passwd="EsteveTerradas2023.", 
     database="ZeldaBBDD"
+
 )
 cursor = db.cursor()
+
 
 mapaActual = []
 #Contea la cantidad de cada tipo de arma.
@@ -602,28 +604,28 @@ def moverPersonajeGanon(mapaActual, select, posicionplayer):
     
     
     if select[0:7] == "go left":
-        print(posicionplayer[1], posicionplayer[1] - int(select[8:]) )
-        if posicionplayer[1] - int(select[8:]) < 0:
+        print(posicionplayer[1], posicionplayer[1] - int(select[7:]) )
+        if posicionplayer[1] - int(select[7:]) < 0:
             
             return["Invalid action1"], posicionplayer[0], posicionplayer[1]
         else:
             int1 = posicionplayer[1]
-            int2 = posicionplayer[1] - int(select[8:])
+            int2 = posicionplayer[1] - int(select[7:])
             diferent = True
            
             for i in range (int1, int2, -1):
                 
-                if int(select[8:]) == 1:
+                if int(select[7:]) == 1:
 
                     if mapaActual[posicionplayer[0]][i-1] != " ":
-                        
+                        d.texto_prompt.append("Invalid action")
                         return["Invalid action"], posicionplayer[0], posicionplayer[1]
                     
                     else:
 
                         mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
-                        mapaActual[posicionplayer[0]][posicionplayer[1] - int(select[8:])] = "X"
-                        return mapaActual, posicionplayer[0], posicionplayer[1] - int(select[8:])
+                        mapaActual[posicionplayer[0]][posicionplayer[1] - int(select[7:])] = "X"
+                        return mapaActual, posicionplayer[0], posicionplayer[1] - int(select[7:])
                 else:
 
                     if mapaActual[posicionplayer[0]][i-1] != " ":
@@ -632,9 +634,10 @@ def moverPersonajeGanon(mapaActual, select, posicionplayer):
             if diferent == True:
 
                 mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
-                mapaActual[posicionplayer[0]][posicionplayer[1] - int(select[8:])] = "X"
-                return mapaActual, posicionplayer[0], posicionplayer[1] - int(select[8:])        
+                mapaActual[posicionplayer[0]][posicionplayer[1] - int(select[7:])] = "X"
+                return mapaActual, posicionplayer[0], posicionplayer[1] - int(select[7:])        
             else:
+                d.texto_prompt.append("Invalid action")
                 return["Invalid action"], posicionplayer[0], posicionplayer[1]
                        
 
@@ -646,14 +649,14 @@ def moverPersonajeGanon(mapaActual, select, posicionplayer):
             return["Invalid action1"], posicionplayer[0], posicionplayer[1]
         else:
             int1 = posicionplayer[1]
-            int2 = posicionplayer[1] + int(select[9:])
+            int2 = posicionplayer[1] + int(select[8:])
             diferent = True
             for i in range (int2, int1, -1):
                 
-                if int(select[9:]) == 1:
+                if int(select[8:]) == 1:
 
                     if mapaActual[posicionplayer[0]][i+1] != " ":
-                        
+                        d.texto_prompt.append("Invalid action")
                         return["Invalid action2"], posicionplayer[0], posicionplayer[1]
                     
                     
@@ -665,9 +668,10 @@ def moverPersonajeGanon(mapaActual, select, posicionplayer):
             if diferent == True:
        
                 mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
-                mapaActual[posicionplayer[0]][posicionplayer[1] + int(select[9:])] = "X"
-                return mapaActual, posicionplayer[0], posicionplayer[1] + int(select[9:])
+                mapaActual[posicionplayer[0]][posicionplayer[1] + int(select[8:])] = "X"
+                return mapaActual, posicionplayer[0], posicionplayer[1] + int(select[8:])
             else:
+                d.texto_prompt.append("Invalid action")
                 return["Invalid action"], posicionplayer[0], posicionplayer[1]
 
 
@@ -724,7 +728,13 @@ def menu_principal():
                                     # Funcion para guardar que tiene jorge en su rama
                                     d.jugador["id_game"] = int(opc[5])
                                     guardado = True
+
                                     selectAndChargePartida(int(opc[5]))
+
+                                    salir = True
+                                    return True
+                            
+
                             if guardado == False:
                                 d.texto_prompt.append("Invalid option")  
                         
@@ -1319,11 +1329,9 @@ def vida_ganon():
                 d.localitzacions["castle"][2][46+i+1] = "♥"
 
 def ganon_castillo():
-    if d.jugador["mapa"] == "castle":
-        if d.win == False:
-            if d.jugador["posicion"][1] > 19:
-                d.jugador["vidas"] -= 1 #Te resta 1 de vida
-                d.texto_prompt.append("Gannon attacked you, you lost 1 life")
+    if d.jugador["posicion"][1] > 18:
+        d.jugador["vidas"] -= 1 #Te resta 1 de vida
+        d.texto_prompt.append("Gannon attacked you, you lost 1 life")
 
 
 def pelea_ganon(mapaActual): #Interacion con ganon
@@ -1757,14 +1765,14 @@ def imprimir_partidas_guardadas():
     
     if len(d.datosPartidas) > 1:
         for i in d.datosPartidas:
-            saved_games.append(["* {}: {} {} - {}, {}".format(i[0], i[4], "18:37:15", i[1], i[9]).ljust(72) + "♥ {}/{} *".format(i[5], i[6])])
+            saved_games.append(["* {}: {} - {}, {}".format(i[0], i[4], i[1], i[9]).ljust(72) + "♥ {}/{} *".format(i[5], i[6])])
         
         while len(saved_games) != 11:
             saved_games.append(["* ".ljust(78) + "*"]) 
     
     elif len(d.datosPartidas) == 1 and type(d.datosPartidas[0]) == list:
         for i in d.datosPartidas:
-            saved_games.append(["* {}: {} {} - {}, {}".format(i[0], i[4], "18:37:15", i[1], i[9]).ljust(72) + "♥ {}/{} *".format(i[5], i[6])])
+            saved_games.append(["* {}: {} - {}, {}".format(i[0], i[4], i[1], i[9]).ljust(72) + "♥ {}/{} *".format(i[5], i[6])])
         
         while len(saved_games) != 11:
             saved_games.append(["* ".ljust(78) + "*"])

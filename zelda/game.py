@@ -157,7 +157,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     
                 elif select[0:5].lower() == "cheat": # Trucos
                     # Falta terminar la funcion de trucos
-                    print("a")
+                    f.trucos(select)
                 
                 else: # Opcion invalida, se añade al prompt
                     d.texto_prompt.append("Invalid action")
@@ -169,6 +169,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     if select[0:7].lower() == "go left" or select[0:8].lower() == "go right": # Solo puedes moverte a derecha o izquierda
                         retorno = f.moverPersonajeGanon(mapaActual, select, posicionplayer)
                         posicionplayer = [retorno[1], retorno[2]] # Cambiar posicion a nueva despues del movimiento
+                        d.jugador["posicion"] = posicionplayer
                     
                     elif select.lower() == "back": # Volver a la ultima región, desde donde has viajado hasta el castillo
                         d.texto_prompt.append("You are now in " + d.mapa_anterior) # Se añade al prompt
@@ -199,7 +200,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     
                     elif select[0:5].lower() == "cheat": # Trucos
                         # Falta terminar funcion trucos
-                        print("a")
+                        f.trucos(select)
                     
                     else: # Opción invalida, se añade al prompt
                         d.texto_prompt.append("Invalid action")
