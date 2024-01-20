@@ -2,12 +2,6 @@ import funciones.funciones as f
 import funciones.datos as d
 
 
-cook = True
-cesped = True
-tree = False
-fish = True
-chest = False
-enemic = False
 
 # Habrá que cambiar esto por que se activen los objetos que tiene al lado
 
@@ -32,6 +26,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
             f.contador_arbol(mapaActual)
             f.blood_moonn()
             f.vida_enemigo(mapaActual)
+            
             
             # Crear diccionario de ganon con sus vidas
             if d.ganon["vida"] == 0: # si la vida de ganon es 0, se muestra la pantalla de win
@@ -168,28 +163,48 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     d.texto_prompt.append("Invalid action")
             
             else: # Si estas en el mapa del castillo, tienes movimientos limitados
-                if select[0:7].lower() == "go left" or select[0:8].lower() == "go right": # Solo puedes moverte a derecha o izquierda
-                    retorno = f.moverPersonajeGanon(mapaActual, select, posicionplayer)
-                    posicionplayer = [retorno[1], retorno[2]] # Cambiar posicion a nueva despues del movimiento
+                if d.win == False:
+                    f.vida_ganon()
+                    f.ganon_castillo()
+                    if select[0:7].lower() == "go left" or select[0:8].lower() == "go right": # Solo puedes moverte a derecha o izquierda
+                        retorno = f.moverPersonajeGanon(mapaActual, select, posicionplayer)
+                        posicionplayer = [retorno[1], retorno[2]] # Cambiar posicion a nueva despues del movimiento
+                    
+                    elif select.lower() == "back": # Volver a la ultima región, desde donde has viajado hasta el castillo
+                        d.texto_prompt.append("You are now in " + d.mapa_anterior) # Se añade al prompt
+                        mapaActual = d.localitzacions[d.mapa_anterior] # Se cambia el mapa
+                        d.jugador["mapa"] = d.mapa_anterior
+                        posicionplayer = d.dades[d.mapa_anterior]["position"] # Se cambia la posicion
+                    
+                    elif select.lower() == "attack" and posicionplayer == [9,21]: # Atacar a Ganon, cuando estas a su lado
+                        f.pelea_ganon(mapaActual)
+                    
+                    elif select[0:5].lower() == "cheat": # Trucos
+                        # Falta terminar funcion trucos
+                        print("a")
+                    
+                    else: # Opción invalida, se añade al prompt
+                        d.texto_prompt.append("Invalid action")
                 
-                elif select.lower() == "back": # Volver a la ultima región, desde donde has viajado hasta el castillo
-                    d.texto_prompt.append("You are now in " + d.mapa_anterior) # Se añade al prompt
-                    mapaActual = d.localitzacions[d.mapa_anterior] # Se cambia el mapa
-                    d.jugador["mapa"] = d.mapa_anterior
-                    posicionplayer = d.dades[d.mapa_anterior]["position"] # Se cambia la posicion
-                
-                elif select.lower() == "attack" and posicionplayer == [9,21]: # Atacar a Ganon, cuando estas a su lado
-                    # Falta funcion para atacar a ganon
-                    aux = d.ganon["vida"]
-                    d.ganon["vida"] = aux - 1 
-                    f.frase_ganon()
-                
-                elif select[0:5].lower() == "cheat": # Trucos
-                    # Falta terminar funcion trucos
-                    print("a")
-                
-                else: # Opción invalida, se añade al prompt
-                    d.texto_prompt.append("Invalid action")
+                else:
+                    if select[0:7].lower() == "go left" or select[0:8].lower() == "go right": # Solo puedes moverte a derecha o izquierda
+                        retorno = f.moverPersonajeGanon(mapaActual, select, posicionplayer)
+                        posicionplayer = [retorno[1], retorno[2]] # Cambiar posicion a nueva despues del movimiento
+                    
+                    elif select.lower() == "back": # Volver a la ultima región, desde donde has viajado hasta el castillo
+                        d.texto_prompt.append("You are now in " + d.mapa_anterior) # Se añade al prompt
+                        mapaActual = d.localitzacions[d.mapa_anterior] # Se cambia el mapa
+                        d.jugador["mapa"] = d.mapa_anterior
+                        posicionplayer = d.dades[d.mapa_anterior]["position"] # Se cambia la posicion
+                    
+                    elif select[0:5].lower() == "cheat": # Trucos
+                        # Falta terminar funcion trucos
+                        print("a")
+                    
+                    else: # Opción invalida, se añade al prompt
+                        d.texto_prompt.append("Invalid action")
+
+
                         
 juego = True                         
 

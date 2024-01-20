@@ -1,5 +1,5 @@
 import funciones.datos as d
-#import funciones.bbddpruebas as b
+#import mysql.connector
 import random
 mapaActual = []
 #Contea la cantidad de cada tipo de arma.
@@ -739,9 +739,28 @@ def menu_principal():
             elif opc.lower() == "consultes":
                 limpiar_pantalla()
                 print("Elige la consulta que quieres hacer".center(60, "*"))
+                print("Jugadores, Partidas, Armas, Alimentos, Blood Moon Media, Blood Moon Max")
                 select = input("Que quieres consultar? ")
                 
-                #consultaBBDD(select)
+                if select.lower() == "jugadores":
+                    consultaJugadores()
+                    
+                elif select.lower() == "partidas":
+                    partidasXJugador()
+                    
+                elif select.lower() == "armas":
+                    ArmasConseguidas()
+                    
+                elif select.lower() == "alimentos":
+                    AlimentosConseguidos()
+                    
+                elif select.lower() == "blood moon media":
+                    MediaBloodMoon()
+                    
+                elif select.lower() == "blood moon max":
+                    maxBloodMoon()
+                    
+                    
 
             elif opc.lower() == "help": #Si se elige la opcion help se ira a la pantalla de help, main menu
                 help(d.diccionarioMenuPrincipal["help_main"])
@@ -1218,7 +1237,11 @@ def enemigos(mapaActual): #Interacion con el enemigo
                     d.texto_prompt.append("he is dead 💀")
                 
                 else:
-                    d.jugador["vidas"]-= 1 #Te resta 1 de vida
+                    if d.jugador["escudo_actual"] != " " and d.jugador["escudo_actual"] != "":
+                        d.inventarioArmas[d.jugador["escudo_actual"]]["usos"] -= 1
+                    
+                    else:
+                        d.jugador["vidas"]-= 1 #Te resta 1 de vida
                     if d.jugador["vidas"] != 0:
                         d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1 #Le quita un uso a la espada
                         d.texto_prompt.append(f"Brave, keep fighting {d.jugador['nombre']}")
@@ -1270,29 +1293,32 @@ def vida_ganon():
         if d.win == False:
             d.ganon["vida"] = 8
             for i in range(8):
-                print(d.localitzacions["castle"][2][46+i+1])
                 d.localitzacions["castle"][2][46+i+1] = "♥"
-                print(d.localitzacions["castle"][2][46+i+1])
 
 def ganon_castillo():
     if d.jugador["mapa"] == "castle":
         if d.win == False:
             if d.jugador["posicion"][1] > 19:
                 d.jugador["vidas"] -= 1 #Te resta 1 de vida
+                d.texto_prompt.append("Gannon attacked you, you lost 1 life")
 
 
 def pelea_ganon(mapaActual): #Interacion con ganon
     if d.jugador["arma_actual"] == " " or d.jugador["arma_actual"] == "": #compruba si tienes una espada
         d.texto_prompt.append("I can't attack if you don't have a sword")
     else:
-        d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1 #Le quita un uso a la espada
+        if d.jugador["escudo_actual"] != " " and d.jugador["escudo_actual"] != "":
+            d.inventarioArmas[d.jugador["escudo_actual"]]["usos"] -= 1 #Le quita un uso a la espada
+        
+        else:
+            d.jugador["vidas"] -= 1
+            
+        d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1
+        d.texto_prompt.append("You attacked Ganon, Ganon lost 1 life")
         numero = random.randint(0,9)
         d.texto_prompt.append(d.frases_ganon[numero])
         d.ganon["vida"] -= 1 #Le resta 1 de vida al enemigo
-        mapaActual[2][46+d.ganon["vida"]] = " "
-        if d.ganon["vida"] == 0: #Comprueba si al enemigo a un le queda vida
-            d.texto_prompt.append("It has been an exhausting fight, but with persistence, you have achieved it.")
-            d.win = True
+        mapaActual[2][47+d.ganon["vida"]] = " "
 
     return mapaActual
                 
@@ -1822,3 +1848,70 @@ def vida_enemigo(mapaActual):
     if d.jugador["mapa"] != "castle":
         for i in d.dades[d.jugador["mapa"]]["E"]["posicion"]: #Busca que arbol tiene la vida al 0 y lo cambia por el numero del contador que tenga en ese momento
             mapaActual[i[0]][i[1]+1] = str(i[3])
+            
+
+'''db = mysql.connector.connect(
+    host="172.187.226.29",  # Cambia a tu dirección IP
+    user="root2",
+    passwd="EsteveTerradas2023.", 
+    database="ZeldaBBDD"
+)
+
+#--Consultas menu principal BBDD:
+
+def consultaJugadores():
+    cursor = db.cursor()
+
+    cursor.execute("Select distinct  user_name, date_started from game;")
+    resultados = cursor.fetchall()
+
+    for element in resultados:
+        print(element)
+
+def partidasXJugador():
+        cursor = db.cursor()
+
+        cursor.execute("Select user_name, count() from game group by user_name;")
+        resultados = cursor.fetchall()
+
+        for element in resultados:
+            print(element)
+
+def ArmasConseguidas():
+        cursor = db.cursor()
+
+        cursor.execute("SELECT g.user_name AS Usuario, w.weapon_name AS Arma, COUNT() AS CantidadObtenida, MAX(g.date_started) AS FechaPartidaMasUsos FROM game g JOIN game_weapons w ON g.game_id = w.game_id GROUP BY g.user_name, w.weapon_name ORDER BY Usuario, CantidadObtenida DESC;")
+        resultados = cursor.fetchall()
+
+        for element in resultados:
+            print(element)
+
+def AlimentosConseguidos():
+        cursor = db.cursor()
+
+        cursor.execute("SELECT  g.user_name AS Usuario, gf.food_name AS Alimento, SUM(gf.quanntity_remaining) AS CantidadObtenida,  max(g.date_started)  as MaxDate FROM game g JOIN game_food gf ON g.game_id = gf.game_id GROUP BY  g.user_name, gf.food_name ORDER BY     Usuario, CantidadObtenida DESC;")
+        resultados = cursor.fetchall()
+
+        for element in resultados:
+            print(element)
+
+def MediaBloodMoon():
+
+        cursor = db.cursor()
+
+        cursor.execute("Select avg(blood_moon_appearances) from game;")
+        resultados = cursor.fetchall()
+
+        for element in resultados:
+            print(element)
+
+def maxBloodMoon():
+
+        cursor = db.cursor()
+
+        cursor.execute("Select g.date_started, g.user_name, g.blood_moon_appearances from game g where g.blood_moon_appearances = (select max(g1.blood_moon_appearances)from game g1) ")
+        resultados = cursor.fetchall()
+
+        for element in resultados:
+            print(element)
+'''
