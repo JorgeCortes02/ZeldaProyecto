@@ -725,6 +725,8 @@ def menu_principal():
                                     # Funcion para guardar que tiene jorge en su rama
                                     d.jugador["id_game"] = int(opc[5])
                                     guardado = True
+                                    salir = True
+                                    return True
                             
                             if guardado == False:
                                 d.texto_prompt.append("Invalid option")  
@@ -1756,7 +1758,7 @@ def imprimir_partidas_guardadas():
     
     if len(d.datosPartidas) > 1:
         for i in d.datosPartidas:
-            saved_games.append(["* {}: {} {} - {}, {}".format(i[0], i[4], "18:37:15", i[1], i[9]).ljust(72) + "♥ {}/{} *".format(i[5], i[6])])
+            saved_games.append(["* {}: {} - {}, {}".format(i[0], i[4], i[1], i[9]).ljust(72) + "♥ {}/{} *".format(i[5], i[6])])
         
         while len(saved_games) != 11:
             saved_games.append(["* ".ljust(78) + "*"]) 
