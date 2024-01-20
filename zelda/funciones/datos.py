@@ -1,14 +1,10 @@
 import funciones.funciones as f
 
 
-
-
 #Atributos jugador
 
 
-jugador = {"name" : " ","posicion" : [3,9], "arma_actual": "", "escudo_actual" : "Shield998", "vidas_max": 3, "vidas" : 3, "bloodMoonCoutdown": 25, "totalBloodMoon" : 0, "mapa" : "Hyrule", "id_game" : 16 }
-
-
+jugador = {"nombre" : " ","posicion" : [8,11], "arma_actual": "Sword989", "escudo_actual" : "Shield998", "vidas_max": 3, "vidas" : 3, "bloodMoonCoutdown": -1, "totalBloodMoon" : 0, "mapa" : "hyrule", "id_game" : 16 }
 
 
 dict_tipos = {"Shield" : {"total": 0, "minUsos" : 0}, "Wood Shield" : {"total": 0, "minUsos" : 0}, "Sword" : {"total": 0, "minUsos" : 0}, "Wood Sword" : {"total": 0, "minUsos" : 0} }
@@ -20,9 +16,11 @@ inventarioComida = { "Vegetables" : 0,
                     "Meat" : 0, 
                     "Salads" : 0, 
                     "Pescatarian" : 0, 
-                    "Roasted" : 0 }
+                    "Roasted" : 0}
 
 
+
+#inventario1 = f.mostrarInventario("show inventory weapons")
 
 
 select = "show inventory main"
@@ -60,10 +58,10 @@ localitzacions = {
         ["*"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","C"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","~","~","~","~","~","~"," "," "," ","~","~","~","~","~","~","*"],
         ["*"," "," "," "," "," ","T"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","~","~","~","*"],
         ["*"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","E","9"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","*"],
-        ["*"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","S","0","?"," "," "," "," "," "," "," "," "," "," "," ","*"],
+        ["*"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","S0?"," "," "," "," "," "," "," "," "," "," "," ","*"],
         ["*"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","*"],
         ["*"," "," "," "," "," "," "," "," "," "," ","X"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","T"," "," "," "," "," "," "," "," "," ","*"],
-        ["*"," ","O","O"," "," "," "," ","O","O","O","O","O"," "," "," "," "," "," "," "," ","E","1"," "," "," "," "," "," "," "," ","S","1","?"," "," "," "," "," "," "," "," "," "," "," "," ","T"," ","M"," "," "," ","F"," "," "," "," "," ","*"],
+        ["*"," ","O","O"," "," "," "," ","O","O","O","O","O"," "," "," "," "," "," "," "," ","E","1"," "," "," "," "," "," "," "," ","S1?"," "," "," "," "," "," "," "," "," "," "," "," ","T"," ","M"," "," "," ","F"," "," "," "," "," ","*"],
         ["*","O","O","O","O","O","O","O","O","O","O","O"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","*"]],
 
         "gerudo" : [["*"," ","G","e","r","u","d","o"," "," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"],
@@ -79,7 +77,6 @@ localitzacions = {
           ["*", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "~", "~", "~", "~", "~", "~", "~", "*"]],
 
         "necluda" : [["*"," ","N","e","c","l","u","d","a"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"," ","*"],
-          ["*", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "M", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "M", " ", " ", " ", " ", " ", " ", "*"],
           ["*", " ", "X", " ", " ", " ", " ", " ", " ", " ", "E", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "T", "T", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "M", " ", " ", " ", " ", " ", " ", "*"],
           ["*", "O", "O", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "C", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "T", "T", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "~", "~", "~", "~", "~", "*"],
           ["*", "O", "O", "O", "O", "O", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "~", "~", "~", "~", "~", "~", "~", "~", "~", "*"],
@@ -126,13 +123,13 @@ dades = { "death" : {"position" : (9,2),
                      "T":{"lista":[[7,19],[8,18],[9,18]],"vida":[4,4,4],"contador":[0,0,0]},
                      "~":{"posicion":[[3,2],[3,3],[4,2],[4,4],[5,5],[5,6],[5,7],[5,8],[5,9],[5,10],
                                     [6,8],[6,9],[6,10],[7,7],[7,6],[7,5],[6,4],[6,3],[6,2]]},
-                     "Santuarios":{"posicion":[[3,6,"S2",False,2],[9,49,"S3",False,3]]}, #X/Y/Nombre/False/ID
+                     "Santuarios":{"posicion":[[3,6,"S2",False,2],[9,49,"S3",False,3]]}, #X/Y/Nombre/ID
                      "M":{"posicion":[[8,36,False,2]]}, #X/Y/Comprueba si esta abierto/ID
                      "E":{"posicion":[[4,13,3,2],[3,51,4,2]]}}, #X/Y/ID/Vida
          "hyrule" : {"position" : (8,11),
                      "F":{"posicion":[9,52]}, 
                      "C":{"posicion":[3,17]},
-                     "T":{"lista":[[4,6],[8,48],[9,46]],"vida":[4,4,4],"contador":[0,0,0]},
+                     "T":{"lista":[[4,6],[5,9],[8,48],[9,46]],"vida":[4,4,4,4],"contador":[0,0,0,0]},
                      "~":{"posicion":[[1,37],[2,37],[2,38],[2,39],[2,40],[2,41],[2,42],[3,43],[3,44],[3,45],
                                     [3,46],[3,47],[3,48],[2,49],[3,52],[3,53],[3,54],[4,55],[4,56],[4,57]]},
                      "Santuarios":{"posicion":[[6,44,"S0",False,0],[9,31,"S1",False,1]]},
@@ -161,14 +158,13 @@ dades = { "death" : {"position" : (9,2),
 }
 
 
-
-
 frases_ganon = ["Ganon is powerful, are you sure you can defeat him?", "Ganon's strength is supernatural, Zelda fought with bravery.", "To Ganon, you are like a fly, find a weak spot and attack.", "Ganon will not surrender easily.", "Ganon has fought great battles, is an expert fighter.", "Link, transform your fears into strengths.", "Keep it up, Link, Ganon can't hold out much longer.", "Link, history repeats itself, Ganon can be defeated.", "Think of all the warriors who have tried before.", "You fight for the weaker ones, Link, persevere."]
 
 
 mapa_anterior = ""
 
 
+#mapaActual = f.obtenerMapa(localitzacions["death"], jugador["posicion"])
 diccionarioMenuPrincipal = {
     
   "principal1" : [["* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"],
@@ -346,18 +342,22 @@ diccionarioMenuPrincipal = {
 
 texto_prompt = []
 
-visibilidad_zorro = True
 
-pesca = False
+pesca = False #Sirve para saber si ya has conseguido u pez o no
+#agua = {"posicion":posicion,"mapa":mapa,"pesca":pesca}
 
+visibilidad_zorro = False #Saber si el zorro lo ves o no
+#zorro = {"posicion":posicion,"mapa":mapa,"visibilidad":visibilidad_zorro,"forma":"F"}
 
+puerta_santuario = False #Saber si el santuario esta abierto o no
+#santuario = {"posicion":posicion,"mapa":mapa,"puerta":puerta_santuario,"forma":"S1"}
 
-#Nuevas variables BBDD.
-
-datosPartidas = []
-
+cofre_abierto = False
+#cofre = {"posicion":posicion,"map":map,"cofre":cofre_abierto,"forma":"M"}
 
 win = False # Saber cuando has ganado, para que cuando entres a castle no salga Ganon
 
-ganon = {"vida":9} # Vida de ganon, para saber cuando muere
+
+
+ganon = {"vida":8} # Vida de ganon, para saber cuando muere
 

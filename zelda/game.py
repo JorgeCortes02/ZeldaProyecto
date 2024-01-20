@@ -2,39 +2,27 @@ import funciones.funciones as f
 import funciones.datos as d
 
 
-cook = True
-cesped = True
-tree = False
-fish = True
-chest = False
-enemic = False
-
-# Habrá que cambiar esto por que se activen los objetos que tiene al lado
 
 def game(): # Hay que mirar como se pondria para cuando eliges una partida guardada.
     exit = False 
     while exit == False: # Bucle para que cuando le des a exit en el menu salga del juego
-        #exit = f.menu_principal() # Ejecutamos el menu principal, devuelve un booleano, si es falso es porque has pulsado exit
-        #if exit == False: # Salir de la función
-        #    exit = True
-        #    return True
+        exit = f.menu_principal() # Ejecutamos el menu principal, devuelve un booleano, si es falso es porque has pulsado exit
+        if exit == False: # Salir de la función
+            exit = True
+            return True
         
-        if d.jugador["mapa"] == "hyrule":
-            posicionplayer = d.jugador["posicion"] # guardamos posicion inicial
-            mapaActual = d.localitzacions["hyrule"] # guardamos mapa inicial
-        
-        else:
-            posicionplayer = d.jugador["posicion"]
-            mapaActual = d.localitzacions[d.jugador["mapa"]]
-            
+        posicionplayer = d.dades["hyrule"]["position"] # guardamos posicion inicial
+        mapaActual = d.localitzacions["hyrule"] # guardamos mapa inicial
+        d.jugador["mapa"] = "hyrule"
         f.zorro_visivilidad() # miramos visibilidad del zorro
         final = False 
         while final == False: # Bucle para la partida
             f.limpiar_pantalla()
             f.cofre_cerrar_sword()
             f.cofre_cerrar_shield()
-            mapaActual = f.contador_arbol_mapa(mapaActual)
-            mapaActual = f.contador_arbol(mapaActual)
+            f.contador_arbol_mapa(mapaActual)
+            f.contador_arbol(mapaActual)
+            f.blood_moonn()
             
             # Crear diccionario de ganon con sus vidas
             if d.ganon["vida"] == 0: # si la vida de ganon es 0, se muestra la pantalla de win
@@ -84,8 +72,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
             
                 if select[0:7].lower() == "go left" or select[0:8].lower() == "go right" or select[0:5].lower() == "go up" or select[0:7].lower() == "go down": # mover personaje
                     retorno = f.moverPersonaje(mapaActual, select, posicionplayer) # llanmada a la funcion de mover el personaje
-                    posicionplayer = [retorno[1], retorno[2]]
-                    d.jugador["posicion"] = posicionplayer # nueva posicion del jugador
+                    posicionplayer = [retorno[1], retorno[2]] # nueva posicion del jugador
                 
                 # No me cambia de menu, hay que cambiar datos de prueba a los del diccionario
                 elif select[0:14].lower() == "show inventary": # si se escribe show inventory
@@ -118,7 +105,8 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     f.mostrar_mapa()
                 
                 elif select[0:3].lower() == "eat": # Consumir comida
-                    f.comer()
+                    # Falta la funcion de comer 
+                    print("a")
                 
                 elif select[0:11].lower() == "unequip the": # Desequipar arma
                     # Sigue saliendo en el inventario, y si no tienes espada o escudo equipado te tiene que dar un texto de error.
@@ -132,40 +120,42 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     f.cocinar(select, d.inventarioComida)
                     
                 elif select.lower() == "attack": # Atacar a un enemigo, cuando esta a tu lado
-                    ejecutado = False
-                    ejecutado = f.atacar(posicionplayer, mapaActual, "E")
+                    # Falta funcion de enemigo
+                    print("a")
                 
-                    if ejecutado == False:
-                        ejecutado = f.atacar(posicionplayer, mapaActual, "F") # Falta quitarle vida al arma y añadir carne al inventario
+                elif select.lower() == "attack": # Atacar a un zorro, cuando estas al lado de una F
+                    f.zorro() # Falta quitarle vida al arma y añadir carne al inventario
                 
-                    if ejecutado == False:
-                        ejecutado = f.atacar(posicionplayer, mapaActual, "T") # Falta acabar la funcion de arboles, da error con la vida
+                elif select.lower() == "attack": # Atacar a un arbol, cuando estas al lado de una T
+                    f.arbol(d.jugador["arma_actual"]) # Falta acabar la funcion de arboles, da error con la vida
                     
-                    if ejecutado == False:
-                        ejecutado = f.atacar(posicionplayer, mapaActual, " ")
+                elif select.lower() == "attack": # Atacat al cesped, cuando estas en un " "
+                    f.cesped()
                 
                 elif select.lower() == "fish": # Pescar cuando estas al lado de una ~
                     f.agua() # Falta añadir al inventario el pez conseguido
                 
                 elif select.lower() == "open sanctuary": # Abrir un santuario, cuando estas al lado de un santuario 
-                    f.abrir_santuario(posicionplayer, mapaActual) # Hay que crear un diccionario o lista con los santuarios y que cuando abres uno se ponga en True en el diccionario.
+                    f.abrir_santuario(posicionplayer) # Hay que crear un diccionario o lista con los santuarios y que cuando abres uno se ponga en True en el diccionario.
                 
                 elif select[0:5].lower() == "go to": # Cambiar de región
                     # en el pdf no pone nada, asi que a castle se puede ir desde cualquier sitio, y dentro de castle no se puede ir a otro sitio, tienes que atacar a ganon o escribir back y volver a la ultima region donde has estado.
-                    retorno = f.cambiar_mapa(select, mapaActual, posicionplayer)
+                    retorno = f.cambiar_mapa(select, mapaActual)
                     mapaActual = retorno[0]
                     posicionplayer = retorno[1]
                     
                 
                 elif select[0:5].lower() == "go by": # moverte al objeto indicado más cercano a donde estas
-                    f.movimientoCercano(select)
+                    # Falta terminar la funcion para del movimiento cercano
+                    print("a")
                 
                 elif select.lower() == "open chest": # Abrir cofre, cuando estas al lado de una M o W
+                    # Falta ver como hacemos lo de los cofres abiertos, que se reinicien y tal.
                     f.cofre() 
                     
                 elif select[0:5].lower() == "cheat": # Trucos
                     # Falta terminar la funcion de trucos
-                    print("a")
+                    f.trucos(select)
                 
                 else: # Opcion invalida, se añade al prompt
                     d.texto_prompt.append("Invalid action")
@@ -188,7 +178,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                 
                 elif select[0:5].lower() == "cheat": # Trucos
                     # Falta terminar funcion trucos
-                    print("a")
+                    f.trucos(select)
                 
                 else: # Opción invalida, se añade al prompt
                     d.texto_prompt.append("Invalid action")
