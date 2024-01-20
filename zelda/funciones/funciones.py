@@ -91,12 +91,22 @@ def mostrarInventario(Select):
                             " Link".ljust(12) + "  {0}/{1}".format(d.jugador["vidas"],d.jugador["vidas_max"]).rjust(6) + " * \n",
                             " Blod Moon in ".ljust(2) + "  {0}".format(d.jugador["bloodMoonCoutdown"]).rjust(4) + " * \n",
                             "* \n".rjust(22),
-                            " Equipement ".ljust(19) + "* \n",
-                            "{0}".format(d.inventarioArmas[d.jugador["escudo_actual"]]["tipo"]).rjust(18) + " * \n",
-                            "{0}".format(d.inventarioArmas[d.jugador["arma_actual"]]["tipo"]).rjust(18) + " * \n",
-                            "* \n".rjust(22),
-                            " Food".ljust(15) + "{0}".format(sumComida).rjust(3) +  " *\n",
-                            " Weapons".ljust(15) + "{0}".format(sumArmas).rjust(3) +  " *"]
+                            " Equipement ".ljust(19) + "* \n",]
+        
+        if len(d.inventarioArmas) == 0 or d.jugador["escudo_actual"] not in d.inventarioArmas or d.jugador["escudo_actual"] == " " or d.jugador["escudo_actual"] == "":
+
+                inventario += "* \n".rjust(22),
+        else:
+                inventario += "{0}".format(d.inventarioArmas[d.jugador["escudo_actual"]]["tipo"]).rjust(18) + " * \n",
+
+        if len(d.inventarioArmas) == 0 or d.jugador["arma_actual"] not in d.inventarioArmas or d.jugador["arma_actual"] == " " or d.jugador["arma_actual"] == "":
+
+                inventario += "* \n".rjust(22),
+        else:
+                inventario += "{0}".format(d.inventarioArmas[d.jugador["arma_actual"]]["tipo"]).rjust(18) + " * \n",
+
+
+        inventario += "* \n".rjust(22), " Food".ljust(15) + "{0}".format(sumComida).rjust(3) +  " *\n"," Weapons".ljust(15) + "{0}".format(sumArmas).rjust(3) +  " *"
                             
         return inventario
     
@@ -1680,56 +1690,64 @@ def cambiar_mapa(select, mapaActual, posicionfallo): # Funcion para cambiar de m
         
         
 # Lo dejo comentado por si no da tiempo, no esta perfecto, hay que modificar algunas cosas     
-'''def trucos(select):
+def trucos(select):
     if select[0:22].lower() == "cheat rename player to":
         if select[23:].lower().replace(" ", "").isalnum() and len(select[23:]) >= 3 and len(select[23:]) <= 10:
             d.jugador["nombre"] = select[23:]
-            d.texto_prompt.append("Name changed to " + d.jugador["nombre"])
+            d.texto_prompt.append("Cheating:rename player to. Name changed to " + d.jugador["nombre"])
+
         
         else:
             d.texto_prompt.append("Incorrect name")
     
     elif select.lower() == "cheat add vegetable":
         añadirInventario("Vegetable", d.inventarioComida)
-    
+        d.texto_prompt.append("Cheating: add vegetable")
     elif select.lower() == "cheat add fish":
         añadirInventario("Fish", d.inventarioComida)
-    
+        d.texto_prompt.append("Cheating: add fish")
     elif select.lower() == "cheat add meat":
         añadirInventario("Meat", d.inventarioComida)
-        
+        d.texto_prompt.append("Cheating: add meat")
     elif select.lower() == "cheat cook salad":
         cocinar("cook salad", d.inventarioComida)
-        
+        d.texto_prompt.append("Cheating: cook salad")
     elif select.lower() == "cheat cook pescatarian":
         cocinar("cook pescatarian", d.inventarioComida)
-        
+        d.texto_prompt.append("Cheating: cook pescatarian")
     elif select.lower() == "cheat cook roasted":
         cocinar("cook roasted", d.inventarioComida)
-        
+        d.texto_prompt.append("Cheating: cook roasted")
     elif select.lower() == "cheat add wood sword":
         añadirInventario("Wood Sword", d.inventarioArmas)
-    
+        d.texto_prompt.append("Cheating: add wood sword")
     elif select.lower() == "cheat add sword":
         añadirInventario("Sword", d.inventarioArmas)
-        
+        d.texto_prompt.append("Cheating: add sword")
     elif select.lower() == "cheat add wood shield":
         añadirInventario("Wood Shield", d.inventarioArmas)
-    
+        d.texto_prompt.append("Cheating: add wood shield")
     elif select.lower() == "cheat add shield":
         añadirInventario("Shield", d.inventarioArmas)
-    
+        d.texto_prompt.append("Cheating: add shield")
     elif select.lower() == "cheat open sanctuaries":
-        print("a") # Falta hacerlo
+        lista_mapas = list(d.localitzacions.keys())
+
+        for element in lista_mapas:
+
+           for santuario in d.localitzacions[element]["Santuarios"]["posicion"]:
+               
+               santuario[3] = True
+        d.texto_prompt.append("Cheating: open sanctuaries")
     
     elif select.lower() == "cheat game over":
         d.jugador["vidas"] = 0
-        
+        d.texto_prompt.append("Cheating: game over")
     elif select.lower() == "cheat win game":
         d.ganon["vida"] = 0
-    
+        d.texto_prompt.append("Cheating: win game")
     else:
-        d.texto_prompt.append("Invalid option")'''
+        d.texto_prompt.append("Invalid option")
         
         
 

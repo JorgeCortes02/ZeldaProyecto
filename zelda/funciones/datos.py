@@ -4,7 +4,7 @@ import funciones.funciones as f
 
 
 
-jugador = {"name" : " ","posicion" : [3,9], "arma_actual": " ", "escudo_actual" : "Shield998", "vidas_max": 3, "vidas" : 3, "bloodMoonCoutdown": 25, "totalBloodMoon" : 0, "mapa" : "hyrule", "id_game" : 3 }
+jugador = {"name" : " ","posicion" : [3,9], "arma_actual": "pollo", "escudo_actual" : " ", "vidas_max": 3, "vidas" : 3, "bloodMoonCoutdown": 25, "totalBloodMoon" : 0, "mapa" : "hyrule", "id_game" : 3 }
 
 
 
@@ -25,7 +25,7 @@ inventarioComida = { "Vegetables" : 0,
 
 
 
-select = "show inventory food"
+select = "show inventory main"
 
 #Localizaciones y datos
 localitzacions = {
