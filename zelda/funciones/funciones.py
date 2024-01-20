@@ -8,8 +8,8 @@ db = mysql.connector.connect(
     user="root2",
     passwd="EsteveTerradas2023.", 
     database="ZeldaBBDD"
-
 )
+
 cursor = db.cursor()
 
 
@@ -213,7 +213,7 @@ def añadirInventario(objeto, diccionario):
         
         diccionario[objeto] = {"tipo": "Sword", "usos": 9 }
 
-    elif objeto == "Vegetable":
+    elif objeto == "Vegetables":
         
         diccionario[objeto] += 1 
     elif objeto == "Fish":
@@ -772,27 +772,35 @@ def menu_principal():
 
             elif opc.lower() == "consultes":
                 limpiar_pantalla()
-                print("Elige la consulta que quieres hacer".center(60, "*"))
-                print("Jugadores, Partidas, Armas, Alimentos, Blood Moon Media, Blood Moon Max")
-                select = input("Que quieres consultar? ")
-                
-                if select.lower() == "jugadores":
-                    consultaJugadores()
+                back = False
+                while back == False:
+                    print("Elige la consulta que quieres hacer".center(60, "*"))
+                    print("Jugadores, Partidas, Armas, Alimentos, Blood Moon Media, Blood Moon Max, Back")
+                    select = input("Que quieres consultar? ")
                     
-                elif select.lower() == "partidas":
-                    partidasXJugador()
+                    if select.lower() == "jugadores":
+                        consultaJugadores()
+                        
+                    elif select.lower() == "partidas":
+                        partidasXJugador()
+                        
+                    elif select.lower() == "armas":
+                        ArmasConseguidas()
+                        
+                    elif select.lower() == "alimentos":
+                        AlimentosConseguidos()
+                        
+                    elif select.lower() == "blood moon media":
+                        MediaBloodMoon()
+                        
+                    elif select.lower() == "blood moon max":
+                        maxBloodMoon()
                     
-                elif select.lower() == "armas":
-                    ArmasConseguidas()
+                    elif select.lower() == "back":
+                        back = True
                     
-                elif select.lower() == "alimentos":
-                    AlimentosConseguidos()
-                    
-                elif select.lower() == "blood moon media":
-                    MediaBloodMoon()
-                    
-                elif select.lower() == "blood moon max":
-                    maxBloodMoon()
+                    else:
+                        print("Invalid Option")
                     
                     
 
@@ -1332,9 +1340,8 @@ def vida_ganon():
                 d.localitzacions["castle"][2][46+i+1] = "♥"
 
 def ganon_castillo():
-    if d.jugador["posicion"][1] > 18:
-        d.jugador["vidas"] -= 1 #Te resta 1 de vida
-        d.texto_prompt.append("Gannon attacked you, you lost 1 life")
+    d.jugador["vidas"] -= 1 #Te resta 1 de vida
+    d.texto_prompt.append("Gannon attacked you, you lost 1 life")
 
 
 def pelea_ganon(mapaActual): #Interacion con ganon
@@ -1739,7 +1746,7 @@ def trucos(select):
             d.texto_prompt.append("Incorrect name")
     
     elif select.lower() == "cheat add vegetable":
-        añadirInventario("Vegetable", d.inventarioComida)
+        añadirInventario("Vegetables", d.inventarioComida)
         d.texto_prompt.append("Cheating: add vegetable")
     elif select.lower() == "cheat add fish":
         añadirInventario("Fish", d.inventarioComida)
@@ -1748,14 +1755,22 @@ def trucos(select):
         añadirInventario("Meat", d.inventarioComida)
         d.texto_prompt.append("Cheating: add meat")
     elif select.lower() == "cheat cook salad":
-        cocinar("cook salad", d.inventarioComida)
-        d.texto_prompt.append("Cheating: cook salad")
+        if d.inventarioComida["Vegetables"] > 1:
+            d.inventarioComida["Vegetables"] -= 2
+            d.inventarioComida["Salads"] += 1
+            d.texto_prompt.append("Cheating: cook salad")
     elif select.lower() == "cheat cook pescatarian":
-        cocinar("cook pescatarian", d.inventarioComida)
-        d.texto_prompt.append("Cheating: cook pescatarian")
+        if d.inventarioComida["Vegetables"] > 0 and d.inventarioComida["Fish"] > 0:
+            d.inventarioComida["Vegetables"] -= 1
+            d.inventarioComida["Fish"] -= 1
+            d.inventarioComida["Pescatarian"] += 1
+            d.texto_prompt.append("Cheating: cook pescatarian")
     elif select.lower() == "cheat cook roasted":
-        cocinar("cook roasted", d.inventarioComida)
-        d.texto_prompt.append("Cheating: cook roasted")
+        if d.inventarioComida["Vegetables"] > 0 and d.inventarioComida["Meat"] > 0:
+            d.inventarioComida["Vegetables"] -= 1
+            d.inventarioComida["Meat"] -= 1
+            d.inventarioComida["Roasted"] += 1
+            d.texto_prompt.append("Cheating: cook roasted")
     elif select.lower() == "cheat add wood sword":
         añadirInventario("Wood Sword", d.inventarioArmas)
         d.texto_prompt.append("Cheating: add wood sword")
@@ -1772,12 +1787,11 @@ def trucos(select):
         lista_mapas = list(d.dades.keys())
 
         for element in lista_mapas:
+           for santuario in d.dades[element]["Santuarios"]["posicion"]:
 
-            for santuario in d.dades[element]["Santuarios"]["posicion"]:
-               
                santuario[3] = True
 
-            d.jugador["vidas_max"] = 10
+        d.jugador["vidas_max"] = 10
 
         d.texto_prompt.append("Cheating: open sanctuaries")
     
@@ -1799,20 +1813,20 @@ def imprimir_partidas_guardadas():
         for i in d.datosPartidas:
             saved_games.append(["* {}: {} - {}, {}".format(i[0], i[4], i[1], i[9]).ljust(72) + "♥ {}/{} *".format(i[5], i[6])])
         
-        while len(saved_games) != 11:
+        while len(saved_games) != 12:
             saved_games.append(["* ".ljust(78) + "*"]) 
     
     elif len(d.datosPartidas) == 1 and type(d.datosPartidas[0]) == list:
         for i in d.datosPartidas:
             saved_games.append(["* {}: {} - {}, {}".format(i[0], i[4], i[1], i[9]).ljust(72) + "♥ {}/{} *".format(i[5], i[6])])
         
-        while len(saved_games) != 11:
+        while len(saved_games) != 12:
             saved_games.append(["* ".ljust(78) + "*"])
     
     else:
         saved_games.append(["* {}".format(d.datosPartidas[0]).ljust(78) + "*"])
         
-        while len(saved_games) != 11:
+        while len(saved_games) != 12:
             saved_games.append(["* ".ljust(78) + "*"]) 
         
     saved_games.append(["* Play X, Erase X, Help, Back * * * * * * * * * * * * * * * * * * * * * * * * *"])

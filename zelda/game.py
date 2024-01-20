@@ -8,10 +8,10 @@ import funciones.datos as d
 def game(): # Hay que mirar como se pondria para cuando eliges una partida guardada.
     exit = False 
     while exit == False: # Bucle para que cuando le des a exit en el menu salga del juego
-        exit = f.menu_principal() # Ejecutamos el menu principal, devuelve un booleano, si es falso es porque has pulsado exit
-        if exit == False: # Salir de la función
-            exit = True
-            return True
+        #exit = f.menu_principal() # Ejecutamos el menu principal, devuelve un booleano, si es falso es porque has pulsado exit
+        #if exit == False: # Salir de la función
+        #    exit = True
+        #    return True
         
         posicionplayer = d.jugador["posicion"]
         mapaActual = d.localitzacions[d.jugador["mapa"]]
@@ -165,7 +165,9 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
             else: # Si estas en el mapa del castillo, tienes movimientos limitados
                 if d.win == False:
                     f.vida_ganon()
-                    f.ganon_castillo()
+                    if d.jugador["posicion"][1] > 18 and d.herido == False:
+                        f.ganon_castillo()
+                        d.herido = True
                     if select[0:7].lower() == "go left" or select[0:8].lower() == "go right": # Solo puedes moverte a derecha o izquierda
                         retorno = f.moverPersonajeGanon(mapaActual, select, posicionplayer)
                         posicionplayer = [retorno[1], retorno[2]] # Cambiar posicion a nueva despues del movimiento
@@ -176,6 +178,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                         mapaActual = d.localitzacions[d.mapa_anterior] # Se cambia el mapa
                         d.jugador["mapa"] = d.mapa_anterior
                         posicionplayer = d.dades[d.mapa_anterior]["position"] # Se cambia la posicion
+                        d.herido = False
                     
                     elif select.lower() == "attack" and posicionplayer == [9,21]: # Atacar a Ganon, cuando estas a su lado
                         f.pelea_ganon(mapaActual)
