@@ -1765,7 +1765,7 @@ def imprimir_partidas_guardadas():
     
     elif len(d.datosPartidas) == 1 and type(d.datosPartidas[0]) == list:
         for i in d.datosPartidas:
-            saved_games.append(["* {}: {} {} - {}, {}".format(i[0], i[4], "18:37:15", i[1], i[9]).ljust(72) + "♥ {}/{} *".format(i[5], i[6])])
+            saved_games.append(["* {}: {} - {}, {}".format(i[0], i[4], i[1], i[9]).ljust(72) + "♥ {}/{} *".format(i[5], i[6])])
         
         while len(saved_games) != 11:
             saved_games.append(["* ".ljust(78) + "*"])
