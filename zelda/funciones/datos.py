@@ -14,7 +14,7 @@ dict_tipos = {"Shield" : {"total": 0, "minUsos" : 0}, "Wood Shield" : {"total": 
 inventarioArmas = {}
 
 inventarioComida = { "Vegetables" : 0, 
-                    "Fish" : 20, 
+                    "Fish" : 0, 
                     "Meat" : 2, 
                     "Salads" : 0, 
                     "Pescatarian" : 0, 
