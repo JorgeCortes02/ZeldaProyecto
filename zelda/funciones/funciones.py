@@ -1,5 +1,5 @@
 import funciones.datos as d
-#import mysql.connector
+
 import random
 import mysql.connector
 mapaActual = []
@@ -10,9 +10,9 @@ db = mysql.connector.connect(
     database="ZeldaBBDD"
 )
 
+cursor = db.cursor()
 
-import funciones.datos as d
-import random
+
 mapaActual = []
 #Contea la cantidad de cada tipo de arma.
 def conteoInventario():
@@ -198,20 +198,20 @@ def añadirInventario(objeto, diccionario):
 
     if objeto == "Wood Sword":
         
-        diccionario[objeto] = {"tipo": "Wood Sword", "Usos": 5 }
+        diccionario[objeto] = {"tipo": "Wood Sword", "usos": 5 }
         
     elif objeto == "Wood Shield":
     
-        diccionario[objeto] = {"tipo": "Wood Shield", "Usos": 5 }
+        diccionario[objeto] = {"tipo": "Wood Shield", "usos": 5 }
     
     elif objeto == "Shield":
         
-        diccionario[objeto] = {"tipo": "Shield", "Usos": 9 }
+        diccionario[objeto] = {"tipo": "Shield", "usos": 9 }
         
     
     elif objeto == "Sword":
         
-        diccionario[objeto] = {"tipo": "Sword", "Usos": 9 }
+        diccionario[objeto] = {"tipo": "Sword", "usos": 9 }
 
     elif objeto == "Vegetables":
         
@@ -234,6 +234,7 @@ def añadirInventario(objeto, diccionario):
         
         diccionario[objeto] += 1 
 
+    saveGame()
 '''
 A esta función le pasamos los datos del mapa en cuestion y los copia en otra variable para poder editar este segundo mapa sin que el original se vea afectado.'''
 def obtenerMapa(playermap):
@@ -695,21 +696,23 @@ def menu_principal():
     menu_inicial = menu_random()
     menu = True
     salir = False
+    
     while salir == False:
         while menu == True:
             limpiar_pantalla()
             imprimirmapa_menu(menu_inicial)
             prompt()
             opc = input("What to do now? ") #Guardar la opcion
+            descargarGuardadas()
             if opc.lower() == "continue": #Si se elige continuar partida
                 back = False
                 while back == False:
                     limpiar_pantalla()
-                    #b.descargarGuardadas()
+                    
                     imprimir_partidas_guardadas()
                     prompt()
                     opc = input("What to do now? ")
-                    
+                   
                     if opc.lower() == "help":
                         limpiar_pantalla()
                         help(d.diccionarioMenuPrincipal["help_saved_games"])
@@ -727,9 +730,13 @@ def menu_principal():
                                     # Funcion para guardar que tiene jorge en su rama
                                     d.jugador["id_game"] = int(opc[5])
                                     guardado = True
+
+                                    selectAndChargePartida(int(opc[5]))
+
                                     salir = True
                                     return True
                             
+
                             if guardado == False:
                                 d.texto_prompt.append("Invalid option")  
                         
@@ -764,27 +771,35 @@ def menu_principal():
 
             elif opc.lower() == "consultes":
                 limpiar_pantalla()
-                print("Elige la consulta que quieres hacer".center(60, "*"))
-                print("Jugadores, Partidas, Armas, Alimentos, Blood Moon Media, Blood Moon Max")
-                select = input("Que quieres consultar? ")
-                
-                if select.lower() == "jugadores":
-                    consultaJugadores()
+                back = False
+                while back == False:
+                    print("Elige la consulta que quieres hacer".center(60, "*"))
+                    print("Jugadores, Partidas, Armas, Alimentos, Blood Moon Media, Blood Moon Max, Back")
+                    select = input("Que quieres consultar? ")
                     
-                elif select.lower() == "partidas":
-                    partidasXJugador()
+                    if select.lower() == "jugadores":
+                        consultaJugadores()
+                        
+                    elif select.lower() == "partidas":
+                        partidasXJugador()
+                        
+                    elif select.lower() == "armas":
+                        ArmasConseguidas()
+                        
+                    elif select.lower() == "alimentos":
+                        AlimentosConseguidos()
+                        
+                    elif select.lower() == "blood moon media":
+                        MediaBloodMoon()
+                        
+                    elif select.lower() == "blood moon max":
+                        maxBloodMoon()
                     
-                elif select.lower() == "armas":
-                    ArmasConseguidas()
+                    elif select.lower() == "back":
+                        back = True
                     
-                elif select.lower() == "alimentos":
-                    AlimentosConseguidos()
-                    
-                elif select.lower() == "blood moon media":
-                    MediaBloodMoon()
-                    
-                elif select.lower() == "blood moon max":
-                    maxBloodMoon()
+                    else:
+                        print("Invalid Option")
                     
                     
 
@@ -822,12 +837,14 @@ def funcion_new_game():
             elif opc.lower() == "":  # Si no se escribe nada se asigna el nombre Link
                 d.jugador["nombre"] = "Link" # Modificar variable name
                 d.texto_prompt.append("Welcome to the game Link")
+                saveInicialGame()
                 salir = before_game()
                 return True
 
             elif opc.lower().replace(" ", "").isalnum() and len(opc) >= 3 and len(opc) <= 10:  # Cuando el nombre sea correcto se guarda
                 d.jugador["nombre"] = opc # Modificar variable name
                 d.texto_prompt.append("Welcome to the game " + d.jugador['nombre'])
+                saveInicialGame()
                 salir = before_game()
                 return True
 
@@ -1054,7 +1071,7 @@ def agua(mapaActual): #Interacion con el agua
         agua = True
         
     elif mapaActual[d.jugador["posicion"][0]][d.jugador["posicion"][1]-1] == "~":
-        agua = True
+        agua = True 
     
     
     if agua == True:
@@ -1179,7 +1196,7 @@ def abrir_santuario(posicionplayer, mapaActual): #Interacion con el santuario
     
     if posicion_igual == False:
         d.texto_prompt.append("Invalid Option")
-    
+    saveGame()
 
 def cofre(mapaActual): #Interacion con el cofre
     for j in range(len(d.dades[d.jugador["mapa"]]["M"]["posicion"])):
@@ -1744,8 +1761,10 @@ def trucos(select):
         lista_mapas = list(d.dades.keys())
         for element in lista_mapas:
            for santuario in d.dades[element]["Santuarios"]["posicion"]:
-               d.jugador["vidas_max"] += 1
                santuario[3] = True
+
+            d.jugador["vidas_max"] = 10
+
         d.texto_prompt.append("Cheating: open sanctuaries")
     
     elif select.lower() == "cheat game over":
@@ -1766,20 +1785,20 @@ def imprimir_partidas_guardadas():
         for i in d.datosPartidas:
             saved_games.append(["* {}: {} - {}, {}".format(i[0], i[4], i[1], i[9]).ljust(72) + "♥ {}/{} *".format(i[5], i[6])])
         
-        while len(saved_games) != 11:
+        while len(saved_games) != 12:
             saved_games.append(["* ".ljust(78) + "*"]) 
     
     elif len(d.datosPartidas) == 1 and type(d.datosPartidas[0]) == list:
         for i in d.datosPartidas:
-            saved_games.append(["* {}: {} {} - {}, {}".format(i[0], i[4], "18:37:15", i[1], i[9]).ljust(72) + "♥ {}/{} *".format(i[5], i[6])])
+            saved_games.append(["* {}: {} - {}, {}".format(i[0], i[4], i[1], i[9]).ljust(72) + "♥ {}/{} *".format(i[5], i[6])])
         
-        while len(saved_games) != 11:
+        while len(saved_games) != 12:
             saved_games.append(["* ".ljust(78) + "*"])
     
     else:
         saved_games.append(["* {}".format(d.datosPartidas[0]).ljust(78) + "*"])
         
-        while len(saved_games) != 11:
+        while len(saved_games) != 12:
             saved_games.append(["* ".ljust(78) + "*"]) 
         
     saved_games.append(["* Play X, Erase X, Help, Back * * * * * * * * * * * * * * * * * * * * * * * * *"])
@@ -1951,5 +1970,242 @@ def maxBloodMoon():
         for element in resultados:
 
             print(element)
+
+
+
+
+def saveInicialGame():
+
+        #Al iniciar la partida guarda la tabla game.
+        query = "Insert into game(user_name,date_started,hearts_remaining, blood_moon_countdown,blood_moon_appearances, region, max_live, xpos, ypos ) Values(%s,  NOW(), %s, %s, %s,%s, %s,%s, %s)"
+        val = (d.jugador["name"], d.jugador["vidas"], 25,0, "Hyrule", d.jugador["vidas_max"], d.jugador["posicion"][0], d.jugador["posicion"][1])
+        cursor.execute(query, val)
+        d.jugador["id_game"] = cursor.lastrowid
+        print(d.jugador["id_game"])
+        db.commit()
+
+        #Y se añaden los enemigos.
+        lista_objetos = d.dades.keys()
+        for element in lista_objetos:
+            for element1 in d.dades[element]["E"]["posicion"]:
+                print(element1)
+                query = "Insert into game_enemies(game_id, region, num, xpos, ypos, lives_remaining) Values(%s, %s, %s, %s,%s, %s)"
+                val = (d.jugador["id_game"],element, element1[2],  element1[0], element1[1], element1[3])
+                cursor.execute(query, val)
+        db.commit()
+       
+
+def saveGame():
+
+    lista_inventario = []
+
+    #Actualizar tabla game.
+    query = "UPDATE game SET hearts_remaining = %s, blood_moon_countdown = %s, blood_moon_appearances = %s, region = %s, max_live = %s, xpos = %s, ypos = %s, date_started = NOW() WHERE game_id = %s;"
+    val = (d.jugador["vidas"], d.jugador["bloodMoonCoutdown"], d.jugador["totalBloodMoon"], d.jugador["mapa"], d.jugador["vidas_max"], d.jugador["id_game"], d.jugador["posicion"][0], d.jugador["posicion"][1])
+    print(d.jugador["id_game"])
+    cursor.execute(query, val)
+    db.commit()
+
+    #Actualizar enemigos con update.
+    lista_inventario = d.dades.keys()
+    for element in lista_inventario:
+            for element1 in d.dades[element]["E"]["posicion"]:
+                print(element1)
+                query = "UPDATE game_enemies SET xpos = %s, ypos = %s, lives_remaining = %s WHERE game_id = %s AND region = %s AND num = %s;"
+                val = (element1[0], element1[1], element1[3], d.jugador["id_game"],element, element1[2])
+                cursor.execute(query, val)
+    db.commit()
+
+    #Actualizar o insertar datos en la tabla food
+    lista_inventario = list(d.inventarioComida.keys())
+    query = "INSERT INTO game_food(game_id, food_name, quanntity_remaining) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE quanntity_remaining = %s;"
+    
+    for element in lista_inventario:
+    
+        val = (d.jugador["id_game"], element , d.inventarioComida[element], d.inventarioComida[element])
+        cursor.execute(query, val)
+    db.commit()
+
+    #Insertamos datos de santuraios. Si ya existe ese santuario en la BBDD no inserta ningun datos.
+    
+    lista_inventario = d.dades.keys()
+    query = "INSERT IGNORE INTO game_sactuaries_opened(game_id, region, num, xpos, ypos) VALUES (%s, %s, %s, %s,%s);"
+
+    for element in lista_inventario:
+            for element1 in d.dades[element]["Santuarios"]["posicion"]:
+                
+                if element1[3] == True:
+                    
+                    val = (d.jugador["id_game"],element, element1[4],  element1[0], element1[1])
+                    cursor.execute(query, val)
+    db.commit()
+    
+    #Actualizar/insertar armas
+
+    lista_inventario = d.inventarioArmas.keys()
+    query = "INSERT INTO game_weapons(game_id, weapon_name, lives_remaining, equiped, tipo) VALUES (%s, %s, %s, %s, %s) ON DUPLICATE KEY UPDATE lives_remaining = %s, equiped = %s;"
+    
+    for element in lista_inventario:
+        
+        if d.jugador["arma_actual"] == element or d.jugador["escudo_actual"] == element:
+             equiped = True
+        else:
+             equiped = False
+
+        val = (d.jugador["id_game"], element , d.inventarioArmas[element]["usos"], equiped, d.inventarioArmas[element]["tipo"] , d.inventarioArmas[element]["usos"], equiped  )
+        cursor.execute(query, val)
+    db.commit()
+
+    #Actualizar, insertar o eliminar(en caso de que se cierre) cofres.
+
+    lista_inventario =  d.dades.keys()
+
+    for element in lista_inventario:
+            for element1 in d.dades[element]["M"]["posicion"]:
+                print(element1)
+                if element1[2] == False:
+                    query = "Delete from game_chests_opened where game_id = %s and num = %s;"
+                    val = (d.jugador["id_game"], element1[3])
+                    cursor.execute(query, val)
+                elif element1[2] == True:
+                    query = "INSERT IGNORE INTO game_chests_opened(game_id, region, num, xpos, ypos) VALUES (%s, %s, %s, %s,%s);"
+                    val = (d.jugador["id_game"], element, element1[3], element1[0], element1[1])
+                    cursor.execute(query, val)
+    db.commit()
+
+#Descarga los datos de jugador (tabla game) para mostrarlos en el menu de seleccion de partida.
+def descargarGuardadas():
+    
+    query = "Select game_id, user_name, xpos, ypos, date_started, hearts_remaining, max_live,blood_moon_countdown, blood_moon_appearances, region from game limit 8;"
+    cursor.execute(query)
+    resultados = cursor.fetchall()
+
+    if resultados:
+        for element in resultados:
+            
+            d.datosPartidas.append(element)
+
+    else: d.datosPartidas.append("No hay partidas guardadas, inicia una nueva.")
+
+
+
+#Se le pasa el numero de partida que se ha seleccionado.
+def selectAndChargePartida(numero):
+    datos = []
+    for element in d.datosPartidas:
+        
+        if numero == element[0]:
+             
+            d.jugador["name"] = element[1]
+            d.jugador["posicion"].append(element[2])
+            d.jugador["posicion"].append(element[3])
+            d.jugador["vidas_max"] = element[6]
+            d.jugador["vidas"] = element[5]
+            d.jugador["bloodMoonCoutdown"] = element[7]
+            d.jugador["mActual"] = element[9]
+            d.jugador["id_game"] = element[0]
+        
+        break
+
+    #Recuperamos la comida
+    query = "Select food_name, quanntity_remaining  from game_food where game_id = %s;"
+    val=(d.jugador["id_game"],)
+    cursor.execute(query,val)
+    resultados = cursor.fetchall()
+
+    if resultados:
+        for element in resultados:
+            
+            d.inventarioComida[element[0]] = element[1] 
+    
+    
+    #Recuperamos armas
+        
+    query = "Select weapon_name, equiped, tipo, lives_remaining from game_weapons where game_id = %s;"
+    val=(d.jugador["id_game"],)
+    cursor.execute(query,val)
+    resultados = cursor.fetchall()
+
+    if resultados:
+        for element in resultados:
+            
+            d.inventarioArmas[element[0]] = {
+                
+                "tipo" : element[2],
+                "usos" : element[3]
+                }
+
+            if element[1] == True and "Shield" in element[0]:
+                
+                d.jugador["escudo_actual"] = element[0]
+            
+            elif element[1] == True and "Sword" in element[0]: 
+
+                d.jugador["arma_actual"] = element[0]   
+
+    #Recuperamos enemigos
+                
+    query = "Select region, num, xpos, ypos,lives_remaining from game_enemies where game_id = %s;"
+    val=(d.jugador["id_game"],)
+    cursor.execute(query,val)
+    resultados = cursor.fetchall()
+
+    
+    if resultados:
+         
+         for element in resultados:
+            index = resultados.index(element)
+            for element1 in d.dades[resultados[index][0]]["E"]["posicion"]:
+                index2 = d.dades[resultados[index][0]]["E"]["posicion"].index(element1)
+               
+                if element[1] == element1[2]:
+
+                    d.dades[resultados[index][0]]["E"]["posicion"][index2][0] = element[2]
+                    d.dades[resultados[index][0]]["E"]["posicion"][index2][1] = element[3]
+                    d.dades[resultados[index][0]]["E"]["posicion"][index2][3] = element[4]
+                    print(d.dades[resultados[index][0]]["E"]["posicion"][index2])
+                     
+   
+    #Recuperamos Santuarios abiertos:
+                
+    query = "Select region, num from game_sactuaries_opened where game_id = %s;"
+    val=(d.jugador["id_game"],)
+    cursor.execute(query,val)
+    resultados = cursor.fetchall()
+
+    
+    if resultados:
+         
+         for element in resultados:
+            index = resultados.index(element)
+            for element1 in d.dades[resultados[index][0]]["Santuarios"]["posicion"]:
+                index2 = d.dades[resultados[index][0]]["Santuarios"]["posicion"].index(element1)
+               
+                if element[1] == element1[4]:
+
+                    d.dades[resultados[index][0]]["Santuarios"]["posicion"][index2][3] = True
+                    
+    #Recuperamos cofes abiertos:
+                
+    query = "Select region, num from game_chests_opened where game_id = %s;"
+    val=(d.jugador["id_game"],)
+    cursor.execute(query,val)
+    resultados = cursor.fetchall()
+
+    
+    if resultados:
+         
+         for element in resultados:
+            index = resultados.index(element)
+            for element1 in d.dades[resultados[index][0]]["M"]["posicion"]:
+                index2 = d.dades[resultados[index][0]]["M"]["posicion"].index(element1)
+               
+                if element[1] == element1[3]:
+
+                    d.dades[resultados[index][0]]["M"]["posicion"][index2][2] = True
+   
+
+                    
+
 
 

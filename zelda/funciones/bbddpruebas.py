@@ -232,7 +232,7 @@ def selectAndChargePartida(numero):
 
                     d.dades[resultados[index][0]]["M"]["posicion"][index2][2] = True
    
-#Funciones Estadisticas menu principal.
+
                     
 
 
@@ -260,8 +260,6 @@ db = mysql.connector.connect(
 
 # Crear un cursor
 cursor = db.cursor()
-
-
-saveGame()
+saveInicialGame()
 
 
