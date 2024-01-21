@@ -301,164 +301,181 @@ def moverPersonaje(mapaActual, select, posicionplayer):
     select = select.lower()
 
     if select[0:7] == "go left":
-       
-        #Comprobamos que la posicion a la que queremos mover al monigote este dentro de los limites del mapa.
-        if posicionplayer[1] - int(select[8:]) < 0:
-            #En caso de ser incorrecto, devolvemos una tupla con un mensaje de error y la posicion en la que se quedará en personaje.
-            d.texto_prompt.append("You can't go there")
+        if not select[8:].isdigit():
+
+            d.texto_prompt.append("Invalid Action")
             return posicionplayer[0], posicionplayer[1]
         else:
-            #Cojemos la posicion actual del personaje en el eje que lo vamos a mover y después en otra variable guardamos la posición a la que irá
-            int1 = posicionplayer[1]
-            int2 = posicionplayer[1] - int(select[8:])
-            diferent = True
-           
-           #Este bucle recorre cada una de las posiciones entre ambos puntos para comprobar que todas son cesped.
-            for i in range (int1, int2, -1):
-                #Comprobamos que al verificar que el personaje no pase por encima de objetos al moverse, la funcion no cuente la posicion donde estaba el personaje porque sino saltaría error.
-                if int(select[8:]) == 1:
-
-                    if mapaActual[posicionplayer[0]][i-1] != " ":
-                        
-                        d.texto_prompt.append("You can't go there")
-                        return posicionplayer[0], posicionplayer[1]
-                    
-                    else:
-                        #Ponemos la posicion donde estaba el personaje como espacio vacio de nuevo.
-                        mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
-                        #Colocamos la nueva X
-                        mapaActual[posicionplayer[0]][posicionplayer[1] - int(select[8:])] = "X"
-                        #Devolvemos el mapa actualizado y las nuevas posiciones.
-                        return posicionplayer[0], posicionplayer[1] - int(select[8:])
-                else:
-                    #Si no solo se ha de mover una posicion y la posicion anterior no es " " marcara un booleano como false, lo que hará que en el siguiente if no intente moverlo.
-                    if mapaActual[posicionplayer[0]][i-1] != " ":
-                        
-                        diferent = False
-            if diferent == True:
-
-                mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
-                mapaActual[posicionplayer[0]][posicionplayer[1] - int(select[8:])] = "X"
-                return posicionplayer[0], posicionplayer[1] - int(select[8:])        
-            else:
+            #Comprobamos que la posicion a la que queremos mover al monigote este dentro de los limites del mapa.
+            if posicionplayer[1] - int(select[8:]) < 0:
+                #En caso de ser incorrecto, devolvemos una tupla con un mensaje de error y la posicion en la que se quedará en personaje.
                 d.texto_prompt.append("You can't go there")
                 return posicionplayer[0], posicionplayer[1]
-                       
+            else:
+                #Cojemos la posicion actual del personaje en el eje que lo vamos a mover y después en otra variable guardamos la posición a la que irá
+                int1 = posicionplayer[1]
+                int2 = posicionplayer[1] - int(select[8:])
+                diferent = True
+            
+            #Este bucle recorre cada una de las posiciones entre ambos puntos para comprobar que todas son cesped.
+                for i in range (int1, int2, -1):
+                    #Comprobamos que al verificar que el personaje no pase por encima de objetos al moverse, la funcion no cuente la posicion donde estaba el personaje porque sino saltaría error.
+                    if int(select[8:]) == 1:
+
+                        if mapaActual[posicionplayer[0]][i-1] != " ":
+                            
+                            d.texto_prompt.append("You can't go there")
+                            return posicionplayer[0], posicionplayer[1]
+                        
+                        else:
+                            #Ponemos la posicion donde estaba el personaje como espacio vacio de nuevo.
+                            mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
+                            #Colocamos la nueva X
+                            mapaActual[posicionplayer[0]][posicionplayer[1] - int(select[8:])] = "X"
+                            #Devolvemos el mapa actualizado y las nuevas posiciones.
+                            return posicionplayer[0], posicionplayer[1] - int(select[8:])
+                    else:
+                        #Si no solo se ha de mover una posicion y la posicion anterior no es " " marcara un booleano como false, lo que hará que en el siguiente if no intente moverlo.
+                        if mapaActual[posicionplayer[0]][i-1] != " ":
+                            
+                            diferent = False
+                if diferent == True:
+
+                    mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
+                    mapaActual[posicionplayer[0]][posicionplayer[1] - int(select[8:])] = "X"
+                    return posicionplayer[0], posicionplayer[1] - int(select[8:])        
+                else:
+                    d.texto_prompt.append("You can't go there")
+                    return posicionplayer[0], posicionplayer[1]
+                        
                         
 
     elif select[0:8] == "go right":
-       
-        if posicionplayer[1] + int(select[9:]) > 57:
-            
-            d.texto_prompt.append("You can't go there")
+        if not select[9:].isdigit():
+
+            d.texto_prompt.append("Invalid Action")
             return posicionplayer[0], posicionplayer[1]
         else:
-            int1 = posicionplayer[1]
-            int2 = posicionplayer[1] + int(select[9:])
-            diferent = True
-            for i in range (int1, int2):
+            if posicionplayer[1] + int(select[9:]) > 57:
                 
-                if int(select[9:]) == 1:
-
-                    if mapaActual[posicionplayer[0]][i+1] != " ":
-                        d.texto_prompt.append("You can't go there")
-                        return posicionplayer[0], posicionplayer[1]
-                    
-                    
-                else:
-
-                    if mapaActual[posicionplayer[0]][i+1] != " ":
-                        diferent = False
-            
-            if diferent == True:
-       
-                mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
-                mapaActual[posicionplayer[0]][posicionplayer[1] + int(select[9:])] = "X"
-                return posicionplayer[0], posicionplayer[1] + int(select[9:])
-            else:
                 d.texto_prompt.append("You can't go there")
                 return posicionplayer[0], posicionplayer[1]
+            else:
+                int1 = posicionplayer[1]
+                int2 = posicionplayer[1] + int(select[9:])
+                diferent = True
+                for i in range (int1, int2):
+                    
+                    if int(select[9:]) == 1:
+
+                        if mapaActual[posicionplayer[0]][i+1] != " ":
+                            d.texto_prompt.append("You can't go there")
+                            return posicionplayer[0], posicionplayer[1]
+                        
+                        
+                    else:
+
+                        if mapaActual[posicionplayer[0]][i+1] != " ":
+                            diferent = False
+                
+                if diferent == True:
+        
+                    mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
+                    mapaActual[posicionplayer[0]][posicionplayer[1] + int(select[9:])] = "X"
+                    return posicionplayer[0], posicionplayer[1] + int(select[9:])
+                else:
+                    d.texto_prompt.append("You can't go there")
+                    return posicionplayer[0], posicionplayer[1]
 
 
     elif select[0:5] == "go up":
+        if not select[6:].isdigit():
 
-        if posicionplayer[0] - int(select[6:]) < 1:
-
-            d.texto_prompt.append("You can't go there")
+            d.texto_prompt.append("Invalid Action")
             return posicionplayer[0], posicionplayer[1]
         else:
-            int1 = posicionplayer[0]
-            int2 = posicionplayer[0] - int(select[6:])
-            diferent = True
-            for i in range (int1, int2, -1):
-                
-                if int(select [6:]) == 1:
+            if posicionplayer[0] - int(select[6:]) < 1:
 
-                    if mapaActual[i-1][posicionplayer[1]] != " ":
-                        d.texto_prompt.append("You can't go there")
-                        return posicionplayer[0], posicionplayer[1]
-                    
-                    else:
-
-                        mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
-                        mapaActual[posicionplayer[0]- int(select[6:])][posicionplayer[1] ] = "X"
-                        d.texto_prompt.append("You can't go there")
-                        return posicionplayer[0]- int(select[6:]), posicionplayer[1]
-                else:
-
-                    if mapaActual[i-1][posicionplayer[1]] != " ":
-                        
-                        diferent=False
-                    
-            if diferent == True:
-       
-                mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
-                mapaActual[posicionplayer[0]- int(select[6:])][posicionplayer[1] ] = "X"
-                return posicionplayer[0]- int(select[6:]), posicionplayer[1]
-            else:
                 d.texto_prompt.append("You can't go there")
                 return posicionplayer[0], posicionplayer[1]
+            else:
+                int1 = posicionplayer[0]
+                int2 = posicionplayer[0] - int(select[6:])
+                diferent = True
+                for i in range (int1, int2, -1):
+                    
+                    if int(select [6:]) == 1:
+
+                        if mapaActual[i-1][posicionplayer[1]] != " ":
+                            d.texto_prompt.append("You can't go there")
+                            return posicionplayer[0], posicionplayer[1]
+                        
+                        else:
+
+                            mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
+                            mapaActual[posicionplayer[0]- int(select[6:])][posicionplayer[1] ] = "X"
+                            
+                            return posicionplayer[0]- int(select[6:]), posicionplayer[1]
+                    else:
+
+                        if mapaActual[i-1][posicionplayer[1]] != " ":
+                            
+                            diferent=False
+                        
+                if diferent == True:
+        
+                    mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
+                    mapaActual[posicionplayer[0]- int(select[6:])][posicionplayer[1] ] = "X"
+                    return posicionplayer[0]- int(select[6:]), posicionplayer[1]
+                else:
+                    d.texto_prompt.append("You can't go there")
+                    return posicionplayer[0], posicionplayer[1]
 
                    
     elif select[0:7] == "go down":
-        
-        if posicionplayer[0] + int(select[8:]) > len(mapaActual)-1:
+        if not select[8:].isdigit():
 
-            d.texto_prompt.append("You can't go there")
+            d.texto_prompt.append("Invalid Action")
             return posicionplayer[0], posicionplayer[1]
         else:
-            int1 = posicionplayer[0]
-            int2 = posicionplayer[0] + int(select[8:])
-            diferent = True
-            for i in range (int1, int2):
-                print(mapaActual[i+1][posicionplayer[1]])
-                if int(select [8:]) == 1:
+        
+            if posicionplayer[0] + int(select[8:]) > len(mapaActual)-1:
 
-                    if mapaActual[i+1][posicionplayer[1]] != " ":
-                        d.texto_prompt.append("You can't go there")
-                        return posicionplayer[0], posicionplayer[1]
-                    
-                    else:
-
-                        mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
-                        mapaActual[posicionplayer[0]+ int(select[8:])][posicionplayer[1] ] = "X"
-                        return posicionplayer[0]+ int(select[8:]), posicionplayer[1]
-                else:
-
-                    if mapaActual[i+1][posicionplayer[1]] != " ":
-                        
-                      if mapaActual[i-1][posicionplayer[1]] != " ":
-                        
-                        diferent=False
-                    
-            if diferent == True:
-       
-                mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
-                mapaActual[posicionplayer[0]+ int(select[8:])][posicionplayer[1] ] = "X"
-                return posicionplayer[0]+ int(select[8:]), posicionplayer[1]
-            else:
                 d.texto_prompt.append("You can't go there")
                 return posicionplayer[0], posicionplayer[1]
+            else:
+                int1 = posicionplayer[0]
+                int2 = posicionplayer[0] + int(select[8:])
+                diferent = True
+                for i in range (int1, int2):
+                    print(mapaActual[i+1][posicionplayer[1]])
+                    if int(select [8:]) == 1:
+
+                        if mapaActual[i+1][posicionplayer[1]] != " ":
+                            d.texto_prompt.append("You can't go there")
+                            return posicionplayer[0], posicionplayer[1]
+                        
+                        else:
+
+                            mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
+                            mapaActual[posicionplayer[0]+ int(select[8:])][posicionplayer[1] ] = "X"
+                            return posicionplayer[0]+ int(select[8:]), posicionplayer[1]
+                    else:
+
+                        if mapaActual[i+1][posicionplayer[1]] != " ":
+                           
+                            if mapaActual[i-1][posicionplayer[1]] != " ":
+                                
+                                diferent=False
+                        
+                if diferent == True:
+        
+                    mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
+                    mapaActual[posicionplayer[0]+ int(select[8:])][posicionplayer[1] ] = "X"
+                    return posicionplayer[0]+ int(select[8:]), posicionplayer[1]
+                else:
+                    d.texto_prompt.append("You can't go there")
+                    return posicionplayer[0], posicionplayer[1]
 
 def movimientoCercano(Select, mapaActual):
     
@@ -629,76 +646,85 @@ def moverPersonajeGanon(mapaActual, select, posicionplayer):
     
     
     if select[0:7] == "go left":
-        print(posicionplayer[1], posicionplayer[1] - int(select[7:]) )
-        if posicionplayer[1] - int(select[7:]) < 0:
-            
-            d.texto_prompt.append("You can't go there")
+        if not select[8:].isdigit():
+
+            d.texto_prompt.append("Invalid Action")
             return posicionplayer[0], posicionplayer[1]
         else:
-            int1 = posicionplayer[1]
-            int2 = posicionplayer[1] - int(select[7:])
-            diferent = True
-           
-            for i in range (int1, int2, -1):
+        
+            if posicionplayer[1] - int(select[7:]) < 0:
                 
-                if int(select[7:]) == 1:
-
-                    if mapaActual[posicionplayer[0]][i-1] != " ":
-                        d.texto_prompt.append("Invalid action")
-                        return posicionplayer[0], posicionplayer[1]
+                d.texto_prompt.append("You can't go there")
+                return posicionplayer[0], posicionplayer[1]
+            else:
+                int1 = posicionplayer[1]
+                int2 = posicionplayer[1] - int(select[7:])
+                diferent = True
+            
+                for i in range (int1, int2, -1):
                     
+                    if int(select[7:]) == 1:
+
+                        if mapaActual[posicionplayer[0]][i-1] != " ":
+                            d.texto_prompt.append("Invalid action")
+                            return posicionplayer[0], posicionplayer[1]
+                        
+                        else:
+
+                            mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
+                            mapaActual[posicionplayer[0]][posicionplayer[1] - int(select[7:])] = "X"
+                            return posicionplayer[0], posicionplayer[1] - int(select[7:])
                     else:
 
-                        mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
-                        mapaActual[posicionplayer[0]][posicionplayer[1] - int(select[7:])] = "X"
-                        return posicionplayer[0], posicionplayer[1] - int(select[7:])
+                        if mapaActual[posicionplayer[0]][i-1] != " ":
+                            
+                            diferent = False
+                if diferent == True:
+
+                    mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
+                    mapaActual[posicionplayer[0]][posicionplayer[1] - int(select[7:])] = "X"
+                    return mapaActual, posicionplayer[0], posicionplayer[1] - int(select[7:])        
                 else:
-
-                    if mapaActual[posicionplayer[0]][i-1] != " ":
+                    d.texto_prompt.append("Invalid action")
+                    return posicionplayer[0], posicionplayer[1]
                         
-                        diferent = False
-            if diferent == True:
-
-                mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
-                mapaActual[posicionplayer[0]][posicionplayer[1] - int(select[7:])] = "X"
-                return mapaActual, posicionplayer[0], posicionplayer[1] - int(select[7:])        
-            else:
-                d.texto_prompt.append("Invalid action")
-                return posicionplayer[0], posicionplayer[1]
-                       
 
     elif select[0:8] == "go right":
-       
-        if posicionplayer[1] + int(select[8:]) > 57:
-            
-            d.texto_prompt.append("You can't go there")
+        if not select[9:].isdigit():
+
+            d.texto_prompt.append("Invalid Action")
             return posicionplayer[0], posicionplayer[1]
         else:
-            int1 = posicionplayer[1]
-            int2 = posicionplayer[1] + int(select[8:])
-            diferent = True
-            for i in range (int2, int1, -1):
+            if posicionplayer[1] + int(select[8:]) > 57:
                 
-                if int(select[8:]) == 1:
-
-                    if mapaActual[posicionplayer[0]][i+1] != " ":
-                        d.texto_prompt.append("Invalid action")
-                        return posicionplayer[0], posicionplayer[1]
-                    
-                    
-                else:
-
-                    if mapaActual[posicionplayer[0]][i+1] != " ":
-                        diferent = False
-            
-            if diferent == True:
-       
-                mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
-                mapaActual[posicionplayer[0]][posicionplayer[1] + int(select[8:])] = "X"
-                return posicionplayer[0], posicionplayer[1] + int(select[8:])
-            else:
-                d.texto_prompt.append("Invalid action")
+                d.texto_prompt.append("You can't go there")
                 return posicionplayer[0], posicionplayer[1]
+            else:
+                int1 = posicionplayer[1]
+                int2 = posicionplayer[1] + int(select[8:])
+                diferent = True
+                for i in range (int2, int1, -1):
+                    
+                    if int(select[8:]) == 1:
+
+                        if mapaActual[posicionplayer[0]][i+1] != " ":
+                            d.texto_prompt.append("Invalid action")
+                            return posicionplayer[0], posicionplayer[1]
+                        
+                        
+                    else:
+
+                        if mapaActual[posicionplayer[0]][i+1] != " ":
+                            diferent = False
+                
+                if diferent == True:
+        
+                    mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
+                    mapaActual[posicionplayer[0]][posicionplayer[1] + int(select[8:])] = "X"
+                    return posicionplayer[0], posicionplayer[1] + int(select[8:])
+                else:
+                    d.texto_prompt.append("Invalid action")
+                    return posicionplayer[0], posicionplayer[1]
 
 
 #Menu aleatorio
@@ -792,6 +818,7 @@ def menu_principal():
                 
 
             elif opc.lower() == "new game": #Si se elige nueva partida
+                reiniciarDatos()
                 salir = funcion_new_game()
                 if salir == True:
                     return True
@@ -1049,8 +1076,8 @@ def arbol(): #Interacion con el arbol
     if arbol_encontrado == 10: #si no encuentra nigun arbol con vida no te deja hacer nada
         d.texto_prompt.append("No trees available")
     else:
-        d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1 #Le quita un uso a la espada
-        print(d.inventarioArmas[d.jugador["arma_actual"]]["usos"])
+       
+        
         porcentaje = random.randint(1,100)
         if d.jugador["arma_actual"] == " " or d.jugador["arma_actual"] == "" or not d.inventarioArmas[d.jugador["arma_actual"]]["tipo"] == "Sword": #compruba si cuando has atacado a sido con una espada o no
             if porcentaje in range(1,6): #Te da una espada de madera y tiene que salir un mensaje en el promp
@@ -1066,7 +1093,7 @@ def arbol(): #Interacion con el arbol
                 d.texto_prompt.append("The tree didn't give you anything")
         else:
             
-            
+            d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1 #Le quita un uso a la espada
             if porcentaje in range(1,21): #Te da una espada de madera y tiene que salir un mensaje en el promp
                 d.texto_prompt.append("You got a Wood sword")
                 añadirInventario("Wood Sword",d.inventarioArmas)
@@ -2076,7 +2103,7 @@ def saveInicialGame():
         lista_objetos = d.dades.keys()
         for element in lista_objetos:
             for element1 in d.dades[element]["E"]["posicion"]:
-                print(element1)
+                
                 query = "Insert into game_enemies(game_id, region, num, xpos, ypos, lives_remaining) Values(%s, %s, %s, %s,%s, %s)"
                 val = (d.jugador["id_game"],element, element1[2],  element1[0], element1[1], element1[3])
                 cursor.execute(query, val)
@@ -2149,7 +2176,7 @@ def saveGame():
 
     for element in lista_inventario:
             for element1 in d.dades[element]["M"]["posicion"]:
-                print(element1)
+                
                 if element1[2] == False:
                     query = "Delete from game_chests_opened where game_id = %s and num = %s;"
                     val = (d.jugador["id_game"], element1[3])
@@ -2314,3 +2341,54 @@ def gastar_arma():
             del d.inventarioArmas[d.jugador["escudo_actual"]]
             d.jugador["escudo_actual"] = ""
             d.texto_prompt.append("Your Shield is depleted, choose another one.")
+
+def reiniciarDatos():
+
+    d.jugador = {"name" : " ","posicion" : [8,11], "arma_actual": "", "escudo_actual" : "", "vidas_max": 3, "vidas" : 3, "bloodMoonCoutdown": -1, "totalBloodMoon" : 0, "mapa" : "hyrule", "id_game" : 0 }
+    d.inventarioArmas = {}
+
+    d.inventarioComida = {"Vegetables" : 0, 
+                            "Fish" : 0, 
+                            "Meat" : 0, 
+                            "Salads" : 0, 
+                            "Pescatarian" : 0, 
+                            "Roasted" : 0}
+    d.dict_tipos = {"Shield" : {"total": 0, "minUsos" : ""}, "Wood Shield" : {"total": 0, "minUsos" : ""}, "Sword" : {"total": 0, "minUsos" : ""}, "Wood Sword" : {"total": 0, "minUsos" : ""} }
+    d.dades = { "death" : {"position" : [9,2],
+                     "F":{"posicion":[2,30]}, 
+                     "C":{"posicion":[9,6]},
+                     "T":{"lista":[[7,19],[8,18],[9,18]],"vida":[4,4,4],"contador":[0,0,0]},
+                     "~":{"posicion":[[3,2],[3,3],[4,2],[4,4],[5,5],[5,6],[5,7],[5,8],[5,9],[5,10],
+                                    [6,8],[6,9],[6,10],[7,7],[7,6],[7,5],[6,4],[6,3],[6,2]]},
+                     "Santuarios":{"posicion":[[3,6,"S2",False,2],[9,49,"S3",False,3]]}, #X/Y/Nombre/False/ID
+                     "M":{"posicion":[[8,36,False,2]]}, #X/Y/Comprueba si esta abierto/ID
+                     "E":{"posicion":[[4,13,3,2],[3,51,4,2]]}}, #X/Y/ID/Vida
+         "hyrule" : {"position" : [8,11],
+                     "F":{"posicion":[9,52]}, 
+                     "C":{"posicion":[3,17]},
+                     "T":{"lista":[[4,6],[8,48],[9,46]],"vida":[4,4,4],"contador":[0,0,0]},
+                     "~":{"posicion":[[1,37],[2,37],[2,38],[2,39],[2,40],[2,41],[2,42],[3,43],[3,44],[3,45],
+                                    [3,46],[3,47],[3,48],[2,49],[3,52],[3,53],[3,54],[4,55],[4,56],[4,57]]},
+                     "Santuarios":{"posicion":[[6,44,"S0",False,0],[9,31,"S1",False,1]]},
+                     "M":{"posicion":[[9,48,False,1]]},
+                     "E":{"posicion":[[9,21,1,1],[5,36,2,9]]}},
+         "gerudo" : {"position" : [9,2],
+                     "F":{"posicion":[8,47]},
+                     "C":{"posicion":[4,15]},
+                     "T":{"lista":[[8,5],[2,29],[2,30],[2,31],[3,31],[3,32]],"vida":[4,4,4,4,4,4],"contador":[0,0,0,0,0,0]},
+                     "~":{"posicion":[[8,57],[8,56],[9,55],[9,54],[10,53],[10,52],[10,51]]},
+                     "Santuarios":{"posicion":[[3,45,"S4",False,4]]},
+                     "M":{"posicion":[[9,7,False,3],[1,52,False,4]]},
+                     "E":{"posicion":[[4,3,5,1],[6,38,6,2]]}},
+         "necluda" : {"position" : [2,2],
+                      "F":{"posicion":[7,6]}, 
+                      "C":{"posicion":[3,19]},
+                      "T":{"lista":[[6,15],[7,14],[8,15],[2,37],[2,38],[3,36],[3,35]],"vida":[4,4,4,4,4,4,4],"contador":[0,0,0,0,0,0,0]},
+                      "~":{"posicion":[[8,1],[8,2],[9,3],[9,4],[9,5],[9,6],[9,7],[9,8],[10,9],[10,10],
+                                    [10,11],[10,12],[3,57],[3,56],[3,55],[3,54],[3,53],[4,52],[4,51],
+                                    [4,50],[4,49],[5,51],[7,50],[7,49],[7,48],[8,51],[9,50],[9,49],
+                                    [9,48],[9,47],[9,46],[9,45],[10,44],[10,43],[10,42],[10,41],[10,40]]},
+                      "Santuarios":{"posicion":[[6,50,"S5",False,5],[9,33,"S6",False,6]]},
+                      "M":{"posicion":[[1,22,False,5],[9,23,False,6],[2,51,False,7]]},
+                      "E":{"posicion":[[2,10,7,1],[6,38,8,2]]}},
+}

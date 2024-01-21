@@ -158,8 +158,9 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     f.trucos(select)
                 
                 elif select.lower() == "exit": # Salir
-                    exit = True
+                    
                     final = True
+                    exit = True
                     
                 
                 else: # Opcion invalida, se añade al prompt
@@ -193,6 +194,8 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     elif select.lower() == "exit": # Salir
                         exit = True
                         final = True
+                        
+                    
                     
                     
                     else: # Opción invalida, se añade al prompt
@@ -216,7 +219,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     elif select.lower() == "exit": # Salir
                         exit = True
                         final = True
-                    
+                        
                     else: # Opción invalida, se añade al prompt
                         d.texto_prompt.append("Invalid action")
 
