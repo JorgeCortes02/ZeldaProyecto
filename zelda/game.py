@@ -26,6 +26,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
             f.contador_arbol(mapaActual)
             f.blood_moonn()
             f.vida_enemigo(mapaActual)
+            f.gastar_arma()
             
             
             # Crear diccionario de ganon con sus vidas
@@ -61,7 +62,6 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     f.prompt()
                     opc = input("What to do now? ")
                 
-                # Esto hay que cambiarlo, y reiniciar todo (esto es para pruebas)
                 d.texto_prompt = [] # Se reinicia el prompt
                 d.jugador["vidas"] = 3 # Se reinician las vidas
                 return False # Devolvemos falso para no terminar el bulce y que vuelva a aparecer el menu principal
@@ -76,7 +76,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
             
                 if select[0:7].lower() == "go left" or select[0:8].lower() == "go right" or select[0:5].lower() == "go up" or select[0:7].lower() == "go down": # mover personaje
                     retorno = f.moverPersonaje(mapaActual, select, posicionplayer) # llanmada a la funcion de mover el personaje
-                    posicionplayer = [retorno[1], retorno[2]]
+                    posicionplayer = [retorno[0], retorno[1]]
                     d.jugador["posicion"] = posicionplayer # nueva posicion del jugador
                 
                 # No me cambia de menu, hay que cambiar datos de prueba a los del diccionario
@@ -113,11 +113,9 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     f.comer(select)
                 
                 elif select[0:11].lower() == "unequip the": # Desequipar arma
-                    # Sigue saliendo en el inventario, y si no tienes espada o escudo equipado te tiene que dar un texto de error.
                     d.texto_prompt.append(f.desequiparArma(select))
                     
                 elif select[0:9].lower() == "equip the": # Equipar arma
-                    # Me da error la funcion cuando busca las armas disponibles
                     f.equiparArma(select)
                 
                 elif select[0:4].lower() == "cook":  # Cocinar comida, cuando estas al lado de una C
@@ -128,19 +126,19 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     ejecutado = f.atacar(posicionplayer, mapaActual, "E")
                 
                     if ejecutado == False:
-                        ejecutado = f.atacar(posicionplayer, mapaActual, "F") # Falta quitarle vida al arma y añadir carne al inventario
+                        ejecutado = f.atacar(posicionplayer, mapaActual, "F")
                 
                     if ejecutado == False:
-                        ejecutado = f.atacar(posicionplayer, mapaActual, "T") # Falta acabar la funcion de arboles, da error con la vida
+                        ejecutado = f.atacar(posicionplayer, mapaActual, "T") 
                     
                     if ejecutado == False:
                         ejecutado = f.atacar(posicionplayer, mapaActual, " ")
                 
                 elif select.lower() == "fish": # Pescar cuando estas al lado de una ~
-                    f.agua(mapaActual) # Falta añadir al inventario el pez conseguido
+                    f.agua(mapaActual) 
                 
                 elif select.lower() == "open sanctuary": # Abrir un santuario, cuando estas al lado de un santuario 
-                    f.abrir_santuario(posicionplayer, mapaActual) # Hay que crear un diccionario o lista con los santuarios y que cuando abres uno se ponga en True en el diccionario.
+                    f.abrir_santuario(posicionplayer, mapaActual)
                 
                 elif select[0:5].lower() == "go to": # Cambiar de región
                     # en el pdf no pone nada, asi que a castle se puede ir desde cualquier sitio, y dentro de castle no se puede ir a otro sitio, tienes que atacar a ganon o escribir back y volver a la ultima region donde has estado.
@@ -156,8 +154,10 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     f.cofre(mapaActual) 
                     
                 elif select[0:5].lower() == "cheat": # Trucos
-                    # Falta terminar la funcion de trucos
                     f.trucos(select)
+                
+                elif select.lower() == "exit": # Salir
+                    final = True
                 
                 else: # Opcion invalida, se añade al prompt
                     d.texto_prompt.append("Invalid action")
@@ -184,7 +184,10 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                         f.pelea_ganon(mapaActual)
                     
                     elif select[0:5].lower() == "cheat": # Trucos
-                         f.trucos(select)
+                        f.trucos(select)
+                    
+                    elif select.lower() == "exit": # Salir
+                        final = True
                     
                     else: # Opción invalida, se añade al prompt
                         d.texto_prompt.append("Invalid action")
@@ -201,8 +204,10 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                         posicionplayer = d.dades[d.mapa_anterior]["position"] # Se cambia la posicion
                     
                     elif select[0:5].lower() == "cheat": # Trucos
-                        
                         f.trucos(select)
+                    
+                    elif select.lower() == "exit": # Salir
+                        final = True
                     
                     else: # Opción invalida, se añade al prompt
                         d.texto_prompt.append("Invalid action")

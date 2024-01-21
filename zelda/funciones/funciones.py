@@ -131,53 +131,53 @@ def mostrarInventario(Select):
     elif Select.lower() == "show inventory weapons":
         #Calculamos cuales son las armas de cada tipo que tienen menos usos para poder imprimir los usos de sa arma.
         conteoInventario()
-        inventario = [" * * * * *  Weapons * \n",
-                        "*\n".rjust(22),
-                        "*\n".rjust(22),
+        inventario = [" * * * * * Weapons * \n",
+                        "*\n".rjust(21),
+                        "*\n".rjust(21),
         ]
         
         #Cada if determina como será esa linea en función de si el arma esta equipada o no.   
          
         if d.dict_tipos["Wood Sword"]["total"] == 0:
-            inventario += " Wood Sword" + "0/0".rjust(8) + " * \n","* \n".rjust(23),
+            inventario += " Wood Sword" + "0/0".rjust(7) + " * \n","* \n".rjust(22),
         else:
 
-            inventario += " Wood Sword" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Wood Sword"]["minUsos"]]["usos"], d.dict_tipos["Wood Sword"]["total"]).rjust(8) + " * \n",
+            inventario += " Wood Sword" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Wood Sword"]["minUsos"]]["usos"], d.dict_tipos["Wood Sword"]["total"]).rjust(7) + " * \n",
         
             if d.jugador["arma_actual"] in d.inventarioArmas and d.inventarioArmas[d.jugador["arma_actual"]]["tipo"] == "Wood Sword":
                     
-                    inventario += "  (equiped)" + "*\n".rjust(11),
+                    inventario += "  (equiped)" + "*\n".rjust(10),
             else:
-                    inventario += "* \n".rjust(23),
+                    inventario += "* \n".rjust(22),
         
         if d.dict_tipos["Sword"]["total"] == 0:
-            inventario += " Sword" + "0/0".rjust(13) + " * \n","* \n".rjust(23),
+            inventario += " Sword" + "0/0".rjust(12) + " * \n","* \n".rjust(22),
         else:
 
-            inventario +=" Sword" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Sword"]["minUsos"]]["usos"], d.dict_tipos["Sword"]["total"]).rjust(13) + " * \n",
+            inventario +=" Sword" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Sword"]["minUsos"]]["usos"], d.dict_tipos["Sword"]["total"]).rjust(12) + " * \n",
        
             if d.jugador["arma_actual"] in d.inventarioArmas and d.inventarioArmas[d.jugador["arma_actual"]]["tipo"] == "Sword":
                     
-                    inventario += "  (equiped)" + "*\n".rjust(11),
+                    inventario += "  (equiped)" + "*\n".rjust(10),
             else:
-                    inventario += "* \n".rjust(23),
+                    inventario += "* \n".rjust(22),
         
         if d.dict_tipos["Wood Shield"]["total"] == 0:
             
-            inventario += " Wood shield" + "0/0".rjust(7) + " * \n",  "* \n".rjust(23),            
+            inventario += " Wood shield" + "0/0".rjust(6) + " * \n",  "* \n".rjust(22),            
        
         else:
 
-            inventario += " Wood shield" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Wood Shield"]["minUsos"]]["usos"], d.dict_tipos["Wood Shield"]["total"]).rjust(7) + " * \n",              
+            inventario += " Wood shield" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Wood Shield"]["minUsos"]]["usos"], d.dict_tipos["Wood Shield"]["total"]).rjust(6) + " * \n",              
         
             if d.jugador["escudo_actual"] in d.inventarioArmas and d.inventarioArmas[d.jugador["escudo_actual"]]["tipo"] == "Swood Shield":
                     
-                    inventario += "  (equiped)" + "*\n".rjust(11),
+                    inventario += "  (equiped)" + "*\n".rjust(10),
             else:
-                    inventario += "* \n".rjust(23),
+                    inventario += "* \n".rjust(22),
         if d.dict_tipos["Shield"]["total"] == 0:
             
-            inventario += " Shield" + "0/0".rjust(12) + " * \n",  "* \n".rjust(23),         
+            inventario += " Shield" + "0/0".rjust(11) + " * \n",  "*".rjust(20),         
        
         else:
 
@@ -186,9 +186,9 @@ def mostrarInventario(Select):
                             
             if d.jugador["escudo_actual"] in d.inventarioArmas and d.inventarioArmas[d.jugador["escudo_actual"]]["tipo"] == "Shield":
                     
-                    inventario += "  (equiped)" + "*\n".rjust(11),"*".rjust(22)
+                    inventario += "  (equiped)" + "*".rjust(10)
             else:
-                    inventario += "* \n".rjust(23),"*\n".rjust(8),"*".rjust(22)                          
+                    inventario += "* \n".rjust(22),"*".rjust(8)                        
                                        
         return inventario                
    
@@ -289,7 +289,8 @@ def moverPersonaje(mapaActual, select, posicionplayer):
         #Comprobamos que la posicion a la que queremos mover al monigote este dentro de los limites del mapa.
         if posicionplayer[1] - int(select[8:]) < 0:
             #En caso de ser incorrecto, devolvemos una tupla con un mensaje de error y la posicion en la que se quedará en personaje.
-            return["Invalid action1"], posicionplayer[0], posicionplayer[1]
+            d.texto_prompt.append("You can't go there")
+            return posicionplayer[0], posicionplayer[1]
         else:
             #Cojemos la posicion actual del personaje en el eje que lo vamos a mover y después en otra variable guardamos la posición a la que irá
             int1 = posicionplayer[1]
@@ -303,7 +304,8 @@ def moverPersonaje(mapaActual, select, posicionplayer):
 
                     if mapaActual[posicionplayer[0]][i-1] != " ":
                         
-                        return["Invalid action"], posicionplayer[0], posicionplayer[1]
+                        d.texto_prompt.append("You can't go there")
+                        return posicionplayer[0], posicionplayer[1]
                     
                     else:
                         #Ponemos la posicion donde estaba el personaje como espacio vacio de nuevo.
@@ -311,7 +313,7 @@ def moverPersonaje(mapaActual, select, posicionplayer):
                         #Colocamos la nueva X
                         mapaActual[posicionplayer[0]][posicionplayer[1] - int(select[8:])] = "X"
                         #Devolvemos el mapa actualizado y las nuevas posiciones.
-                        return mapaActual, posicionplayer[0], posicionplayer[1] - int(select[8:])
+                        return posicionplayer[0], posicionplayer[1] - int(select[8:])
                 else:
                     #Si no solo se ha de mover una posicion y la posicion anterior no es " " marcara un booleano como false, lo que hará que en el siguiente if no intente moverlo.
                     if mapaActual[posicionplayer[0]][i-1] != " ":
@@ -321,9 +323,10 @@ def moverPersonaje(mapaActual, select, posicionplayer):
 
                 mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
                 mapaActual[posicionplayer[0]][posicionplayer[1] - int(select[8:])] = "X"
-                return mapaActual, posicionplayer[0], posicionplayer[1] - int(select[8:])        
+                return posicionplayer[0], posicionplayer[1] - int(select[8:])        
             else:
-                return["Invalid action"], posicionplayer[0], posicionplayer[1]
+                d.texto_prompt.append("You can't go there")
+                return posicionplayer[0], posicionplayer[1]
                        
                         
 
@@ -331,8 +334,8 @@ def moverPersonaje(mapaActual, select, posicionplayer):
        
         if posicionplayer[1] + int(select[9:]) > 57:
             
-
-            return["Invalid action1"], posicionplayer[0], posicionplayer[1]
+            d.texto_prompt.append("You can't go there")
+            return posicionplayer[0], posicionplayer[1]
         else:
             int1 = posicionplayer[1]
             int2 = posicionplayer[1] + int(select[9:])
@@ -342,8 +345,8 @@ def moverPersonaje(mapaActual, select, posicionplayer):
                 if int(select[9:]) == 1:
 
                     if mapaActual[posicionplayer[0]][i+1] != " ":
-                        
-                        return["Invalid action2"], posicionplayer[0], posicionplayer[1]
+                        d.texto_prompt.append("You can't go there")
+                        return posicionplayer[0], posicionplayer[1]
                     
                     
                 else:
@@ -355,16 +358,18 @@ def moverPersonaje(mapaActual, select, posicionplayer):
        
                 mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
                 mapaActual[posicionplayer[0]][posicionplayer[1] + int(select[9:])] = "X"
-                return mapaActual, posicionplayer[0], posicionplayer[1] + int(select[9:])
+                return posicionplayer[0], posicionplayer[1] + int(select[9:])
             else:
-                return["Invalid action"], posicionplayer[0], posicionplayer[1]
+                d.texto_prompt.append("You can't go there")
+                return posicionplayer[0], posicionplayer[1]
 
 
     elif select[0:5] == "go up":
 
         if posicionplayer[0] - int(select[6:]) < 1:
 
-            return["Invalid action1"], posicionplayer[0], posicionplayer[1]
+            d.texto_prompt.append("You can't go there")
+            return posicionplayer[0], posicionplayer[1]
         else:
             int1 = posicionplayer[0]
             int2 = posicionplayer[0] - int(select[6:])
@@ -374,14 +379,15 @@ def moverPersonaje(mapaActual, select, posicionplayer):
                 if int(select [6:]) == 1:
 
                     if mapaActual[i-1][posicionplayer[1]] != " ":
-                        
-                        return["Invalid action2"], posicionplayer[0], posicionplayer[1]
+                        d.texto_prompt.append("You can't go there")
+                        return posicionplayer[0], posicionplayer[1]
                     
                     else:
 
                         mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
                         mapaActual[posicionplayer[0]- int(select[6:])][posicionplayer[1] ] = "X"
-                        return mapaActual, posicionplayer[0]- int(select[6:]), posicionplayer[1]
+                        d.texto_prompt.append("You can't go there")
+                        return posicionplayer[0]- int(select[6:]), posicionplayer[1]
                 else:
 
                     if mapaActual[i-1][posicionplayer[1]] != " ":
@@ -392,16 +398,18 @@ def moverPersonaje(mapaActual, select, posicionplayer):
        
                 mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
                 mapaActual[posicionplayer[0]- int(select[6:])][posicionplayer[1] ] = "X"
-                return mapaActual, posicionplayer[0]- int(select[6:]), posicionplayer[1]
+                return posicionplayer[0]- int(select[6:]), posicionplayer[1]
             else:
-                return["Invalid action"], posicionplayer[0], posicionplayer[1]
+                d.texto_prompt.append("You can't go there")
+                return posicionplayer[0], posicionplayer[1]
 
                    
     elif select[0:7] == "go down":
         
         if posicionplayer[0] + int(select[8:]) > len(mapaActual)-1:
 
-            return["Invalid action1"], posicionplayer[0], posicionplayer[1]
+            d.texto_prompt.append("You can't go there")
+            return posicionplayer[0], posicionplayer[1]
         else:
             int1 = posicionplayer[0]
             int2 = posicionplayer[0] + int(select[8:])
@@ -411,14 +419,14 @@ def moverPersonaje(mapaActual, select, posicionplayer):
                 if int(select [8:]) == 1:
 
                     if mapaActual[i+1][posicionplayer[1]] != " ":
-                        
-                        return["Invalid action2"], posicionplayer[0], posicionplayer[1]
+                        d.texto_prompt.append("You can't go there")
+                        return posicionplayer[0], posicionplayer[1]
                     
                     else:
 
                         mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
                         mapaActual[posicionplayer[0]+ int(select[8:])][posicionplayer[1] ] = "X"
-                        return mapaActual, posicionplayer[0]+ int(select[8:]), posicionplayer[1]
+                        return posicionplayer[0]+ int(select[8:]), posicionplayer[1]
                 else:
 
                     if mapaActual[i+1][posicionplayer[1]] != " ":
@@ -431,9 +439,10 @@ def moverPersonaje(mapaActual, select, posicionplayer):
        
                 mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
                 mapaActual[posicionplayer[0]+ int(select[8:])][posicionplayer[1] ] = "X"
-                return mapaActual, posicionplayer[0]+ int(select[8:]), posicionplayer[1]
+                return posicionplayer[0]+ int(select[8:]), posicionplayer[1]
             else:
-                return["Invalid action"], posicionplayer[0], posicionplayer[1]
+                d.texto_prompt.append("You can't go there")
+                return posicionplayer[0], posicionplayer[1]
 
 def movimientoCercano(Select, mapaActual):
     
@@ -2241,3 +2250,12 @@ def erase(num_id):
 
 
 
+
+def gastar_arma():
+    if d.jugador["arma_actual"] != "" and d.jugador["arma_actual"] != " ":
+        if d.inventarioArmas[d.jugador["arma_actual"]]["usos"] == 0:
+            del d.inventarioArmas[d.jugador["arma_actual"]]
+    
+    if d.jugador["escudo_actual"] != "" and d.jugador["escudo_actual"] != " ":
+        if d.inventarioArmas[d.jugador["escudo_actual"]]["usos"] == 0:
+            del d.inventarioArmas[d.jugador["escudo_actual"]]
