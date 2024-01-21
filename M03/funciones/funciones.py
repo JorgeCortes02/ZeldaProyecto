@@ -2,6 +2,9 @@ import funciones.datos as d
 import math
 import random
 import mysql.connector
+
+#Jorge Cortés, Luciano Poyanco, Erik Rojas - Grup 4
+
 mapaActual = []
 db = mysql.connector.connect(
     host="172.187.226.29",  # Cambia a tu dirección IP
@@ -793,7 +796,7 @@ def menu_principal():
                 if salir == True:
                     return True
 
-            elif opc.lower() == "consultes":
+            elif opc.lower() == "consultes bbdd":
                 limpiar_pantalla()
                 back = False
                 while back == False:
@@ -1999,7 +2002,7 @@ def vida_enemigo(mapaActual):
 def consultaJugadores():
     cursor = db.cursor()
 
-    cursor.execute("Select distinct  user_name, date_started from game;")
+    cursor.execute("Select distinct  user_name,max(date_started) from game group by user_name ;")
     resultados = cursor.fetchall()
 
     for element in resultados:
@@ -2067,7 +2070,6 @@ def saveInicialGame():
         val = (d.jugador["name"], d.jugador["vidas"], 25,0, "Hyrule", d.jugador["vidas_max"], d.jugador["posicion"][0], d.jugador["posicion"][1])
         cursor.execute(query, val)
         d.jugador["id_game"] = cursor.lastrowid
-        print(d.jugador["id_game"])
         db.commit()
 
         #Y se añaden los enemigos.

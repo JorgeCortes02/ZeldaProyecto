@@ -1,5 +1,5 @@
 import funciones.funciones as f
-
+#Jorge Cortés, Luciano Poyanco, Erik Rojas - Grup 4
 #Atributos jugador
 
 

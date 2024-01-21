@@ -1,6 +1,7 @@
 import funciones.funciones as f
 import funciones.datos as d
 
+#Jorge Cortés, Luciano Poyanco, Erik Rojas - Grup 4
 
 
 # Habrá que cambiar esto por que se activen los objetos que tiene al lado
@@ -80,14 +81,14 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     d.jugador["posicion"] = posicionplayer # nueva posicion del jugador
                 
                 # No me cambia de menu, hay que cambiar datos de prueba a los del diccionario
-                elif select[0:14].lower() == "show inventary": # si se escribe show inventory
-                    if select.lower() == "show inventary food": # se cambia al inventario de comida
+                elif select[0:14].lower() == "show inventory": # si se escribe show inventory
+                    if select.lower() == "show inventory food": # se cambia al inventario de comida
                         d.select = "show inventory food"
                     
-                    elif select.lower() == "show inventary weapons": # se cambia al inventario de armas
+                    elif select.lower() == "show inventory weapons": # se cambia al inventario de armas
                         d.select = "show inventory weapons"
                     
-                    elif select.lower() == "show inventary main": # se cambia al inventario principal
+                    elif select.lower() == "show inventory main": # se cambia al inventario principal
                         d.select = "show inventory main"
                     
                     elif select.lower() == "show inventary help": # se muestra la pantalla de help del menu

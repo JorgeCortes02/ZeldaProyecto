@@ -1,0 +1,153 @@
+
+#Estas dos querys se ejecutan al principio, el resto de datos no se guardan en la BBDD
+hasta que no se consiguen armas o alimentos o se abre un santuario.
+
+#Al iniciar la partida guarda la tabla game.
+        query = "Insert into game(user_name,date_started,hearts_remaining, blood_moon_countdown,blood_moon_appearances, region, max_live, xpos, ypos ) Values(%s,  NOW(), %s, %s, %s,%s, %s,%s, %s)"
+        val = (d.jugador["name"], d.jugador["vidas"], 25,0, "Hyrule", d.jugador["vidas_max"], d.jugador["posicion"][0], d.jugador["posicion"][1])
+        cursor.execute(query, val)
+        d.jugador["id_game"] = cursor.lastrowid
+        db.commit()
+
+#Añadimos a los enemigos: 
+
+        query = "Insert into game_enemies(game_id, region, num, xpos, ypos, lives_remaining) Values(%s, %s, %s, %s,%s, %s)"
+        val = (d.jugador["id_game"],element, element1[2],  element1[0], element1[1], element1[3])
+        cursor.execute(query, val)
+        db.commit()
+
+
+#A partir de ahora se mostraran las querys con las que se guardan o se actualizan los datos
+de aquello que sucede durante la partida.
+
+#Esta query actualiza la tabla game con las armas equipadas, la posicion del jugador...
+
+query = "UPDATE game SET hearts_remaining = %s, blood_moon_countdown = %s, blood_moon_appearances = %s, region = %s, max_live = %s, xpos = %s, ypos = %s, date_started = NOW() WHERE game_id = %s;"
+    val = (d.jugador["vidas"], d.jugador["bloodMoonCoutdown"], d.jugador["totalBloodMoon"], d.jugador["mapa"], d.jugador["vidas_max"], d.jugador["posicion"][0], d.jugador["posicion"][1], d.jugador["id_game"])
+    print(d.jugador["id_game"])
+    cursor.execute(query, val)
+    db.commit()
+
+#Actualizar enemigos con update.
+  
+    query = "UPDATE game_enemies SET xpos = %s, ypos = %s, lives_remaining = %s WHERE game_id = %s AND region = %s AND num = %s;"
+    val = (element1[0], element1[1], element1[3], d.jugador["id_game"],element, element1[2])
+    cursor.execute(query, val)
+    db.commit()
+
+#Actualizar o insertar datos en la tabla food
+#Gracias al ON DUPLICATE lo que nospermite esta query es comprobar si 
+ya hay algun elemento con las mismas claves primarias, si lo hay, actualiza esa row
+si no, la inserta.
+   
+    query = "INSERT INTO game_food(game_id, food_name, quanntity_remaining) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE quanntity_remaining = %s;"
+    val = (d.jugador["id_game"], element , d.inventarioComida[element], d.inventarioComida[element])
+    cursor.execute(query, val)
+    db.commit()
+
+#Esta query inserta los datos de santuarios que esten abiertos, pero si detecta que ese santuario ya consta en la 
+BBDD, el "Ignore" hace que no se vuelva a introducir.
+
+    "INSERT IGNORE INTO game_sactuaries_opened(game_id, region, num, xpos, ypos) VALUES (%s, %s, %s, %s,%s);"  
+    val = (d.jugador["id_game"],element, element1[4],  element1[0], element1[1])
+    cursor.execute(query, val)
+    db.commit()
+
+#Insertamos o actualizamos las armas:
+
+    query = "INSERT INTO game_weapons(game_id, weapon_name, lives_remaining, equiped, tipo) VALUES (%s, %s, %s, %s, %s) ON DUPLICATE KEY UPDATE lives_remaining = %s, equiped = %s;"
+    val = (d.jugador["id_game"], element , d.inventarioArmas[element]["usos"], equiped, d.inventarioArmas[element]["tipo"] , d.inventarioArmas[element]["usos"], equiped  )
+    cursor.execute(query, val)
+    db.commit()
+
+#Eliminamos los cofres que se hayan cerrados (en la BBDD solo tenemos los que esten abiertos).
+
+    query = "Delete from game_chests_opened where game_id = %s and num = %s;"
+    val = (d.jugador["id_game"], element1[3])
+    cursor.execute(query, val)
+
+#Añadimos los cofres que esten abiertos:
+
+    query = "INSERT IGNORE INTO game_chests_opened(game_id, region, num, xpos, ypos) VALUES (%s, %s, %s, %s,%s);"
+    val = (d.jugador["id_game"], element, element1[3], element1[0], element1[1])
+    cursor.execute(query, val)
+
+
+#Ahora mostraremos las querys con las que hemos descargado los datos de las partidas guardadas.
+
+#Descargamos todos los datos de la tabla game para mostrar todas las partidas guardadas.
+
+    query = "SELECT game_id, user_name, xpos, ypos, date_started, hearts_remaining, max_live, blood_moon_countdown, blood_moon_appearances, region FROM game ORDER BY date_started DESC LIMIT 10;"
+    cursor.execute(query)
+    resultados = cursor.fetchall()
+
+#Una vez elegida la partida que queremos recuperar, se pasa el id a las siquientes querys:
+
+#Recuperamos la comida
+    query = "Select food_name, quanntity_remaining  from game_food where game_id = %s;"
+    val=(d.jugador["id_game"],)
+    cursor.execute(query,val)
+    resultados = cursor.fetchall()
+
+#Recuperamos armas
+        
+    query = "Select weapon_name, equiped, tipo, lives_remaining from game_weapons where game_id = %s;"
+    val=(d.jugador["id_game"],)
+    cursor.execute(query,val)
+    resultados = cursor.fetchall()
+
+#Recuperamos enemigos
+query = "Select region, num, xpos, ypos,lives_remaining from game_enemies where game_id = %s;"
+    val=(d.jugador["id_game"],)
+    cursor.execute(query,val)
+    resultados = cursor.fetchall()
+
+#Recuperamos Santuarios abiertos:
+                
+    query = "Select region, num from game_sactuaries_opened where game_id = %s;"
+    val=(d.jugador["id_game"],)
+    cursor.execute(query,val)
+    resultados = cursor.fetchall()
+
+#Recuperamos cofes abiertos:
+                
+    query = "Select region, num from game_chests_opened where game_id = %s;"
+    val=(d.jugador["id_game"],)
+    cursor.execute(query,val)
+    resultados = cursor.fetchall()
+
+#Eliminar partidas guardadas 
+query = "Delete from game where game_id = %s;"
+    val=(num_id,)
+    cursor.execute(query,val)
+    db.commit()        
+
+
+#Consultas de estadisticas a la BBDD.
+
+#Lista de jugadores y fecha de su ultima partida.
+cursor.execute("Select distinct  user_name,max(date_started) from game group by user_name ;")
+
+#Listar total partidas jugadas por jugador.
+cursor.execute("Select user_name, count(*) from game group by user_name;")
+
+#Armas conseguidas. No hemos podido realizar la ultima parte de la query porque 
+dado como hemos creado el sistema de armas, no podiamos saber cual era la más usada, pero
+el resto de la query esta bien.
+
+cursor.execute("SELECT g.user_name AS Usuario, w.weapon_name AS Arma, COUNT(*) AS CantidadObtenida, MAX(g.date_started) AS FechaPartidaMasUsos FROM game g JOIN game_weapons w ON g.game_id = w.game_id GROUP BY g.user_name, w.weapon_name ORDER BY Usuario, CantidadObtenida DESC;")
+
+#Alimentos conseguidos. Pasa lo mismo que con la anterior, nuestro sistema de inventario complicaba poder extraer
+los alimentos consumidos, pero el resto de la query esta bien.
+
+cursor.execute("SELECT  g.user_name AS Usuario, gf.food_name AS Alimento, SUM(gf.quanntity_remaining) AS CantidadObtenida,  max(g.date_started)  as MaxDate FROM game g JOIN game_food gf ON g.game_id = gf.game_id GROUP BY  g.user_name, gf.food_name ORDER BY     Usuario, CantidadObtenida DESC;")
+
+#Media total de blood moons entre todos los jugadores:
+
+cursor.execute("Select avg(blood_moon_appearances) from game;")
+
+#Cantidad maxima de blood moons por usuario:
+
+cursor.execute("Select g.date_started, g.user_name, g.blood_moon_appearances from game g where g.blood_moon_appearances = (select max(g1.blood_moon_appearances)from game g1) ")
+
+
