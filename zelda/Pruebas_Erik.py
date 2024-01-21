@@ -1,6 +1,4 @@
-import funciones.funciones as f
-import funciones.datos as d
-import random
+
 
 #menu_inicial = f.menu_random()
 #f.menu_principal(menu_inicial)
@@ -44,7 +42,7 @@ diccio = {"vegetable123456":{"nombre":"vegetable"}, "vegetable654321":{"nombre":
 #         print("Invalid action")
 
 
-def funcion_en_funcion():
+'''def funcion_en_funcion():
     a = "hola"
     print(a)
     
@@ -57,6 +55,8 @@ def funcion_normal(funcion):
 funcion_normal(funcion_en_funcion())
 
 
-
+'''
 # Enemigo, vida y movimiento
 # Terminar opcion menu consultas BBDD
+
+print(len("go left "))

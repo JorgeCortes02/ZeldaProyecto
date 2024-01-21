@@ -629,7 +629,8 @@ def moverPersonajeGanon(mapaActual, select, posicionplayer):
         print(posicionplayer[1], posicionplayer[1] - int(select[7:]) )
         if posicionplayer[1] - int(select[7:]) < 0:
             
-            return["Invalid action1"], posicionplayer[0], posicionplayer[1]
+            d.texto_prompt.append("You can't go there")
+            return posicionplayer[0], posicionplayer[1]
         else:
             int1 = posicionplayer[1]
             int2 = posicionplayer[1] - int(select[7:])
@@ -641,13 +642,13 @@ def moverPersonajeGanon(mapaActual, select, posicionplayer):
 
                     if mapaActual[posicionplayer[0]][i-1] != " ":
                         d.texto_prompt.append("Invalid action")
-                        return["Invalid action"], posicionplayer[0], posicionplayer[1]
+                        return posicionplayer[0], posicionplayer[1]
                     
                     else:
 
                         mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
                         mapaActual[posicionplayer[0]][posicionplayer[1] - int(select[7:])] = "X"
-                        return mapaActual, posicionplayer[0], posicionplayer[1] - int(select[7:])
+                        return posicionplayer[0], posicionplayer[1] - int(select[7:])
                 else:
 
                     if mapaActual[posicionplayer[0]][i-1] != " ":
@@ -660,15 +661,15 @@ def moverPersonajeGanon(mapaActual, select, posicionplayer):
                 return mapaActual, posicionplayer[0], posicionplayer[1] - int(select[7:])        
             else:
                 d.texto_prompt.append("Invalid action")
-                return["Invalid action"], posicionplayer[0], posicionplayer[1]
+                return posicionplayer[0], posicionplayer[1]
                        
 
     elif select[0:8] == "go right":
        
         if posicionplayer[1] + int(select[8:]) > 57:
             
-
-            return["Invalid action1"], posicionplayer[0], posicionplayer[1]
+            d.texto_prompt.append("You can't go there")
+            return posicionplayer[0], posicionplayer[1]
         else:
             int1 = posicionplayer[1]
             int2 = posicionplayer[1] + int(select[8:])
@@ -679,7 +680,7 @@ def moverPersonajeGanon(mapaActual, select, posicionplayer):
 
                     if mapaActual[posicionplayer[0]][i+1] != " ":
                         d.texto_prompt.append("Invalid action")
-                        return["Invalid action2"], posicionplayer[0], posicionplayer[1]
+                        return posicionplayer[0], posicionplayer[1]
                     
                     
                 else:
@@ -691,10 +692,10 @@ def moverPersonajeGanon(mapaActual, select, posicionplayer):
        
                 mapaActual[posicionplayer[0]][posicionplayer[1] ] = " "
                 mapaActual[posicionplayer[0]][posicionplayer[1] + int(select[8:])] = "X"
-                return mapaActual, posicionplayer[0], posicionplayer[1] + int(select[8:])
+                return posicionplayer[0], posicionplayer[1] + int(select[8:])
             else:
                 d.texto_prompt.append("Invalid action")
-                return["Invalid action"], posicionplayer[0], posicionplayer[1]
+                return posicionplayer[0], posicionplayer[1]
 
 
 #Menu aleatorio
@@ -951,24 +952,31 @@ def equiparArma(Select):
     #Comprueba si hay armas en el inventario
     if len(d.inventarioArmas )== 0:
 
-        return "No hay armas en el inventario" 
+        return "No weapons in inventary" 
     #Comprueba el arma que le hemos pedido equipar y guarda el tipo de arma en la misma variable select.
     if Select.find("wood shield") != -1:
 
         d.jugador["escudo_actual"] = d.dict_tipos["Wood Shield"]["minUsos"]
+        return "Wood Shield equiped"
     
     elif Select.find("shield") != -1 and Select.find("wood") == -1:
         
         d.jugador["escudo_actual"] = d.dict_tipos["Shield"]["minUsos"]
-        d.texto_prompt.append(str(d.inventarioArmas["Shield"]["tipo"]))
+        return "Shield equiped"
+    
     elif Select.find("wood sword") != -1:
 
        d.jugador["arma_actual"] = d.dict_tipos["Wood Sword"]["minUsos"]
+       return "Wood Sword equiped"
 
      
     elif Select.find("sword") != -1 and Select.find("wood") == -1:
 
         d.jugador["arma_actual"] = d.dict_tipos["Sword"]["minUsos"]
+        return "Sword equiped"
+    
+    else:
+        return "Invalid option"
         
         
             
@@ -977,12 +985,12 @@ def desequiparArma(Select):
     Select= Select.lower()
     if "sword" in Select and (d.jugador["arma_actual"] != "" or d.jugador["arma_actual"] != " "):
         d.jugador["arma_actual"] = " "
-        return "Espada desequipado."
+        return "Sword unequipped."
     elif "shield" in Select and (d.jugador["escudo_actual"] != "" or d.jugador["escudo_actual"] != " "):
         d.jugador["escudo_actual"] = " "
-        return "Escudo desequipado."
+        return "Shield unequipped."
     else:
-        return "Este elemento no estaba equipado."
+        return "Invalid option"
     
 
 #---------Encontrar mapa ----------------------

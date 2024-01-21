@@ -74,7 +74,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
             
             if d.jugador["mapa"] == "hyrule" or d.jugador["mapa"] == "gerudo" or d.jugador["mapa"] == "death" or d.jugador["mapa"] == "necluda": # si no estas en castillo, movimiento y acciones normales
             
-                if select[0:7].lower() == "go left" or select[0:8].lower() == "go right" or select[0:5].lower() == "go up" or select[0:7].lower() == "go down": # mover personaje
+                if (select[0:7].lower() == "go left" and len(select) > 8) or (select[0:8].lower() == "go right" and len(select) > 9) or (select[0:5].lower() == "go up" and len(select) > 6) or (select[0:7].lower() == "go down" and len(select) > 8): # mover personaje
                     retorno = f.moverPersonaje(mapaActual, select, posicionplayer) # llanmada a la funcion de mover el personaje
                     posicionplayer = [retorno[0], retorno[1]]
                     d.jugador["posicion"] = posicionplayer # nueva posicion del jugador
@@ -106,7 +106,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     else: # opcion incorrecta se añade al prompt
                         d.texto_prompt.append("Invalid action")
                 
-                elif select[0:8].lower() == "show map": # Muestra el mapa de la region
+                elif select.lower() == "show map": # Muestra el mapa de la region
                     f.mostrar_mapa()
                 
                 elif select[0:3].lower() == "eat": # Consumir comida
@@ -116,7 +116,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     d.texto_prompt.append(f.desequiparArma(select))
                     
                 elif select[0:9].lower() == "equip the": # Equipar arma
-                    f.equiparArma(select)
+                    d.texto_prompt.append(f.equiparArma(select))
                 
                 elif select[0:4].lower() == "cook":  # Cocinar comida, cuando estas al lado de una C
                     f.cocinar(select, d.inventarioComida, mapaActual)
@@ -170,9 +170,10 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     if d.jugador["posicion"][1] > 18 and d.herido == False:
                         f.ganon_castillo()
                         d.herido = True
-                    if select[0:7].lower() == "go left" or select[0:8].lower() == "go right": # Solo puedes moverte a derecha o izquierda
+                    
+                    if (select[0:7].lower() == "go left" and len(select) > 8) or (select[0:8].lower() == "go right" and len(select) > 9): # Solo puedes moverte a derecha o izquierda
                         retorno = f.moverPersonajeGanon(mapaActual, select, posicionplayer)
-                        posicionplayer = [retorno[1], retorno[2]] # Cambiar posicion a nueva despues del movimiento
+                        posicionplayer = [retorno[0], retorno[1]] # Cambiar posicion a nueva despues del movimiento
                         d.jugador["posicion"] = posicionplayer
                     
                     elif select.lower() == "back": # Volver a la ultima región, desde donde has viajado hasta el castillo
@@ -197,9 +198,10 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                         d.texto_prompt.append("Invalid action")
                 
                 else:
-                    if select[0:7].lower() == "go left" or select[0:8].lower() == "go right": # Solo puedes moverte a derecha o izquierda
+                    if (select[0:7].lower() == "go left" and len(select) > 8) or (select[0:8].lower() == "go right" and len(select) > 9): # Solo puedes moverte a derecha o izquierda
                         retorno = f.moverPersonajeGanon(mapaActual, select, posicionplayer)
-                        posicionplayer = [retorno[1], retorno[2]] # Cambiar posicion a nueva despues del movimiento
+                        posicionplayer = [retorno[0], retorno[1]] # Cambiar posicion a nueva despues del movimiento
+                        d.jugador["posicion"] = posicionplayer
                     
                     elif select.lower() == "back": # Volver a la ultima región, desde donde has viajado hasta el castillo
                         d.texto_prompt.append("You are now in " + d.mapa_anterior) # Se añade al prompt
