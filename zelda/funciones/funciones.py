@@ -802,21 +802,28 @@ def menu_principal():
                     select = input("Que quieres consultar? ")
                     
                     if select.lower() == "jugadores":
+                        print("Nombre".ljust(13), "Fecha".rjust(30))
                         consultaJugadores()
                         
+                        
                     elif select.lower() == "partidas":
+                        print("Nombre".ljust(13), "Partidas".rjust(7))
                         partidasXJugador()
                         
                     elif select.lower() == "armas":
+                        print("Nombre".ljust(13), "Arma".ljust(15), "Cantidad".rjust(5), "Fecha".rjust(30))
                         ArmasConseguidas()
                         
                     elif select.lower() == "alimentos":
+                        print("Nombre".ljust(13), "Alimento".ljust(15), "Cantidad".rjust(5), "Fecha".rjust(30))
                         AlimentosConseguidos()
                         
                     elif select.lower() == "blood moon media":
+                        print("Media Blood Moon".ljust(16))
                         MediaBloodMoon()
                         
                     elif select.lower() == "blood moon max":
+                        print("Fecha".ljust(30), "Nombre".rjust(13), "Maxima".rjust(5))
                         maxBloodMoon()
                     
                     elif select.lower() == "back":
@@ -1978,7 +1985,7 @@ def consultaJugadores():
     resultados = cursor.fetchall()
 
     for element in resultados:
-        print(element)
+        print(str(element[0]).ljust(13), str(element[1]).rjust(30))
 
 def partidasXJugador():
         cursor = db.cursor()
@@ -1989,7 +1996,7 @@ def partidasXJugador():
         resultados = cursor.fetchall()
 
         for element in resultados:
-            print(element)
+            print(str(element[0]).ljust(13), str(element[1]).rjust(5))
 
 def ArmasConseguidas():
         cursor = db.cursor()
@@ -1999,7 +2006,8 @@ def ArmasConseguidas():
         resultados = cursor.fetchall()
 
         for element in resultados:
-            print(element)
+            print(str(element[0]).ljust(13), str(element[1]).ljust(15), str(element[2]).rjust(5), str(element[3]).rjust(30))
+
 
 def AlimentosConseguidos():
         cursor = db.cursor()
@@ -2008,7 +2016,7 @@ def AlimentosConseguidos():
         resultados = cursor.fetchall()
 
         for element in resultados:
-            print(element)
+            print(str(element[0]).ljust(13), str(element[1]).ljust(15), str(element[2]).rjust(5), str(element[3]).rjust(30))
 
 def MediaBloodMoon():
 
@@ -2018,7 +2026,7 @@ def MediaBloodMoon():
         resultados = cursor.fetchall()
 
         for element in resultados:
-            print(element)
+            print(element[0])
 
 def maxBloodMoon():
 
@@ -2029,7 +2037,7 @@ def maxBloodMoon():
 
         for element in resultados:
 
-            print(element)
+            print(str(element[0]).ljust(30), str(element[1]).rjust(13), str(element[2]).rjust(5))
 
 
 
