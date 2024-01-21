@@ -91,7 +91,7 @@ def mostrarInventario(Select):
       #Muestra el main del inventario
         inventario = [" * * * * Inventory * \n",
                             "*\n".rjust(21),
-                            " Link".ljust(12) +"  {0}/{1}".format(d.jugador["vidas"],d.jugador["vidas_max"]).rjust(6) + " * \n",
+                            " {0}".format(d.jugador["name"]).ljust(12) +"  {0}/{1}".format(d.jugador["vidas"],d.jugador["vidas_max"]).rjust(6) + " * \n",
                             " Blod Moon in ".ljust(2) + "  {0}".format(d.jugador["bloodMoonCoutdown"]).rjust(4) + " * \n",
                             "* \n".rjust(22),
                             " Equipement ".ljust(19) + "* \n",]
@@ -186,7 +186,7 @@ def mostrarInventario(Select):
        
         else:
 
-            inventario += " Shield" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Shield"]["minUsos"]]["usos"], d.dict_tipos["Shield"]["total"]).rjust(12) + " * \n",          
+            inventario += " Shield" + "{0}/{1}".format(d.inventarioArmas[d.dict_tipos["Shield"]["minUsos"]]["usos"], d.dict_tipos["Shield"]["total"]).rjust(11) + " * \n",          
         
                             
             if d.jugador["escudo_actual"] in d.inventarioArmas and d.inventarioArmas[d.jugador["escudo_actual"]]["tipo"] == "Shield":
@@ -960,7 +960,7 @@ def equiparArma(Select):
     elif Select.find("shield") != -1 and Select.find("wood") == -1:
         
         d.jugador["escudo_actual"] = d.dict_tipos["Shield"]["minUsos"]
-        d.texto_prompt.append(str(d.inventarioArmas["Shield"]["tipo"]))
+        
     elif Select.find("wood sword") != -1:
 
        d.jugador["arma_actual"] = d.dict_tipos["Wood Sword"]["minUsos"]
@@ -1670,7 +1670,7 @@ def cambiar_mapa(select, mapaActual, posicionfallo): # Funcion para cambiar de m
             d.jugador["mapa"] = "hyrule"
             zorro_visivilidad(mapaActual) 
             reiniciar_pesca()
-            posicion_player = d.dades["hyrule"]["position"]
+            d.jugador["posicion"] = d.dades["hyrule"]["position"]
             return mapaActual, posicion_player
         
         elif d.jugador["mapa"] == "hyrule":
@@ -1689,6 +1689,7 @@ def cambiar_mapa(select, mapaActual, posicionfallo): # Funcion para cambiar de m
             d.jugador["mapa"] = "gerudo"
             zorro_visivilidad(mapaActual) 
             reiniciar_pesca()
+            d.jugador["posicion"] = d.dades["gerudo"]["position"]
             posicion_player = d.dades["gerudo"]["position"]
             return mapaActual, posicion_player
 
@@ -1707,6 +1708,7 @@ def cambiar_mapa(select, mapaActual, posicionfallo): # Funcion para cambiar de m
             d.jugador["mapa"] = "death"
             zorro_visivilidad(mapaActual)
             reiniciar_pesca() 
+            d.jugador["posicion"] = d.dades["death"]["position"]
             posicion_player = d.dades["death"]["position"]
             return mapaActual, posicion_player
         
@@ -1725,6 +1727,7 @@ def cambiar_mapa(select, mapaActual, posicionfallo): # Funcion para cambiar de m
             d.jugador["mapa"] = "necluda"
             zorro_visivilidad(mapaActual) 
             reiniciar_pesca()
+            d.jugador["posicion"] = d.dades["necluda"]["position"]
             posicion_player = d.dades["necluda"]["position"]
             return mapaActual, posicion_player
         
@@ -2155,12 +2158,13 @@ def descargarGuardadas():
 
 #Se le pasa el numero de partida que se ha seleccionado.
 def selectAndChargePartida(numero):
-    datos = []
+    
     for element in d.datosPartidas:
         
         if numero == element[0]:
              
             d.jugador["name"] = element[1]
+            d.jugador["posicion"] = []
             d.jugador["posicion"].append(element[2])
             d.jugador["posicion"].append(element[3])
             d.jugador["vidas_max"] = element[6]
@@ -2169,7 +2173,7 @@ def selectAndChargePartida(numero):
             d.jugador["mapa"] = element[9].lower()
             d.jugador["id_game"] = element[0]
             
-        break
+            break
 
     #Recuperamos la comida
     query = "Select food_name, quanntity_remaining  from game_food where game_id = %s;"
