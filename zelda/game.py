@@ -16,7 +16,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
         posicionplayer = d.jugador["posicion"]
         mapaActual = d.localitzacions[d.jugador["mapa"]]
             
-        f.zorro_visivilidad() # miramos visibilidad del zorro
+        f.zorro_visivilidad(mapaActual) # miramos visibilidad del zorro
         final = False 
         while final == False: # Bucle para la partida
             f.limpiar_pantalla()
@@ -26,7 +26,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
             f.contador_arbol(mapaActual)
             f.blood_moonn()
             f.vida_enemigo(mapaActual)
-            '''f.gastar_arma()'''
+            f.gastar_arma()
             
             
             # Crear diccionario de ganon con sus vidas

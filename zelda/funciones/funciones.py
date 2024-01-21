@@ -15,7 +15,7 @@ cursor = db.cursor()
 
 mapaActual = []
 def resetTipos():
-    dict_tipos = {"Shield" : {"total": 0, "minUsos" : 0}, "Wood Shield" : {"total": 0, "minUsos" : 0}, "Sword" : {"total": 0, "minUsos" : 0}, "Wood Sword" : {"total": 0, "minUsos" : 0} }
+    d.dict_tipos = {"Shield" : {"total": 0, "minUsos" : 0}, "Wood Shield" : {"total": 0, "minUsos" : 0}, "Sword" : {"total": 0, "minUsos" : 0}, "Wood Sword" : {"total": 0, "minUsos" : 0} }
 
 #Contea la cantidad de cada tipo de arma.
 def conteoInventario():
@@ -134,6 +134,7 @@ def mostrarInventario(Select):
     elif Select.lower() == "show inventory weapons":
         #Calculamos cuales son las armas de cada tipo que tienen menos usos para poder imprimir los usos de sa arma.
         resetTipos()
+        print(d.dict_tipos)
         conteoInventario()
         inventario = [" * * * * * Weapons * \n",
                         "*\n".rjust(21),
@@ -256,7 +257,7 @@ def obtenerMapa(playermap):
             '''Lo hacemos de este modo porque si aplicamos el copy sobre la lista general del mapa, al modificar las listas internas que corresponden
                 a cada una de las lineas del mapa, el mapa original si que se ve afectado.'''
             mapaActual.append(element1.copy())
-    '''mapaActual = introducirUserInicial(posicionplayer,mapaActual)'''
+    mapaActual = introducirUserInicial(d.jugador["posicion"],mapaActual)
     imprimirmapa(mapaActual)
     return mapaActual
 
@@ -267,8 +268,7 @@ def obtenerMapa(playermap):
 def introducirUserInicial(posicionUser, playermap):
 
     playermap[posicionUser[0]][posicionUser[1]] = "X"
-    d.jugador["posicion"][0] = posicionUser[0]
-    d.jugador["posicion"][1] = posicionUser[1]
+  
     return playermap
 
 
@@ -1006,12 +1006,13 @@ def cesped(): #Interacion con el cesped
    porcentaje = random.randint(1,100)
    if porcentaje in range(1,10):#Si consigues una lagartija tine que salir esto en el promp y sumar uno de Meat
        d.texto_prompt.append("You got a lizard") 
-       d.inventarioComida["Meat"] += 1
+       añadirInventario("Meat", d.inventarioComida)
    else:
        d.texto_prompt.append("The grass didn't give you anything")
 
 def arbol(): #Interacion con el arbol
     arbol_encontrado = 10
+    
     for j in range(len(d.dades[d.jugador["mapa"]]["T"]["lista"])): #Busca en la lista del arbol cual esta cerca y que tenga toda la vida
         if d.jugador["posicion"][0] == d.dades[d.jugador["mapa"]]["T"]["lista"][j][0] and d.jugador["posicion"][1]-1 == d.dades[d.jugador["mapa"]]["T"]["lista"][j][1]:
             if not d.dades[d.jugador["mapa"]]["T"]["vida"][j] == 0:
@@ -1028,6 +1029,8 @@ def arbol(): #Interacion con el arbol
     if arbol_encontrado == 10: #si no encuentra nigun arbol con vida no te deja hacer nada
         d.texto_prompt.append("No trees available")
     else:
+        d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1 #Le quita un uso a la espada
+        print(d.inventarioArmas[d.jugador["arma_actual"]]["usos"])
         porcentaje = random.randint(1,100)
         if d.jugador["arma_actual"] == " " or d.jugador["arma_actual"] == "" or not d.inventarioArmas[d.jugador["arma_actual"]]["tipo"] == "Sword": #compruba si cuando has atacado a sido con una espada o no
             if porcentaje in range(1,6): #Te da una espada de madera y tiene que salir un mensaje en el promp
@@ -1038,29 +1041,31 @@ def arbol(): #Interacion con el arbol
                 añadirInventario("Wood Shield",d.inventarioArmas)
             elif porcentaje in range(11,51): #Te da una manzana y tiene que salir un mensaje en el promp
                 d.texto_prompt.append("You got an apple")
-                d.inventarioComida["Vegetables"] += 1
+                añadirInventario("Vegetables", d.inventarioComida)
             else: #No te da nada y tiene que salir un mensaje en el promp
                 d.texto_prompt.append("The tree didn't give you anything")
         else:
+            
+            
             if porcentaje in range(1,21): #Te da una espada de madera y tiene que salir un mensaje en el promp
                 d.texto_prompt.append("You got a Wood sword")
                 añadirInventario("Wood Sword",d.inventarioArmas)
-                d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1 #cuando atacas con la espda restas 1 de vida a la espada
+               
                 d.dades[d.jugador["mapa"]]["T"]["vida"][arbol_encontrado] -= 1 #Cuando atacas con la espda restas 1 de vida al arbol
             elif porcentaje in range(21,41): #Te da un escudo de madera y tiene que salir un mensaje en el promp
                 d.texto_prompt.append("You got a Wood shield")
                 añadirInventario("Wood Shield",d.inventarioArmas)
-                d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1 
+                
                 d.dades[d.jugador["mapa"]]["T"]["vida"][arbol_encontrado] -= 1
             elif porcentaje in range(41,81): #Te da una manzana y tiene que salir un mensaje en el promp
   
                 d.texto_prompt.append("You got an apple")
-                d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1 
+               
                 d.dades[d.jugador["mapa"]]["T"]["vida"][arbol_encontrado] -= 1
-                d.inventarioComida["Vegetables"] += 1
+                añadirInventario("Vegetables", d.inventarioComida)
             else: #No te da nada y tiene que salir un mensaje en el promp
                 d.texto_prompt.append("The tree didn't give you anything")
-                d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1 
+                
                 d.dades[d.jugador["mapa"]]["T"]["vida"][arbol_encontrado] -= 1
             if d.dades[d.jugador["mapa"]]["T"]["vida"][arbol_encontrado] == 0: #Cuando el arbol llega a 0 se cae y no aparece hasta dentro de 10 movimientos
                 d.texto_prompt.append("The tree has fallen") #Este prom lo he añadido yo
@@ -1107,7 +1112,7 @@ def agua(mapaActual): #Interacion con el agua
             if porcentaje in range(1,21): #Te da un pez, confirma que ya has conseguido un pez y te da un mensaje en el promp
                 d.texto_prompt.append("You got a fish")
                 d.pesca = True 
-                d.inventarioComida["Fish"] += 1
+                añadirInventario("Fish", d.inventarioComida)
             else: #No te da nada y te escribe en el promp
                 d.texto_prompt.append("You didn't get a fish")
     else:
@@ -1116,11 +1121,12 @@ def agua(mapaActual): #Interacion con el agua
 def reiniciar_pesca():
     d.pesca = False
 
-def zorro_visivilidad(): #Dice si el zorro sera visible o no
+def zorro_visivilidad(mapaActual): #Dice si el zorro sera visible o no
     porcentaje = random.randint(1,100)
     if porcentaje in range(1,51):
         d.visibilidad_zorro = True
         d.vida_zorro = True
+        mapaActual[d.dades[d.jugador["mapa"]]["F"]["posicion"][0]][d.dades[d.jugador["mapa"]]["F"]["posicion"][1]] = "F"
         d.texto_prompt.append("You see a Fox")
     else:
         d.visibilidad_zorro = False
@@ -1134,7 +1140,7 @@ def zorro(): #Interacion con el zorro
             if d.vida_zorro == True:
                 d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1
                 d.texto_prompt.append("You got meat")
-                d.inventarioComida["Meat"] += 1
+                añadirInventario("Meat", d.inventarioComida)
                 d.vida_zorro = False
             
             else:
@@ -1183,6 +1189,7 @@ def abrir_santuario(posicionplayer, mapaActual): #Interacion con el santuario
             else: #Lo abre y añade 1 de vida maxima y escribe en el prompt
                 i[3] = True
                 d.jugador["vidas_max"] = d.jugador["vidas_max"] + 1
+                d.jugador["vidas"] = d.jugador["vidas_max"]
                 d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
                 mapaActual[i[0]][i[1]+2] = " "
         
@@ -1194,6 +1201,7 @@ def abrir_santuario(posicionplayer, mapaActual): #Interacion con el santuario
             else: #Lo abre y añade 1 de vida maxima y escribe en el prompt
                 i[3] = True
                 d.jugador["vidas_max"] = d.jugador["vidas_max"] + 1
+                d.jugador["vidas"] = d.jugador["vidas_max"]
                 d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
                 mapaActual[i[0]][i[1]+2] = " "
         
@@ -1205,6 +1213,7 @@ def abrir_santuario(posicionplayer, mapaActual): #Interacion con el santuario
             else: #Lo abre y añade 1 de vida maxima y escribe en el prompt
                 i[3] = True
                 d.jugador["vidas_max"] = d.jugador["vidas_max"] + 1
+                d.jugador["vidas"] = d.jugador["vidas_max"]
                 d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
                 mapaActual[i[0]][i[1]+2] = " "
         
@@ -1216,6 +1225,7 @@ def abrir_santuario(posicionplayer, mapaActual): #Interacion con el santuario
             else: #Lo abre y añade 1 de vida maxima y escribe en el prompt
                 i[3] = True
                 d.jugador["vidas_max"] = d.jugador["vidas_max"] + 1
+                d.jugador["vidas"] = d.jugador["vidas_max"]
                 d.texto_prompt.append("You opened the sanctuary, your maximum health has increased by 1")
                 mapaActual[i[0]][i[1]+2] = " "
     
@@ -1305,13 +1315,14 @@ def enemigos(mapaActual): #Interacion con el enemigo
                     d.texto_prompt.append("he is dead 💀")
                 
                 else:
+                    d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1 #Le quita un uso a la espada
                     if d.jugador["escudo_actual"] != " " and d.jugador["escudo_actual"] != "":
                         d.inventarioArmas[d.jugador["escudo_actual"]]["usos"] -= 1
                     
                     else:
                         d.jugador["vidas"]-= 1 #Te resta 1 de vida
                     if d.jugador["vidas"] != 0:
-                        d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1 #Le quita un uso a la espada
+                        
                         d.texto_prompt.append(f"Brave, keep fighting {d.jugador['name']}")
                         d.texto_prompt.append(f"Be careful {d.jugador['name']}, you only have {d.jugador['vidas']} hearts")
 
@@ -1657,7 +1668,7 @@ def cambiar_mapa(select, mapaActual, posicionfallo): # Funcion para cambiar de m
             mapaActual = d.localitzacions["hyrule"]
             d.texto_prompt.append("You are now in" + select[6:])
             d.jugador["mapa"] = "hyrule"
-            zorro_visivilidad() 
+            zorro_visivilidad(mapaActual) 
             reiniciar_pesca()
             posicion_player = d.dades["hyrule"]["position"]
             return mapaActual, posicion_player
@@ -1676,7 +1687,7 @@ def cambiar_mapa(select, mapaActual, posicionfallo): # Funcion para cambiar de m
             mapaActual = d.localitzacions["gerudo"]
             d.texto_prompt.append("You are now in " + select[6:])
             d.jugador["mapa"] = "gerudo"
-            zorro_visivilidad() 
+            zorro_visivilidad(mapaActual) 
             reiniciar_pesca()
             posicion_player = d.dades["gerudo"]["position"]
             return mapaActual, posicion_player
@@ -1694,7 +1705,7 @@ def cambiar_mapa(select, mapaActual, posicionfallo): # Funcion para cambiar de m
             mapaActual = d.localitzacions["death"]
             d.texto_prompt.append("You are now in " + select[6:])
             d.jugador["mapa"] = "death"
-            zorro_visivilidad()
+            zorro_visivilidad(mapaActual)
             reiniciar_pesca() 
             posicion_player = d.dades["death"]["position"]
             return mapaActual, posicion_player
@@ -1712,7 +1723,7 @@ def cambiar_mapa(select, mapaActual, posicionfallo): # Funcion para cambiar de m
             mapaActual = d.localitzacions["necluda"]
             d.texto_prompt.append("You are now in " + select[6:])
             d.jugador["mapa"] = "necluda"
-            zorro_visivilidad() 
+            zorro_visivilidad(mapaActual) 
             reiniciar_pesca()
             posicion_player = d.dades["necluda"]["position"]
             return mapaActual, posicion_player
@@ -1815,7 +1826,8 @@ def trucos(select):
 
                santuario[3] = True
 
-        d.jugador["vidas_max"] = 10
+        d.jugador["vidas_max"] = 9
+        d.jugador["vidas"] = d.jugador["vidas_max"]
 
         d.texto_prompt.append("Cheating: open sanctuaries")
     
@@ -1948,6 +1960,7 @@ def blood_moonn():
         d.dades["death"]["E"]["posicion"][1][3] = 2
         d.dades["necluda"]["E"]["posicion"][0][3] = 1
         d.dades["necluda"]["E"]["posicion"][0][3] = 1
+        d.texto_prompt.append("The Blood moon rises once again. Please be careful, Link")
     else:
         d.jugador["bloodMoonCoutdown"] += 1
 
@@ -1986,7 +1999,7 @@ def partidasXJugador():
 def ArmasConseguidas():
         cursor = db.cursor()
 
-        cursor.execute("SELECT g.user_name AS Usuario, w.weapon_name AS Arma, COUNT() AS CantidadObtenida, MAX(g.date_started) AS FechaPartidaMasUsos FROM game g JOIN game_weapons w ON g.game_id = w.game_id GROUP BY g.user_name, w.weapon_name ORDER BY Usuario, CantidadObtenida DESC;")
+        cursor.execute("SELECT g.user_name AS Usuario, w.weapon_name AS Arma, COUNT(*) AS CantidadObtenida, MAX(g.date_started) AS FechaPartidaMasUsos FROM game g JOIN game_weapons w ON g.game_id = w.game_id GROUP BY g.user_name, w.weapon_name ORDER BY Usuario, CantidadObtenida DESC;")
 
         resultados = cursor.fetchall()
 
@@ -2051,13 +2064,12 @@ def saveGame():
 
     lista_inventario = []
 
-    #Actualizar tabla game.
     query = "UPDATE game SET hearts_remaining = %s, blood_moon_countdown = %s, blood_moon_appearances = %s, region = %s, max_live = %s, xpos = %s, ypos = %s, date_started = NOW() WHERE game_id = %s;"
-    val = (d.jugador["vidas"], d.jugador["bloodMoonCoutdown"], d.jugador["totalBloodMoon"], d.jugador["mapa"], d.jugador["vidas_max"], d.jugador["id_game"], d.jugador["posicion"][0], d.jugador["posicion"][1])
+    val = (d.jugador["vidas"], d.jugador["bloodMoonCoutdown"], d.jugador["totalBloodMoon"], d.jugador["mapa"], d.jugador["vidas_max"], d.jugador["posicion"][0], d.jugador["posicion"][1], d.jugador["id_game"])
     print(d.jugador["id_game"])
     cursor.execute(query, val)
     db.commit()
-
+        
     #Actualizar enemigos con update.
     lista_inventario = d.dades.keys()
     for element in lista_inventario:
@@ -2154,9 +2166,9 @@ def selectAndChargePartida(numero):
             d.jugador["vidas_max"] = element[6]
             d.jugador["vidas"] = element[5]
             d.jugador["bloodMoonCoutdown"] = element[7]
-            d.jugador["mActual"] = element[9]
+            d.jugador["mapa"] = element[9].lower()
             d.jugador["id_game"] = element[0]
-        
+            
         break
 
     #Recuperamos la comida
@@ -2270,9 +2282,11 @@ def gastar_arma():
     if d.jugador["arma_actual"] != "" and d.jugador["arma_actual"] != " ":
         if d.inventarioArmas[d.jugador["arma_actual"]]["usos"] == 0:
             del d.inventarioArmas[d.jugador["arma_actual"]]
-            d.jugador["arma_actual"] = 0
+            d.jugador["arma_actual"] = ""
+            d.texto_prompt.append("Your sword is depleted, choose another one.")
     
     if d.jugador["escudo_actual"] != "" and d.jugador["escudo_actual"] != " ":
         if d.inventarioArmas[d.jugador["escudo_actual"]]["usos"] == 0:
             del d.inventarioArmas[d.jugador["escudo_actual"]]
-            d.jugador["escudo_actual"] = 0
+            d.jugador["escudo_actual"] = ""
+            d.texto_prompt.append("Your Shield is depleted, choose another one.")
