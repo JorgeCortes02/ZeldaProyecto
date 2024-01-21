@@ -8,10 +8,10 @@ import funciones.datos as d
 def game(): # Hay que mirar como se pondria para cuando eliges una partida guardada.
     exit = False 
     while exit == False: # Bucle para que cuando le des a exit en el menu salga del juego
-        #exit = f.menu_principal() # Ejecutamos el menu principal, devuelve un booleano, si es falso es porque has pulsado exit
-        #if exit == False: # Salir de la función
-        #    exit = True
-        #    return True
+        exit = f.menu_principal() # Ejecutamos el menu principal, devuelve un booleano, si es falso es porque has pulsado exit
+        if exit == False: # Salir de la función
+            exit = True
+            return True
         
         posicionplayer = d.jugador["posicion"]
         mapaActual = d.localitzacions[d.jugador["mapa"]]
@@ -26,7 +26,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
             f.contador_arbol(mapaActual)
             f.blood_moonn()
             f.vida_enemigo(mapaActual)
-            f.gastar_arma()
+            '''f.gastar_arma()'''
             
             
             # Crear diccionario de ganon con sus vidas
@@ -157,7 +157,9 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                     f.trucos(select)
                 
                 elif select.lower() == "exit": # Salir
+                    exit = True
                     final = True
+                    
                 
                 else: # Opcion invalida, se añade al prompt
                     d.texto_prompt.append("Invalid action")
@@ -187,7 +189,9 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                         f.trucos(select)
                     
                     elif select.lower() == "exit": # Salir
+                        exit = True
                         final = True
+                    
                     
                     else: # Opción invalida, se añade al prompt
                         d.texto_prompt.append("Invalid action")
@@ -207,6 +211,7 @@ def game(): # Hay que mirar como se pondria para cuando eliges una partida guard
                         f.trucos(select)
                     
                     elif select.lower() == "exit": # Salir
+                        exit = True
                         final = True
                     
                     else: # Opción invalida, se añade al prompt

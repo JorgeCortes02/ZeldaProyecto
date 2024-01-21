@@ -9,7 +9,7 @@ jugador = {"name" : " ","posicion" : [8,11], "arma_actual": "", "escudo_actual" 
 
 
 
-dict_tipos = {"Shield" : {"total": 0, "minUsos" : 0}, "Wood Shield" : {"total": 0, "minUsos" : 0}, "Sword" : {"total": 0, "minUsos" : 0}, "Wood Sword" : {"total": 0, "minUsos" : 0} }
+dict_tipos = {"Shield" : {"total": 0, "minUsos" : ""}, "Wood Shield" : {"total": 0, "minUsos" : ""}, "Sword" : {"total": 0, "minUsos" : ""}, "Wood Sword" : {"total": 0, "minUsos" : ""} }
 
 inventarioArmas = {}
 

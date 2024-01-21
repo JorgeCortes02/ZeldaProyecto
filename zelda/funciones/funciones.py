@@ -14,6 +14,9 @@ cursor = db.cursor()
 
 
 mapaActual = []
+def resetTipos():
+    dict_tipos = {"Shield" : {"total": 0, "minUsos" : 0}, "Wood Shield" : {"total": 0, "minUsos" : 0}, "Sword" : {"total": 0, "minUsos" : 0}, "Wood Sword" : {"total": 0, "minUsos" : 0} }
+
 #Contea la cantidad de cada tipo de arma.
 def conteoInventario():
 
@@ -130,6 +133,7 @@ def mostrarInventario(Select):
     #Muestra el inventario de armas.
     elif Select.lower() == "show inventory weapons":
         #Calculamos cuales son las armas de cada tipo que tienen menos usos para poder imprimir los usos de sa arma.
+        resetTipos()
         conteoInventario()
         inventario = [" * * * * * Weapons * \n",
                         "*\n".rjust(21),
@@ -196,22 +200,30 @@ def mostrarInventario(Select):
 #Esta funcion inserta un objeto en el inventario. Solo necesitaremos pasarle el nombre del objeto y el diccionario al cual queremos meterlo (InventarioComida o inventario Arma)
 def añadirInventario(objeto, diccionario):
 
+    numRandom = 0
+
+    for i in range(3):
+        if i == 0:
+            numRandom = random.randint(0,9)
+        else: numRandom += random.randint(0,9)
+
+
     if objeto == "Wood Sword":
-        
-        diccionario[objeto] = {"tipo": "Wood Sword", "usos": 5 }
+
+        diccionario[objeto+ str(numRandom)] = {"tipo": "Wood Sword", "usos": 9 }
         
     elif objeto == "Wood Shield":
     
-        diccionario[objeto] = {"tipo": "Wood Shield", "usos": 5 }
+        diccionario[objeto+ str(numRandom)] = {"tipo": "Wood Shield", "usos": 5 }
     
     elif objeto == "Shield":
         
-        diccionario[objeto] = {"tipo": "Shield", "usos": 9 }
-        
+        diccionario[objeto+ str(numRandom)] = {"tipo": "Shield", "usos": 5 }
+        d.texto_prompt.append("holi")
     
     elif objeto == "Sword":
         
-        diccionario[objeto] = {"tipo": "Sword", "usos": 9 }
+        diccionario[objeto+ str(numRandom)] = {"tipo": "Sword", "usos": 9 }
 
     elif objeto == "Vegetables":
         
@@ -264,6 +276,7 @@ def introducirUserInicial(posicionUser, playermap):
 #Esta función imprime tanto el mapa como el inventario lateral.
 
 def imprimirmapa(mapaActual):
+    inventario1 = mostrarInventario(d.select)
     mapa = ""
     contadorInventario = 0
     for element in mapaActual:
@@ -271,7 +284,7 @@ def imprimirmapa(mapaActual):
         for element1 in element:
                 mapa += str(element1)
                
-        mapa += mostrarInventario(d.select)[contadorInventario]
+        mapa += inventario1[contadorInventario]
         
         if contadorInventario < 10:
             contadorInventario += 1
@@ -931,6 +944,7 @@ def imprimirmapa_menu(mapa):
 
 #Equipa el arma que le pasemos en el Select.
 def equiparArma(Select):
+    resetTipos()
     conteoInventario()
     #armaMenosUsos()
     Select = Select.lower()
@@ -944,9 +958,9 @@ def equiparArma(Select):
         d.jugador["escudo_actual"] = d.dict_tipos["Wood Shield"]["minUsos"]
     
     elif Select.find("shield") != -1 and Select.find("wood") == -1:
-
+        
         d.jugador["escudo_actual"] = d.dict_tipos["Shield"]["minUsos"]
-
+        d.texto_prompt.append(str(d.inventarioArmas["Shield"]["tipo"]))
     elif Select.find("wood sword") != -1:
 
        d.jugador["arma_actual"] = d.dict_tipos["Wood Sword"]["minUsos"]
@@ -1039,6 +1053,7 @@ def arbol(): #Interacion con el arbol
                 d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1 
                 d.dades[d.jugador["mapa"]]["T"]["vida"][arbol_encontrado] -= 1
             elif porcentaje in range(41,81): #Te da una manzana y tiene que salir un mensaje en el promp
+  
                 d.texto_prompt.append("You got an apple")
                 d.inventarioArmas[d.jugador["arma_actual"]]["usos"] -= 1 
                 d.dades[d.jugador["mapa"]]["T"]["vida"][arbol_encontrado] -= 1
@@ -2255,7 +2270,9 @@ def gastar_arma():
     if d.jugador["arma_actual"] != "" and d.jugador["arma_actual"] != " ":
         if d.inventarioArmas[d.jugador["arma_actual"]]["usos"] == 0:
             del d.inventarioArmas[d.jugador["arma_actual"]]
+            d.jugador["arma_actual"] = 0
     
     if d.jugador["escudo_actual"] != "" and d.jugador["escudo_actual"] != " ":
         if d.inventarioArmas[d.jugador["escudo_actual"]]["usos"] == 0:
             del d.inventarioArmas[d.jugador["escudo_actual"]]
+            d.jugador["escudo_actual"] = 0
